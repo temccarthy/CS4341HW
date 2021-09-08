@@ -157,8 +157,8 @@ def expand_queue(queue, newNodesToAddToQueue, problem, search):
         Hint: Note that you'll know that all nodes in a level have been explored when the queue contains only nodes (i.e., paths) of the same length.
         """
         queue.insertNodesAtEnd(newNodesToAddToQueue)
-        queue.areNodePathLengthsEqual()
-        queue.keepBestNodes(2)
+        if queue.areNodePathLengthsEqual():
+            queue.keepBestNodes(2)
 
     return False
 def main(filename):
