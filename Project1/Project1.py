@@ -128,23 +128,38 @@ def expand_queue(queue, newNodesToAddToQueue, problem, search):
         Include your solution for Greedy search here. Hint: 3 lines of code suffice, but you can have more or less lines of code if you need to.
         You only need to call functions already provided in the code files.
         """
-        
+        queue.insertNodesAtEnd(newNodesToAddToQueue)
+        queue.sortByCost()
+        queue.removeRedundantNodes()
+
     elif search == SearchEnum.A_STAR:
         """
         Include your solution for A* search here. Hint: 3 lines of code suffice, but you can have more or less lines of code if you need to.
         You only need to call functions already provided in the code files.
         """
+        queue.insertNodesAtEnd(newNodesToAddToQueue)
+        queue.sortByCost()
+        queue.removeRedundantNodes()
+
     elif search == SearchEnum.HILL_CLIMBING:
         """
-        Include your solution for Hill Crimbing (without backtracking) search here. Hint: 3 lines of code suffice, but you can have more or less lines of code if you need to.
+        Include your solution for Hill Climbing (without backtracking) search here. Hint: 3 lines of code suffice, but you can have more or less lines of code if you need to.
         You only need to call functions already provided in the code files.
         """
+        queue.insertNodesAtEnd(newNodesToAddToQueue)
+        queue.sortByCost()
+        queue.keepBestNodes(1)
+
     elif search == SearchEnum.BEAM_SEARCH:
         """
         Include your solution for Beam search here. Hint: 3-4 lines of code suffice, but you can have more or less lines of code if you need to.
         You only need to call functions already provided in the code files.
         Hint: Note that you'll know that all nodes in a level have been explored when the queue contains only nodes (i.e., paths) of the same length.
         """
+        queue.insertNodesAtEnd(newNodesToAddToQueue)
+        queue.areNodePathLengthsEqual()
+        queue.keepBestNodes(2)
+
     return False
 def main(filename):
     """
@@ -158,7 +173,7 @@ def main(filename):
 
     graph = readInput(filename)
 
-    for index, search in enumerate(SearchEnum):
+    for search in SearchEnum:
         print(search.value)
         result = General_Search(graph, search)
         if (not result):
@@ -167,7 +182,6 @@ def main(filename):
             print("\tgoal reached!")
             print("\n\tsolution found: " + result.stateString())
         print()
-        if index == 3: break
 def readInput(filename):
     """
     Build the graph from the given input file.
