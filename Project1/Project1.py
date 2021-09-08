@@ -92,16 +92,21 @@ def expand_queue(queue, newNodesToAddToQueue, problem, search):
     if search == SearchEnum.DEPTH_FIRST_SEARCH:
         # The solution for Dept-1st search is already provided here in the line below. This should help you realize what you need to do for other search methods. 
         queue.insertNodesAtFront(newNodesToAddToQueue)
+
     elif search == SearchEnum.BREADTH_FIRST_SEARCH:
         """
         Include your solution for Breadth-1st search here. Hint: 1 line of code (a call to a function provided) sufficies.
         """
+        queue.insertNodesAtEnd(newNodesToAddToQueue)
+
     elif search == SearchEnum.DEPTH_LIMITED_SEARCH:
         lengthLimit = 3 # Depth limit + 1 for root
         # Don't add any nodes that go beyond this limit 
         """
         Include your solution for Depth-limited here. Hint: 1 line of code (a call to a function provided) sufficies, but you can have more lines if you need to.
         """
+        queue.insertNodesAtFront([node for node in newNodesToAddToQueue if len(node.path) <= lengthLimit])
+
     elif search == SearchEnum.ITERATIVE_DEEPENING_SEARCH:
         # If starting the iterative deepening search, then start the loop. Otherwise, expand queue until the filter results in an empty queue.
         if(iterativeLimit == 0): 
@@ -110,16 +115,20 @@ def expand_queue(queue, newNodesToAddToQueue, problem, search):
             """
             Include your solution for Depth-limited here. Hint: 1 line of code (a call to a function provided) sufficies, but you can have more lines if you need to.
             """
+            queue.insertNodesAtFront([node for node in newNodesToAddToQueue if len(node.path) <= iterativeLimit+1]) # +1 to include the root
+
     elif search == SearchEnum.UNIFORM_COST_SEARCH:
         # The solution for Uniform-Cost search is already provided here in the 3 lines below. This should help you realize what you need to do for other search methods. 
         queue.insertNodesAtEnd(newNodesToAddToQueue)
         queue.sortByCost()
         queue.removeRedundantNodes()
+
     elif search == SearchEnum.GREEDY_SEARCH:
         """
         Include your solution for Greedy search here. Hint: 3 lines of code suffice, but you can have more or less lines of code if you need to.
         You only need to call functions already provided in the code files.
         """
+        
     elif search == SearchEnum.A_STAR:
         """
         Include your solution for A* search here. Hint: 3 lines of code suffice, but you can have more or less lines of code if you need to.
@@ -149,7 +158,7 @@ def main(filename):
 
     graph = readInput(filename)
 
-    for search in SearchEnum:
+    for index, search in enumerate(SearchEnum):
         print(search.value)
         result = General_Search(graph, search)
         if (not result):
@@ -158,6 +167,7 @@ def main(filename):
             print("\tgoal reached!")
             print("\n\tsolution found: " + result.stateString())
         print()
+        if index == 3: break
 def readInput(filename):
     """
     Build the graph from the given input file.
