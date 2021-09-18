@@ -7,6 +7,9 @@
 
 # C extensions
 *.so
+*.o
+main
+.depends
 
 # Distribution / packaging
 .Python
