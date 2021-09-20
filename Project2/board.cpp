@@ -48,22 +48,20 @@ int Board::getPieceNumFromCoords(int row, int col) {
 bool Board::setPiece(int row, int col, char color) {
 
 	if (!outOfBounds(row, col) && getPiece(row, col) == 0) { // if inbounds and space empty
-		for(int* dir : directions) {
+		for(int* dir : directions) { // iterate through all directions
 			int rowCurr = row;
 			int colCurr = col;
 
 			bool potentialFlipped[64];
 			bool legalMove = false;
-			while (!outOfBounds(rowCurr, colCurr))
-			{
+			while (!outOfBounds(rowCurr, colCurr)) {
 				rowCurr += dir[0];
 				colCurr += dir[1];
 			}
 			char colorCurr = getPiece(rowCurr, colCurr);
 			if (colorCurr == 0) {
 				break;
-			} else if (colorCurr = color)
-			{
+			} else if (colorCurr = color) {
 				for (bool potentialFlip : potentialFlipped) {
 					if (potentialFlip) {
 						legalMove = true;
@@ -89,7 +87,6 @@ string Board::boardToStr() {
 }
 
 void Board::testCases() {
-	Board b = Board('b');
 	bool cases = true;
 
 	cases &= !setPiece(1, 1, 'o'); // false
@@ -101,6 +98,9 @@ void Board::testCases() {
 		cout << "all tests pass!" << endl;
 	else
 		cout << "tests fail" << endl;
+
+	cout << endl << "board after tests" << endl;
+	cout << boardToStr() << endl;
 }
 
 int main() {
@@ -111,9 +111,6 @@ int main() {
 	cout << "~~~~" << endl;
 
 	b.testCases();
-
-	cout << "board after tests" << endl << endl;
-	cout << b.boardToStr() << endl;
 
 	return 0;
 }
