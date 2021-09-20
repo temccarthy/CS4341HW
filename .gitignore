@@ -5,11 +5,16 @@
 
 **/.idea/
 
+
 # C extensions
 *.so
 *.o
 main
 .depends
+*.exe
+.cproject
+.project
+**/.settings/
 
 # Distribution / packaging
 .Python
