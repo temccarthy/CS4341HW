@@ -23,6 +23,7 @@ bool outOfBounds(int row, int col) {
 	return (row < 0) || (row > 7) || (col < 0) || (col > 7);
 }
 
+// we don't do anything with ourColor?
 Board::Board(char ourColor) {
 	memset(board, 0, sizeof(board));
 
