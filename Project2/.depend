@@ -1,2 +1,2 @@
-board.o: board.cpp
-teamname.o: teamname.cpp board.cpp
+board.o: board.cpp board.hpp
+teamname.o: teamname.cpp board.hpp
