@@ -33,7 +33,7 @@ Board::Board(char ourColor) {
 	board[27] = 'b'; //3,3
 	board[28] = 'o'; //3,4
 	board[35] = 'o'; //4,3
-	board[36] = 'b'; //4,4
+	board[36] = 'r'; //4,4
 }
 
 char Board::getPiece(int row, int col) {
@@ -65,9 +65,11 @@ bool Board::setPiece(int row, int col, char color) {
 				for (bool potentialFlip : potentialFlipped) {
 					if (potentialFlip) {
 						legalMove = true;
+                        break;
 					}
 				}
 			}
+            return legalMove;
 		}
 	}
 
