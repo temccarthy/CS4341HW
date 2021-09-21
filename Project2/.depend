@@ -1,1 +1,2 @@
 board.o: board.cpp
+teamname.o: teamname.cpp board.cpp

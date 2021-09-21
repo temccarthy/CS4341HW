@@ -10,6 +10,7 @@ using namespace std;
 #include <iostream>
 #include <string.h>
 #include <fstream>
+#include <sys/stat.h>
 #include "board.cpp"
 
 string teamname = "teamname";
@@ -49,17 +50,20 @@ int main() {
 	Board b = Board('b');
 
 	fstream move_file;
+	string lastMove, opponentMove;
 
 	while (playing) {
-		while (!goFileExists()) {
-		} // spin while waiting
+		while (!goFileExists()) {} // spin while waiting
 
 		// open move_file and read last line
 		move_file.open("move_file");
-		string lastMove = readLastLine(move_file);
+		lastMove = readLastLine(move_file);
 
 		// if we made the last move, continue
 		if (lastMove.find(teamname, 0)) continue; // UNTESTED lol
+
+		// remove opponent name
+		opponentMove = lastMove.substr(lastMove.find(" ") + 1, lastMove.size()); // UNTESTED
 
 
 
