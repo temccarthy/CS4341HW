@@ -26,14 +26,14 @@ bool outOfBounds(int row, int col) {
 Board::Board(char ourColor) {
 	memset(board, 0, sizeof(board));
 
-	for (int i = 0; i < sizeof(board); i++) {
+	for (int i = 0; i < 64; i++) {
 		board[i] = '0';
 	}
 
 	board[27] = 'b'; //3,3
 	board[28] = 'o'; //3,4
 	board[35] = 'o'; //4,3
-	board[36] = 'r'; //4,4
+	board[36] = 'b'; //4,4
 }
 
 char Board::getPiece(int row, int col) {
@@ -45,6 +45,7 @@ int Board::getPieceNumFromCoords(int row, int col) {
 	return row * 8 + col;
 }
 
+
 bool Board::setPiece(int row, int col, char color) {
 
 	if (!outOfBounds(row, col) && getPiece(row, col) == 0) { // if inbounds and space empty
@@ -54,6 +55,7 @@ bool Board::setPiece(int row, int col, char color) {
 
 			bool potentialFlipped[64];
 			bool legalMove = false;
+            int i = 0;
 			while (!outOfBounds(rowCurr, colCurr)) {
 				rowCurr += dir[0];
 				colCurr += dir[1];
@@ -68,7 +70,10 @@ bool Board::setPiece(int row, int col, char color) {
                         break;
 					}
 				}
-			}
+			} else {
+                potentialFlipped[i] = true;
+            }
+
             return legalMove;
 		}
 	}
