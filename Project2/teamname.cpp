@@ -26,7 +26,7 @@ string readLastMove(fstream* fin) {
 	string lastLine, prevLine;
 
 	// stops reading before empty line
-	// maybe need to refactor if other players mess it up
+	// maybe need to refactor if other players mess move_file up
 	while (getline(*fin, lastLine) && lastLine != ""){
 		prevLine = lastLine;
 	}
@@ -42,30 +42,30 @@ int main() {
 	string lastMove, opponentMove;
 
 	while (playing) {
+		// start by looking for name.go file
 		while (!goFileExists()) {
 			// spin while waiting
 		}
-		playing = false;
+		playing = false; // DEBUG
+
 		cout << "go file found; opening move_file" << endl;
+
 		// open move_file and read last line
 		move_file.open("move_file");
-
 		lastMove = readLastMove(&move_file);
 
 		cout << "last move was: " << lastMove << endl;
 
-		// if we made the last move, continue
+		// if we made the last move, look for go file again
 		if (lastMove.find(teamname) != string::npos){
-			cout << "last move us" << endl;
-			continue; // UNTESTED lol
-
+			continue;
 		}
+
 		// remove opponent name
 		opponentMove = lastMove.substr(lastMove.find(" ") + 1, lastMove.size()); // UNTESTED
 		cout << opponentMove << endl;
-
-
 	}
+
 	// start by looking for name.go file
 	// wait otherwise
 	// when team.go exists, read move_file
