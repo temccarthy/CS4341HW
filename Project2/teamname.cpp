@@ -62,8 +62,14 @@ int main() {
 		}
 
 		// remove opponent name
-		opponentMove = lastMove.substr(lastMove.find(" ") + 1, lastMove.size()); // UNTESTED
-		cout << opponentMove << endl;
+		opponentMove = lastMove.substr(lastMove.find(" ") + 1, lastMove.size());
+
+		// play opponent move on board
+		// still need to translate from "B 3" to 2, 3
+		b.setPiece(opponentMove[0], opponentMove[2], 'o'); // need to keep track of who is which color
+
+		// make a move
+		// ?
 	}
 
 	// start by looking for name.go file
