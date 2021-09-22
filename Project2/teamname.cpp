@@ -55,14 +55,14 @@ int main() {
 		cout << "last move was: " << lastMove << endl;
 
 		// if we made the last move, continue
-		if (lastMove.find(teamname, 0)){
+		if (lastMove.find(teamname) != string::npos){
 			cout << "last move us" << endl;
 			continue; // UNTESTED lol
 
 		}
 		// remove opponent name
 		opponentMove = lastMove.substr(lastMove.find(" ") + 1, lastMove.size()); // UNTESTED
-
+		cout << opponentMove << endl;
 
 
 	}
