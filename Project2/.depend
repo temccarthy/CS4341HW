@@ -1,2 +1,3 @@
 board.o: board.cpp board.hpp
 teamname.o: teamname.cpp board.hpp
+minimax.o: minimax.cpp minimax.hpp board.hpp

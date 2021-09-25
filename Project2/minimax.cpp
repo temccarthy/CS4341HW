@@ -7,33 +7,42 @@
 
 #include "minimax.hpp"
 
-// runs search
+// runs search, returns the move
 int Minimax::minimaxSearch(Board board) {
-	int move = maxValue(board);
-	return move;
+	UtilityMovePair* pair = maxValue(board);
+	return (*pair).move;
 }
 
 // tries to get best move for us (maximize utility)
-int Minimax::maxValue(Board board) {
+UtilityMovePair* Minimax::maxValue(Board board) {
+	// if game over, return utility value with null move
 	if (board.gameOver()){
-		return board.utility();
+		UtilityMovePair* ret = new UtilityMovePair(0, board.utility()); // 0 should be null
+		return ret;
 	}
-	float v = -100.0; // minimax value at this stage of the tree
-	float v2 = 0;
+	UtilityMovePair* chosenMove = new UtilityMovePair(0, -100.0); // minimax value at this stage of the tree
+	UtilityMovePair* currMove; // move to be returned
 
 	// iterate through possible moves by seeing if setPiece is true
 	for (int i = 0; i < 64; i++){
-		if (board.setPiece(i%8, i/8, 'o')){
-			v2 = minValue(board);
-			if (v2 > v) {
-				v = v2;
+		// if board can setPiece
+		if (board.setPiece(i%8, i/8, 'o')){ // TODO: figure out which piece we are
+
+			// try to find opponent's best move (which minimizes utility)
+			currMove = minValue(board);
+
+			// if the new move has a better value, the chosen move becomes the new move
+			if ((*currMove).utility > (*chosenMove).utility) {
+				chosenMove = currMove;
 			}
 		}
 	}
-	return
+
+	// return the move with the best utility
+	return chosenMove;
 }
 
 // tries to get best move for opponents (minimizes utility)
-int Minimax::minValue(Board board) {
+UtilityMovePair* Minimax::minValue(Board board) {
 
 }

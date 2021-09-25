@@ -1,7 +1,3 @@
-using namespace std;
-
-#include <iostream>
-#include <string.h>
 #include "board.hpp"
 
 bool outOfBounds(int row, int col) {

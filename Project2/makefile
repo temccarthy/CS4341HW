@@ -5,7 +5,7 @@ CPPFLAGS=-g $(shell root-config --cflags)
 LDFLAGS=-g $(shell root-config --ldflags)
 LDLIBS=$(shell root-config --libs)
 
-SRCS=board.cpp teamname.cpp
+SRCS=board.cpp teamname.cpp minimax.cpp
 OBJS=$(subst .cpp,.o,$(SRCS))
 
 all: main

@@ -8,7 +8,17 @@
 #ifndef MINIMAX_HPP_
 #define MINIMAX_HPP_
 
+using namespace std;
 #include "board.hpp"
+
+struct UtilityMovePair {
+	int move;
+	float utility;
+	UtilityMovePair(int m, float u) {
+		move = m;
+		utility = u;
+	}
+};
 
 class Minimax {
 	int alpha, beta;
@@ -16,8 +26,10 @@ class Minimax {
 public:
 	int minimaxSearch(Board board);
 private:
-	int maxValue(Board board);
-	int minValue(Board board);
+	UtilityMovePair* maxValue(Board board);
+	UtilityMovePair* minValue(Board board);
 };
+
+
 
 #endif /* MINIMAX_HPP_ */
