@@ -12,6 +12,7 @@ using namespace std;
 #include <fstream>
 #include <sys/stat.h>
 #include "board.hpp"
+#include "minimax.hpp"
 
 string teamname = "teamname";
 
@@ -34,12 +35,21 @@ string readLastMove(fstream* fin) {
 	return prevLine;
 }
 
+void writeOurMove(fstream* fin, int move) { // TODO: UNTESTED
+	char col = 65 + move%8;
+	char row = 31+(move%8);
+	string moveString = teamname + " " + col + " " + row;
+	fin << moveString << "\n";
+}
+
 int main() {
 	bool playing = true;
 	Board b = Board('b');
 
 	fstream move_file;
 	string lastMove, opponentMove;
+	int move;
+	//Minimax m = Minimax();
 
 	while (playing) {
 		// start by looking for name.go file
@@ -53,6 +63,7 @@ int main() {
 		// open move_file and read last line
 		move_file.open("move_file");
 		lastMove = readLastMove(&move_file);
+		move_file.close();
 
 		cout << "last move was: " << lastMove << endl;
 
@@ -63,13 +74,16 @@ int main() {
 
 		// remove opponent name
 		opponentMove = lastMove.substr(lastMove.find(" ") + 1, lastMove.size());
-
+		cout << opponentMove << "\n";
 		// play opponent move on board
 		// still need to translate from "B 3" to 2, 3
-		b.setPiece(opponentMove[0], opponentMove[2], 'o'); // need to keep track of who is which color
+		//b.setPiece(opponentMove, 'them'); // need to keep track of who is which color
 
 		// make a move
-		// ?
+		move = 6; // m.minimaxSearch(&b);
+		//b.setPiece(move, 'us');
+
+
 	}
 
 	// start by looking for name.go file

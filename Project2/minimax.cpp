@@ -28,8 +28,6 @@ UtilityMovePair* Minimax::maxValue(Board* board) {
 	for (int i = 0; i < 64; i++){
 		// if board can setPiece
 		if ((*boardCopy).setPiece(i%8, i/8, 'o')){ // TODO: figure out which piece we are
-			// TODO: make a new board to pass through?
-
 
 			// try to find opponent's best move (which minimizes utility)
 			currMove = minValue(board);
