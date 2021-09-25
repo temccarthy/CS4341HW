@@ -1,25 +1,26 @@
 using namespace std;
-
 #include <iostream>
 #include <string.h>
+#include <vector>
 
 class Board {
 	char board[64];
-	int directions[8][2] = { { -1, 0 }, { -1, -1 }, { -1, 1 }, { 1, 0 },
-			{ 1, -1 }, { 1, 1 }, { 0, -1 }, { 0, 1 } };
+	
 
 public:
 	Board(char ourColor);
 	char getPiece(int row, int col);
 	bool setPiece(int row, int col, char color);
+	vector<int> flippedPieces(int row, int col, char color);
 	string boardToStr();
 	int getPieceNumFromCoords(int row, int col);
+	
 	void testCases();
 private:
-	;
 };
 
 bool outOfBounds(int row, int col) {
+	cout << row + "," + col << endl;
 	return (row < 0) || (row > 7) || (col < 0) || (col > 7);
 }
 
@@ -47,33 +48,58 @@ int Board::getPieceNumFromCoords(int row, int col) {
 }
 
 bool Board::setPiece(int row, int col, char color) {
+	vector<int> flipped = flippedPieces(row, col, color);
 
-	if (!outOfBounds(row, col) && getPiece(row, col) == 0) { // if inbounds and space empty
-		for(int* dir : directions) { // iterate through all directions
-			int rowCurr = row;
-			int colCurr = col;
+	cout << !outOfBounds(row, col) << endl;
+	cout << (getPiece(row, col)==0) << endl;
+	cout << (flipped.size()>0) << endl;
+	
+	if (!outOfBounds(row, col) && getPiece(row, col)==0 && flipped.size()>0) { // if inbounds and space empty	
+		for (int pieceNum: flipped){
+			board[pieceNum] = color;
+		}
+		return true;
+	}else{
+		return false;
+	}	
+}
 
-			bool potentialFlipped[64];
-			bool legalMove = false;
-			while (!outOfBounds(rowCurr, colCurr)) {
-				rowCurr += dir[0];
-				colCurr += dir[1];
-			}
+
+vector<int> Board::flippedPieces(int row, int col, char color){
+	int directions[8][2] = { { -1, 0 }, { -1, -1 }, { -1, 1 }, { 1, 0 },
+			{ 1, -1 }, { 1, 1 }, { 0, -1 }, { 0, 1 } };
+	
+	vector<int> flipped;
+
+	for(int* dir : directions) { // iterate through all directions
+		int rowCurr = row;
+		int colCurr = col;
+		bool legalMove = false;
+		vector<int> potentialFlipped;
+		
+		while (!outOfBounds(rowCurr, colCurr)) {
+			rowCurr += dir[0];
+			colCurr += dir[1];
+		
 			char colorCurr = getPiece(rowCurr, colCurr);
 			if (colorCurr == 0) {
 				break;
-			} else if (colorCurr = color) {
-				for (bool potentialFlip : potentialFlipped) {
-					if (potentialFlip) {
-						legalMove = true;
-					}
-				}
+			} else if (colorCurr==color && potentialFlipped.size()>0) {
+				legalMove = true;
+				break;	
+			} else {
+				int pieceNum = getPieceNumFromCoords(rowCurr, colCurr);
+				potentialFlipped.push_back(pieceNum);
 			}
+		}
+
+		if (legalMove){
+			flipped.reserve(flipped.size() + distance(potentialFlipped.begin(),potentialFlipped.end()));
+			flipped.insert(flipped.end(),potentialFlipped.begin(),potentialFlipped.end());
 		}
 	}
 
-	board[row * 8 + col] = color;
-	return false;
+	return flipped;
 }
 
 string Board::boardToStr() {
@@ -81,6 +107,7 @@ string Board::boardToStr() {
 	for (int i = 7; i > -1; i--) {
 		for (int j = 0; j < 8; j++) {
 			output += getPiece(i, j);
+			output += "|";
 		}
 		output += '\n';
 	}
@@ -92,7 +119,7 @@ void Board::testCases() {
 
 	cases &= !setPiece(1, 1, 'o'); // false
 	cases &= !setPiece(1, 1, 'b'); // false
-	cases &= setPiece(2, 3, 'o'); // true
+	//cases &= setPiece(2, 3, 'o'); // true
 	// cases &= setPiece(1, 3, 'b'); // not true
 
 	if (cases)
@@ -110,8 +137,12 @@ int main() {
 	cout << "starting board" << endl;
 	cout << b.boardToStr() << endl;
 	cout << "~~~~" << endl;
-
 	b.testCases();
+	// vector<int> flippedPieces = b.flippedPieces(1, 1, 'b'); 
+	// for (int flippedPiece : flippedPieces){
+	// 	cout << flippedPiece << endl;
+	// }
+	// cout << flippedPieces.size() << endl;
 
 	return 0;
 }
