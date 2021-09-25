@@ -12,6 +12,7 @@ public:
 	Board(char ourColor);
 	char getPiece(int row, int col);
 	bool setPiece(int row, int col, char color);
+    bool * getFlipped(int row, int col, char color, bool potentialFlipped[64]);
 	string boardToStr();
 	int getPieceNumFromCoords(int row, int col);
 	void testCases();
@@ -49,44 +50,50 @@ int Board::getPieceNumFromCoords(int row, int col) {
 bool Board::setPiece(int row, int col, char color) {
 
 	if (!outOfBounds(row, col) && getPiece(row, col) == 0) { // if inbounds and space empty
-		for(int* dir : directions) { // iterate through all directions
-			int rowCurr = row;
-			int colCurr = col;
-
-			bool potentialFlipped[64];
-			bool legalMove = false;
-            int i = 0;
-			while (!outOfBounds(rowCurr, colCurr)) {
-				rowCurr += dir[0];
-				colCurr += dir[1];
-			}
-			char colorCurr = getPiece(rowCurr, colCurr);
-			if (colorCurr == 0) {
-				break;
-			} else if (colorCurr = color) {
-				for (bool potentialFlip : potentialFlipped) {
-					if (potentialFlip) {
-						legalMove = true;
-                        break;
-					}
-				}
-			} else {
-                potentialFlipped[i] = true;
-            }
-
-            return legalMove;
-		}
+		
 	}
 
 	board[row * 8 + col] = color;
 	return false;
 }
 
+bool * Board::getFlipped(int row, int col, char color, bool captured[64]){
+    
+    for(int* dir : directions) { // iterate through all directions
+        int rowCurr = row;
+        int colCurr = col;        
+        bool potentialFlippedExists = false;
+        bool legalMove = false;
+        int i = 0;
+        bool potentialFlipped[64];
+        while (!outOfBounds(rowCurr, colCurr)) {
+            rowCurr += dir[0];
+            colCurr += dir[1];
+        
+            char colorCurr = getPiece(rowCurr, colCurr);
+            if (colorCurr == '0') {
+                break;
+            } else if (colorCurr = color && potentialFlippedExists){
+                legalMove = true; 
+                break;   
+            } else {
+                potentialFlipped[i] = true;
+                potentialFlippedExists = true;
+            }
+        }
+        i++;
+    }
+    return captured;
+}
+
+
+
 string Board::boardToStr() {
 	string output("");
 	for (int i = 7; i > -1; i--) {
 		for (int j = 0; j < 8; j++) {
 			output += getPiece(i, j);
+            output += "|";
 		}
 		output += '\n';
 	}
@@ -106,6 +113,8 @@ void Board::testCases() {
 	else
 		cout << "tests fail" << endl;
 
+
+
 	cout << endl << "board after tests" << endl;
 	cout << boardToStr() << endl;
 }
@@ -117,7 +126,20 @@ int main() {
 	cout << b.boardToStr() << endl;
 	cout << "~~~~" << endl;
 
-	b.testCases();
+    bool *result;
+
+    bool potentialFlipped[64] = {false};
+
+    result = b.getFlipped(6, 1, 'o', potentialFlipped);
+
+    int count = 0;
+    
+     for (int x = 0; x<64; x++){  //Displays the values  "0|1|1|0|1|1|1|0|" (What they become)
+        cout << result[x] << '|';
+        if(8%x == 0) cout << '\n';
+    }
+   cout << count;
+	//b.testCases();
 
 	return 0;
 }
