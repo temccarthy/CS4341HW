@@ -24,10 +24,10 @@ class Minimax {
 	int alpha, beta;
 
 public:
-	int minimaxSearch(Board board);
+	int minimaxSearch(Board* board);
 private:
-	UtilityMovePair* maxValue(Board board);
-	UtilityMovePair* minValue(Board board);
+	UtilityMovePair* maxValue(Board* board);
+	UtilityMovePair* minValue(Board* board);
 };
 
 
