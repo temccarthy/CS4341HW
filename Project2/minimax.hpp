@@ -10,9 +10,14 @@
 
 #include "board.hpp"
 
-int minimaxSearch(Board board);
-int maxValue(Board board);
-int minValue(Board board);
+class Minimax {
+	int alpha, beta;
 
+public:
+	int minimaxSearch(Board board);
+private:
+	int maxValue(Board board);
+	int minValue(Board board);
+};
 
 #endif /* MINIMAX_HPP_ */

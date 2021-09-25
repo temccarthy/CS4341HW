@@ -20,6 +20,9 @@ public:
 	string boardToStr();
 	int getPieceNumFromCoords(int row, int col);
 	void testCases();
+	bool gameOver();
+	float utility();
+	float evaluate();
 private:
 	;
 };
