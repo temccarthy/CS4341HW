@@ -2,27 +2,13 @@ using namespace std;
 
 #include <iostream>
 #include <string.h>
-
-class Board {
-	char board[64];
-	int directions[8][2] = { { -1, 0 }, { -1, -1 }, { -1, 1 }, { 1, 0 },
-			{ 1, -1 }, { 1, 1 }, { 0, -1 }, { 0, 1 } };
-
-public:
-	Board(char ourColor);
-	char getPiece(int row, int col);
-	bool setPiece(int row, int col, char color);
-	string boardToStr();
-	int getPieceNumFromCoords(int row, int col);
-	void testCases();
-private:
-	;
-};
+#include "board.hpp"
 
 bool outOfBounds(int row, int col) {
 	return (row < 0) || (row > 7) || (col < 0) || (col > 7);
 }
 
+// we don't do anything with ourColor?
 Board::Board(char ourColor) {
 	memset(board, 0, sizeof(board));
 
@@ -110,15 +96,15 @@ void Board::testCases() {
 	cout << boardToStr() << endl;
 }
 
-int main() {
-	Board b = Board('b');
-
-	cout << "starting board" << endl;
-	cout << b.boardToStr() << endl;
-	cout << "~~~~" << endl;
-
-	b.testCases();
-
-	return 0;
-}
+//int main() {
+//	Board b = Board('b');
+//
+//	cout << "starting board" << endl;
+//	cout << b.boardToStr() << endl;
+//	cout << "~~~~" << endl;
+//
+//	b.testCases();
+//
+//	return 0;
+//}
 
