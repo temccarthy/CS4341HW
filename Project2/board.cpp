@@ -122,8 +122,8 @@ void Board::testCases() {
 	cases &= !setPiece(1, 1, 'o'); // false
 	cases &= !setPiece(1, 1, 'b'); // false
 	cases &= setPiece(2, 3, 'o'); // true
-	cases &= !setPiece(1, 3, 'b'); // not true
-	//cases &= setPiece();
+	cases &= !setPiece(1, 3, 'b'); // false
+	cases &= setPiece(2, 2, 'b'); // true
 
 	if (cases)
 		cout << "all tests pass!" << endl;
