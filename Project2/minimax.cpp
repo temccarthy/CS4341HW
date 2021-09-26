@@ -29,10 +29,10 @@ UtilityMovePair* Minimax::maxValue(Board* board) {
 	// iterate through possible moves by seeing if setPiece is true
 	for (int i = 0; i < 64; i++){
 		// if board can setPiece
-		if ((*boardCopy).setPiece(i/8, i%8, 'o')){ // TODO: figure out which piece we are
-
+		if ((*boardCopy).setPiece(i/8, i%8, 'b')){ // TODO: figure out which piece we
+			cout << "copyboard with move\n" << boardCopy->boardToStr() << endl;
 			// try to find opponent's best move (which minimizes utility)
-			currMove = minValue(board);
+			currMove = minValue(boardCopy);
 			(*currMove).move = i;
 
 			// if the new move has a better value, the chosen move becomes the new move
@@ -42,12 +42,13 @@ UtilityMovePair* Minimax::maxValue(Board* board) {
 			}
 
 			// ab pruning - skips rest of the checks bc the child mins aren't bigger than this max
-			if ((*chosenMove).utility >= beta) {
-				return chosenMove;
-			}
+//			if ((*chosenMove).utility >= beta) {
+//				return chosenMove;
+//			}
 
 			// resets board for trying next possible setPiece
-			Board* boardCopy = new Board(*board);
+			cout << "orig" << boardCopy << " ";
+			Board* boardCopy = board->copyBoard();
 		}
 	}
 

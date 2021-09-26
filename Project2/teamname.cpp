@@ -44,10 +44,11 @@ void writeOurMove(fstream* fin, int move) { // TODO: UNTESTED
 
 int main() {
 
-//	Board testBoard = Board('b');
-//	testBoard.setPiece('C', 3, 'o');
-//	cout << "test board:" << endl;
-//	cout << testBoard.boardToStr() << endl;
+	Board testBoard = Board('b');
+	testBoard.setPiece('C', 3, 'o');
+	testBoard.setPiece(26, 'b'); // 2,1
+	cout << "test board:" << endl;
+	cout << testBoard.boardToStr() << endl;
 
 	bool playing = true;
 	Board b = Board('b');

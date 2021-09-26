@@ -19,6 +19,9 @@ class Board {
 
 public:
 	Board(char ourColor);
+	Board(Board* board);
+	Board* copyBoard();
+
 	char getPiece(int row, int col);
 	bool setPiece(int row, int col, char color);
 	bool setPiece(char row, int col, char color);
