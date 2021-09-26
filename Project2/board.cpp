@@ -20,17 +20,13 @@ private:
 };
 
 bool outOfBounds(int row, int col) {
-	cout << row + "," + col << endl;
+
 	return (row < 0) || (row > 7) || (col < 0) || (col > 7);
 }
 
 // we don't do anything with ourColor?
 Board::Board(char ourColor) {
 	memset(board, 0, sizeof(board));
-
-	for (int i = 0; i < sizeof(board); i++) {
-		board[i] = '0';
-	}
 
 	board[27] = 'b'; //3,3
 	board[28] = 'o'; //3,4
@@ -49,19 +45,21 @@ int Board::getPieceNumFromCoords(int row, int col) {
 
 bool Board::setPiece(int row, int col, char color) {
 	vector<int> flipped = flippedPieces(row, col, color);
+	cout << row << "," << col << endl;
+	for (int p : flipped){
+		cout << p << " ";
+	}
+	cout << endl;
 
-	cout << !outOfBounds(row, col) << endl;
-	cout << (getPiece(row, col)==0) << endl;
-	cout << (flipped.size()>0) << endl;
-	
-	if (!outOfBounds(row, col) && getPiece(row, col)==0 && flipped.size()>0) { // if inbounds and space empty	
+	cout << (!outOfBounds(row, col)) << (getPiece(row, col)) << (flipped.size()>0) << endl;
+	if (!outOfBounds(row, col) && getPiece(row, col)==0 && flipped.size()>0) { // if inbounds and space empty
 		for (int pieceNum: flipped){
 			board[pieceNum] = color;
 		}
 		return true;
 	}else{
 		return false;
-	}	
+	}
 }
 
 
@@ -106,7 +104,11 @@ string Board::boardToStr() {
 	string output("");
 	for (int i = 7; i > -1; i--) {
 		for (int j = 0; j < 8; j++) {
-			output += getPiece(i, j);
+			if (getPiece(i, j) == 0) {
+				output += "0";
+			} else {
+				output += getPiece(i, j);
+			}
 			output += "|";
 		}
 		output += '\n';
@@ -119,8 +121,9 @@ void Board::testCases() {
 
 	cases &= !setPiece(1, 1, 'o'); // false
 	cases &= !setPiece(1, 1, 'b'); // false
-	//cases &= setPiece(2, 3, 'o'); // true
-	// cases &= setPiece(1, 3, 'b'); // not true
+	cases &= setPiece(2, 3, 'o'); // true
+	cases &= !setPiece(1, 3, 'b'); // not true
+	//cases &= setPiece();
 
 	if (cases)
 		cout << "all tests pass!" << endl;
@@ -129,20 +132,16 @@ void Board::testCases() {
 
 	cout << endl << "board after tests" << endl;
 	cout << boardToStr() << endl;
+	cout << "test" << endl;
 }
 
 int main() {
 	Board b = Board('b');
 
-	cout << "starting board" << endl;
-	cout << b.boardToStr() << endl;
-	cout << "~~~~" << endl;
+//	cout << "starting board" << endl;
+//	cout << b.boardToStr() << endl;
+//	cout << "~~~~" << endl;
 	b.testCases();
-	// vector<int> flippedPieces = b.flippedPieces(1, 1, 'b'); 
-	// for (int flippedPiece : flippedPieces){
-	// 	cout << flippedPiece << endl;
-	// }
-	// cout << flippedPieces.size() << endl;
 
 	return 0;
 }
