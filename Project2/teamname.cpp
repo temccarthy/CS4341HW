@@ -43,6 +43,12 @@ void writeOurMove(fstream* fin, int move) { // TODO: UNTESTED
 }
 
 int main() {
+
+//	Board testBoard = Board('b');
+//	testBoard.setPiece('C', 3, 'o');
+//	cout << "test board:" << endl;
+//	cout << testBoard.boardToStr() << endl;
+
 	bool playing = true;
 	Board b = Board('b');
 
@@ -74,16 +80,18 @@ int main() {
 
 		// remove opponent name
 		opponentMove = lastMove.substr(lastMove.find(" ") + 1, lastMove.size());
-		cout << opponentMove << "\n";
 		// play opponent move on board
 		// still need to translate from "B 3" to 2, 3
-		b.setPiece(opponentMove[0], opponentMove[2], 'o'); // need to keep track of who is which color
+		b.setPiece(opponentMove[0], opponentMove[2], 'o'); // TODO: need to keep track of who is which color
+		cout << "board after opponent" << endl;
+		cout << b.boardToStr() << endl;
 
 		// make a move
 		moveToMake = m.minimaxSearch(&b);
-		b.setPiece(moveToMake, 'us');
+		cout << "move to make: " << moveToMake << endl;
+		b.setPiece(moveToMake, 'b'); // TODO: assuming we're blue
 
-
+		// loop
 	}
 
 	// start by looking for name.go file

@@ -9,6 +9,7 @@
 
 // runs search, returns the move
 int Minimax::minimaxSearch(Board* board) {
+	cout << "starting minimax search" << endl;
 	UtilityMovePair* pair = maxValue(board);
 	return (*pair).move;
 }

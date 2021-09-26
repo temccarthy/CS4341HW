@@ -28,8 +28,9 @@ Board::Board(char ourColor) {
 	board[36] = 'b'; //4,4
 }
 
+// only for reading from textfile
 bool Board::setPiece(char row, int col, char color) {
-	return setPiece(row-65 ,col, color);
+	return setPiece(row-64, col-1, color);
 }
 
 bool Board::setPiece(int boardPos, char color) {
@@ -37,7 +38,13 @@ bool Board::setPiece(int boardPos, char color) {
 }
 
 bool Board::setPiece(int row, int col, char color) {
+	cout << "setting " << row << "," << col << endl;
 	vector<int> flipped = flippedPieces(row, col, color);
+	cout << "flipped: ";
+	for (int flip : flipped) {
+		cout << flip << " ";
+	}
+	cout << endl;
 	
 	if (!outOfBounds(row, col) && getPiece(row, col)==0 && flipped.size()>0) { // if inbounds and space empty	
 		for (int pieceNum: flipped){
@@ -96,6 +103,7 @@ bool Board::isGameOver() {
 			}
 		}
 	}
+	cout << "gameover found" << endl;
 	return true;
 }
 
