@@ -107,7 +107,7 @@ bool Board::isGameOver() {
 	return true;
 }
 
-float Board::utility() {
+float Board::utility(char color) {
 	int blue, orange = 0;
 	for (int i = 0; i < 64; i++) {
 		if (board[i] == 'b'){
@@ -119,11 +119,15 @@ float Board::utility() {
 
 	if (blue == orange) {
 		return 0.5;
-	} else if (blue > orange) {
-		return 1; // blue is us in this case
+	} else if ((color == 'b' && blue > orange)||(color == 'o' && blue < orange)) {
+		return 1;
 	} else {
 		return 0;
 	}
+}
+
+float Board::evaluate(char color) {
+
 }
 
 string Board::boardToStr() {

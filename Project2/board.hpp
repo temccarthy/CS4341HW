@@ -16,8 +16,6 @@ using namespace std;
 
 class Board {
 	char board[64];
-	int directions[8][2] = { { -1, 0 }, { -1, -1 }, { -1, 1 }, { 1, 0 },
-			{ 1, -1 }, { 1, 1 }, { 0, -1 }, { 0, 1 } };
 
 public:
 	Board(char ourColor);
