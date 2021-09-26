@@ -12,6 +12,7 @@ using namespace std;
 
 #include <string.h>
 #include <iostream>
+#include <vector>
 
 class Board {
 	char board[64];
@@ -24,12 +25,11 @@ public:
 	bool setPiece(int row, int col, char color);
 	string boardToStr();
 	int getPieceNumFromCoords(int row, int col);
+	vector<int> flippedPieces(int row, int col, char color);
 	void testCases();
 	bool gameOver();
 	float utility();
 	float evaluate();
-private:
-	;
 };
 
 #endif /* BOARD_HPP_ */
