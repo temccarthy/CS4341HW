@@ -16,7 +16,7 @@ int Minimax::minimaxSearch(Board* board) {
 // tries to get best move for us (maximize utility)
 UtilityMovePair* Minimax::maxValue(Board* board) {
 	// if game over, return utility value with null move
-	if ((*board).gameOver()){
+	if ((*board).isGameOver()){
 		UtilityMovePair* ret = new UtilityMovePair(0, (*board).utility()); // 0 should be null
 		return ret;
 	}

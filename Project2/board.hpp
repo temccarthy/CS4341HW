@@ -27,7 +27,7 @@ public:
 	int getPieceNumFromCoords(int row, int col);
 	vector<int> flippedPieces(int row, int col, char color);
 	void testCases();
-	bool gameOver();
+	bool isGameOver();
 	float utility();
 	float evaluate();
 };
