@@ -25,6 +25,7 @@ UtilityMovePair* Minimax::maxValue(Board* board) {
 	UtilityMovePair* currMove; // move to be returned (v2, a2 in the pseudocode)
 	Board* boardCopy = new Board(*board);
 
+	cout << "maxing board " << &boardCopy << endl;
 	// iterate through possible moves by seeing if setPiece is true
 	for (int i = 0; i < 64; i++){
 		// if board can setPiece
