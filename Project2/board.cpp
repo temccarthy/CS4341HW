@@ -30,7 +30,7 @@ Board::Board(char ourColor) {
 
 Board* Board::copyBoard() {
 	Board* newBoard = (Board*) malloc(sizeof(Board));
-	cout << "copy" << newBoard << endl;
+	cout << "copy" << newBoard;
 	memcpy(newBoard, board, sizeof(Board));
 	return newBoard;
 }
