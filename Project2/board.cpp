@@ -14,6 +14,9 @@ public:
 	vector<int> flippedPieces(int row, int col, char color);
 	string boardToStr();
 	int getPieceNumFromCoords(int row, int col);
+	bool isGameOver();
+	float untility();
+	float eval();
 	
 	void testCases();
 private:
@@ -21,6 +24,15 @@ private:
 
 bool outOfBounds(int row, int col) {
 	return (row < 0) || (row > 7) || (col < 0) || (col > 7);
+}
+
+char Board::getPiece(int row, int col) {
+	//get the piece from the coordinates passed in
+	return board[row * 8 + col];
+}
+
+int Board::getPieceNumFromCoords(int row, int col) {
+	return row * 8 + col;
 }
 
 // we don't do anything with ourColor?
@@ -31,15 +43,6 @@ Board::Board(char ourColor) {
 	board[28] = 'o'; //3,4
 	board[35] = 'o'; //4,3
 	board[36] = 'b'; //4,4
-}
-
-char Board::getPiece(int row, int col) {
-	//get the piece from the coordinates passed in
-	return board[row * 8 + col];
-}
-
-int Board::getPieceNumFromCoords(int row, int col) {
-	return row * 8 + col;
 }
 
 bool Board::setPiece(int row, int col, char color) {
@@ -93,6 +96,17 @@ vector<int> Board::flippedPieces(int row, int col, char color){
 	}
 
 	return flipped;
+}
+
+bool Board::isGameOver() {
+	for (int row=0; row<64; row++){
+		for (int col=0; col<64; col++){
+			if (flippedPieces(row, col, 'o').size() + flippedPieces(row, col, 'b').size() > 0){
+				return false;
+			}
+		}
+	}
+	return true;
 }
 
 string Board::boardToStr() {
