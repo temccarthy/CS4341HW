@@ -28,12 +28,15 @@ Board::Board(char ourColor) {
 	board[36] = 'b'; //4,4
 }
 
+<<<<<<< HEAD
+=======
 Board* Board::copyBoard() {
 	Board* newBoard = (Board*) malloc(sizeof(Board));
 	memcpy(newBoard, board, sizeof(Board));
 	return newBoard;
 }
 
+>>>>>>> cbe6f46f7e20ed8cb3a44c23d40b22af48814b43
 // only for reading from textfile
 bool Board::setPiece(char row, int col, char color) {
 	return setPiece(row-64, col-1, color);
@@ -107,7 +110,7 @@ bool Board::isGameOver() {
 	return true;
 }
 
-float Board::utility() {
+float Board::utility(char color) {
 	int blue, orange = 0;
 	for (int i = 0; i < 64; i++) {
 		if (board[i] == 'b'){
@@ -119,11 +122,16 @@ float Board::utility() {
 
 	if (blue == orange) {
 		return 0.5;
-	} else if (blue > orange) {
-		return 1; // blue is us in this case
+	} else if ((color == 'b' && blue > orange)||(color == 'o' && blue < orange)) {
+		return 1;
 	} else {
 		return 0;
 	}
+}
+
+float Board::evaluate(char color) {
+	int blue, orange = 0;
+
 }
 
 string Board::boardToStr() {
