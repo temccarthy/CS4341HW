@@ -44,11 +44,11 @@ void writeOurMove(fstream* fin, int move) { // TODO: UNTESTED
 
 int main() {
 
-	Board testBoard = Board('b');
-	testBoard.setPiece('C', 3, 'o');
-	testBoard.setPiece(26, 'b'); // 2,1
-	cout << "test board:" << endl;
-	cout << testBoard.boardToStr() << endl;
+//	Board testBoard = Board('b');
+//	testBoard.setPiece('C', 3, 'o');
+//	testBoard.setPiece(26, 'b'); // 2,1
+//	cout << "test board:" << endl;
+//	cout << testBoard.boardToStr() << endl;
 
 	bool playing = true;
 	Board b = Board('b');
@@ -83,7 +83,7 @@ int main() {
 		opponentMove = lastMove.substr(lastMove.find(" ") + 1, lastMove.size());
 		// play opponent move on board
 		// still need to translate from "B 3" to 2, 3
-		cout << opponentMove[0] << opponentMove[2] << endl;
+		// cout << opponentMove[0] << opponentMove[2] << endl;
 		b.setPiece(opponentMove[0], opponentMove[2] - '0', 'o'); // TODO: need to keep track of who is which color
 		cout << "board after opponent" << endl;
 		cout << b.boardToStr() << endl;

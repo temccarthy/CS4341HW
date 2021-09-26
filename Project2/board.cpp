@@ -30,7 +30,6 @@ Board::Board(char ourColor) {
 
 Board* Board::copyBoard() {
 	Board* newBoard = (Board*) malloc(sizeof(Board));
-	cout << "copy" << newBoard;
 	memcpy(newBoard, board, sizeof(Board));
 	return newBoard;
 }
@@ -45,14 +44,8 @@ bool Board::setPiece(int boardPos, char color) {
 }
 
 bool Board::setPiece(int row, int col, char color) {
-	cout << "setting " << row << "," << col << endl;
 	vector<int> flipped = flippedPieces(row, col, color);
-	cout << "flipped: ";
-	for (int flip : flipped) {
-		cout << flip << " ";
-	}
-	cout << endl;
-	
+
 	if (!outOfBounds(row, col) && getPiece(row, col)==0 && flipped.size()>0) { // if inbounds and space empty	
 		for (int pieceNum: flipped){
 			board[pieceNum] = color;
@@ -138,13 +131,13 @@ string Board::boardToStr() {
 	for (int i = 7; i > -1; i--) {
 		for (int j = 0; j < 8; j++) {
 			if (getPiece(i, j) == 0) {
-				output += "0";
+				output += " ";
 			} else {
 				output += getPiece(i, j);
 			}
 			output += "|";
 		}
-		output += '\n';
+		output += "|\n";
 	}
 	return output;
 }
