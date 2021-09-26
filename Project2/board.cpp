@@ -20,7 +20,6 @@ private:
 };
 
 bool outOfBounds(int row, int col) {
-	cout << row + "," + col << endl;
 	return (row < 0) || (row > 7) || (col < 0) || (col > 7);
 }
 
@@ -49,15 +48,13 @@ int Board::getPieceNumFromCoords(int row, int col) {
 
 bool Board::setPiece(int row, int col, char color) {
 	vector<int> flipped = flippedPieces(row, col, color);
-
-	cout << !outOfBounds(row, col) << endl;
-	cout << (getPiece(row, col)==0) << endl;
-	cout << (flipped.size()>0) << endl;
 	
 	if (!outOfBounds(row, col) && getPiece(row, col)==0 && flipped.size()>0) { // if inbounds and space empty	
 		for (int pieceNum: flipped){
 			board[pieceNum] = color;
 		}
+		int pieceNum = getPieceNumFromCoords(row, col);
+		board[pieceNum] = color;
 		return true;
 	}else{
 		return false;
@@ -119,7 +116,7 @@ void Board::testCases() {
 
 	cases &= !setPiece(1, 1, 'o'); // false
 	cases &= !setPiece(1, 1, 'b'); // false
-	//cases &= setPiece(2, 3, 'o'); // true
+	cases &= setPiece(2, 3, 'o'); // true
 	// cases &= setPiece(1, 3, 'b'); // not true
 
 	if (cases)
@@ -138,11 +135,6 @@ int main() {
 	cout << b.boardToStr() << endl;
 	cout << "~~~~" << endl;
 	b.testCases();
-	// vector<int> flippedPieces = b.flippedPieces(1, 1, 'b'); 
-	// for (int flippedPiece : flippedPieces){
-	// 	cout << flippedPiece << endl;
-	// }
-	// cout << flippedPieces.size() << endl;
 
 	return 0;
 }
