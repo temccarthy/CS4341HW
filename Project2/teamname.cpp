@@ -48,8 +48,8 @@ int main() {
 
 	fstream move_file;
 	string lastMove, opponentMove;
-	int move;
-	//Minimax m = Minimax();
+	int moveToMake;
+	Minimax m = Minimax();
 
 	while (playing) {
 		// start by looking for name.go file
@@ -77,11 +77,11 @@ int main() {
 		cout << opponentMove << "\n";
 		// play opponent move on board
 		// still need to translate from "B 3" to 2, 3
-		//b.setPiece(opponentMove, 'them'); // need to keep track of who is which color
+		b.setPiece(opponentMove[0], opponentMove[2], 'o'); // need to keep track of who is which color
 
 		// make a move
-		move = 6; // m.minimaxSearch(&b);
-		//b.setPiece(move, 'us');
+		moveToMake = m.minimaxSearch(&b);
+		b.setPiece(moveToMake, 'us');
 
 
 	}

@@ -28,6 +28,14 @@ Board::Board(char ourColor) {
 	board[36] = 'b'; //4,4
 }
 
+bool Board::setPiece(char row, int col, char color) {
+	return setPiece(row-65 ,col, color);
+}
+
+bool Board::setPiece(int boardPos, char color) {
+	return setPiece(boardPos/8, boardPos%8, color);
+}
+
 bool Board::setPiece(int row, int col, char color) {
 	vector<int> flipped = flippedPieces(row, col, color);
 	

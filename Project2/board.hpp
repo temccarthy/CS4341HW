@@ -23,6 +23,8 @@ public:
 	Board(char ourColor);
 	char getPiece(int row, int col);
 	bool setPiece(int row, int col, char color);
+	bool setPiece(char row, int col, char color);
+	bool setPiece(int boardPos, char color);
 	string boardToStr();
 	int getPieceNumFromCoords(int row, int col);
 	vector<int> flippedPieces(int row, int col, char color);

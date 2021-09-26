@@ -27,7 +27,7 @@ UtilityMovePair* Minimax::maxValue(Board* board) {
 	// iterate through possible moves by seeing if setPiece is true
 	for (int i = 0; i < 64; i++){
 		// if board can setPiece
-		if ((*boardCopy).setPiece(i%8, i/8, 'o')){ // TODO: figure out which piece we are
+		if ((*boardCopy).setPiece(i/8, i%8, 'o')){ // TODO: figure out which piece we are
 
 			// try to find opponent's best move (which minimizes utility)
 			currMove = minValue(board);
@@ -55,5 +55,6 @@ UtilityMovePair* Minimax::maxValue(Board* board) {
 
 // tries to get best move for opponents (minimizes utility)
 UtilityMovePair* Minimax::minValue(Board* board) {
-
+	UtilityMovePair* chosenMove = new UtilityMovePair(0, 100.0);
+	return chosenMove;
 }
