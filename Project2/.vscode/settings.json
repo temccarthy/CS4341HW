@@ -1,6 +1,9 @@
 {
     "files.associations": {
         "iostream": "cpp",
+<<<<<<< HEAD
+        "random": "cpp"
+=======
         "list": "cpp",
         "array": "cpp",
         "atomic": "cpp",
@@ -47,5 +50,6 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "typeinfo": "cpp"
+>>>>>>> main
     }
 }

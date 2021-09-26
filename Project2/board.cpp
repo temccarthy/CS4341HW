@@ -1,7 +1,9 @@
 using namespace std;
+
 #include <iostream>
 #include <string.h>
 #include <vector>
+#include "board.hpp"
 
 class Board {
 	char board[64];
@@ -21,6 +23,7 @@ public:
 	void testCases();
 private:
 };
+
 
 bool outOfBounds(int row, int col) {
 	return (row < 0) || (row > 7) || (col < 0) || (col > 7);
@@ -59,7 +62,6 @@ bool Board::setPiece(int row, int col, char color) {
 		return false;
 	}
 }
-
 
 vector<int> Board::flippedPieces(int row, int col, char color){
 	int directions[8][2] = { { -1, 0 }, { -1, -1 }, { -1, 1 }, { 1, 0 },
@@ -144,14 +146,13 @@ void Board::testCases() {
 	cout << "test" << endl;
 }
 
-int main() {
-	Board b = Board('b');
-
-//	cout << "starting board" << endl;
-//	cout << b.boardToStr() << endl;
-//	cout << "~~~~" << endl;
-	b.testCases();
-
-	return 0;
-}
-
+//int main() {
+//	Board b = Board('b');
+//
+////	cout << "starting board" << endl;
+////	cout << b.boardToStr() << endl;
+////	cout << "~~~~" << endl;
+//	b.testCases();
+//
+//	return 0;
+//}
