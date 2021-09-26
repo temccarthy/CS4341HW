@@ -20,8 +20,8 @@ UtilityMovePair* Minimax::maxValue(Board* board) {
 		UtilityMovePair* ret = new UtilityMovePair(0, (*board).utility()); // 0 should be null
 		return ret;
 	}
-	UtilityMovePair* chosenMove = new UtilityMovePair(0, -100.0); // minimax value at this stage of the tree
-	UtilityMovePair* currMove; // move to be returned
+	UtilityMovePair* chosenMove = new UtilityMovePair(0, -100.0); // minimax value at this stage of the tree (v, a in the pseudocode)
+	UtilityMovePair* currMove; // move to be returned (v2, a2 in the pseudocode)
 	Board* boardCopy = new Board(*board);
 
 	// iterate through possible moves by seeing if setPiece is true
@@ -36,6 +36,12 @@ UtilityMovePair* Minimax::maxValue(Board* board) {
 			// if the new move has a better value, the chosen move becomes the new move
 			if ((*currMove).utility > (*chosenMove).utility) {
 				chosenMove = currMove;
+				alpha = max(alpha, (*chosenMove).utility); // set alpha
+			}
+
+			// ab pruning - skips rest of the checks bc the child mins aren't bigger than this max
+			if ((*chosenMove).utility >= beta) {
+				return chosenMove;
 			}
 
 			// resets board for trying next possible setPiece

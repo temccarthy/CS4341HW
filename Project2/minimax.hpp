@@ -21,7 +21,7 @@ struct UtilityMovePair {
 };
 
 class Minimax {
-	int alpha, beta;
+	float alpha, beta;
 
 public:
 	int minimaxSearch(Board* board);
