@@ -28,6 +28,16 @@ Board::Board(char ourColor) {
 	board[36] = 'b'; //4,4
 }
 
+<<<<<<< HEAD
+=======
+Board* Board::copyBoard() {
+	Board* newBoard = (Board*) malloc(sizeof(Board));
+	cout << "copy" << newBoard;
+	memcpy(newBoard, board, sizeof(Board));
+	return newBoard;
+}
+
+>>>>>>> cbe6f46f7e20ed8cb3a44c23d40b22af48814b43
 // only for reading from textfile
 bool Board::setPiece(char row, int col, char color) {
 	return setPiece(row-64, col-1, color);
