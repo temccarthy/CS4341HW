@@ -46,9 +46,9 @@ UtilityMovePair* Minimax::maxValue(Board* board) {
 			}
 
 			// ab pruning - skips rest of the checks bc the child mins aren't bigger than this max
-//			if ((*chosenMove).utility >= beta) {
-//				return chosenMove;
-//			}
+			if ((*chosenMove).utility >= beta) {
+				return chosenMove;
+			}
 
 			// resets board for trying next possible setPiece
 //			cout << "new board\n" << boardCopy->boardToStr() << endl;
@@ -94,9 +94,9 @@ UtilityMovePair* Minimax::minValue(Board* board) {
 			}
 
 			// ab pruning - skips rest of the checks bc the child mins aren't bigger than this max
-//			if ((*chosenMove).utility >= beta) {
-//				return chosenMove;
-//			}
+			if ((*chosenMove).utility <= alpha) {
+				return chosenMove;
+			}
 
 			// resets board for trying next possible setPiece
 //			cout << "new board\n" << boardCopy->boardToStr() << endl;
