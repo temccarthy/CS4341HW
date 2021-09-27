@@ -17,8 +17,9 @@ int Minimax::minimaxSearch(Board* board) {
 // tries to get best move for us (maximize utility)
 UtilityMovePair* Minimax::maxValue(Board* board) {
 	// if game over, return utility value with null move
-	if ((*board).isGameOver()){
-		UtilityMovePair* ret = new UtilityMovePair(0, (*board).utility()); // 0 should be null
+	if (board->isGameOver()){
+		UtilityMovePair* ret = new UtilityMovePair(0, board->utility('b')); // 0 should be null
+		cout << "gameover utility: " << ret->utility << endl;
 		free(board);
 		return ret;
 	}
@@ -26,7 +27,7 @@ UtilityMovePair* Minimax::maxValue(Board* board) {
 	UtilityMovePair* currMove; // move to be returned (v2, a2 in the pseudocode)
 	Board* boardCopy = new Board(*board);
 
-	cout << "maxing board " << &boardCopy << endl;
+	// cout << "maxing board " << &boardCopy << endl;
 	// iterate through possible moves by seeing if setPiece is true
 	for (int i = 0; i < 64; i++){
 
@@ -64,8 +65,9 @@ UtilityMovePair* Minimax::maxValue(Board* board) {
 // tries to get best move for opponents (minimizes utility)
 UtilityMovePair* Minimax::minValue(Board* board) {
 	// if game over, return utility value with null move
-	if ((*board).isGameOver()){
-		UtilityMovePair* ret = new UtilityMovePair(0, (*board).utility()); // 0 should be null
+	if (board->isGameOver()){
+		UtilityMovePair* ret = new UtilityMovePair(0, board->utility('b')); // 0 should be null
+		cout << "gameover utility: " << ret->utility << endl;
 		free(board);
 		return ret;
 	}
@@ -73,7 +75,7 @@ UtilityMovePair* Minimax::minValue(Board* board) {
 	UtilityMovePair* currMove; // move to be returned (v2, a2 in the pseudocode)
 	Board* boardCopy = new Board(*board);
 
-	cout << "minning board " << &boardCopy << endl;
+	// cout << "minning board " << &boardCopy << endl;
 	// iterate through possible moves by seeing if setPiece is true
 	for (int i = 0; i < 64; i++){
 

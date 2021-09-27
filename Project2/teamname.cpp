@@ -37,7 +37,7 @@ string readLastMove(fstream* fin) {
 
 void writeOurMove(fstream* fin, int move) { // TODO: UNTESTED
 	char col = 65 + move%8;
-	char row = 31+(move%8);
+	char row = 31 + move/8;
 	string moveString = teamname + " " + col + " " + row;
 	*fin << moveString << endl;
 }

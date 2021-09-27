@@ -28,15 +28,12 @@ Board::Board(char ourColor) {
 	board[36] = 'b'; //4,4
 }
 
-<<<<<<< HEAD
-=======
 Board* Board::copyBoard() {
 	Board* newBoard = (Board*) malloc(sizeof(Board));
 	memcpy(newBoard, board, sizeof(Board));
 	return newBoard;
 }
 
->>>>>>> cbe6f46f7e20ed8cb3a44c23d40b22af48814b43
 // only for reading from textfile
 bool Board::setPiece(char row, int col, char color) {
 	return setPiece(row-64, col-1, color);
@@ -101,7 +98,7 @@ vector<int> Board::flippedPieces(int row, int col, char color){
 bool Board::isGameOver() {
 	for (int row=0; row<8; row++){
 		for (int col=0; col<8; col++){
-			if (flippedPieces(row, col, 'o').size() + flippedPieces(row, col, 'b').size() > 0){
+			if ((flippedPieces(row, col, 'o').size() + flippedPieces(row, col, 'b').size()) > 0){
 				return false;
 			}
 		}

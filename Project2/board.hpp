@@ -31,8 +31,8 @@ public:
 	vector<int> flippedPieces(int row, int col, char color);
 	void testCases();
 	bool isGameOver();
-	float utility();
-	float evaluate();
+	float utility(char color);
+	float evaluate(char color);
 };
 
 #endif /* BOARD_HPP_ */
