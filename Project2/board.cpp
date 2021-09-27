@@ -130,6 +130,7 @@ float Board::utility() {
 	}
 }
 
+// TODO: finish eval fcn
 float Board::evaluate() {
 	int blue, orange = 0;
 	return blue;
@@ -169,14 +170,3 @@ void Board::testCases() {
 	cout << boardToStr() << endl;
 	cout << "test" << endl;
 }
-
-//int main() {
-//	Board b = Board('b');
-//
-////	cout << "starting board" << endl;
-////	cout << b.boardToStr() << endl;
-////	cout << "~~~~" << endl;
-//	b.testCases();
-//
-//	return 0;
-//}
