@@ -64,6 +64,10 @@ vector<int> Board::flippedPieces(int row, int col, char color){
 	
 	vector<int> flipped;
 
+	if (getPiece(row, col) != 0){
+		return flipped;
+	}
+
 	for(int* dir : directions) { // iterate through all directions
 		int rowCurr = row;
 		int colCurr = col;
@@ -103,7 +107,6 @@ bool Board::isGameOver() {
 			}
 		}
 	}
-	cout << "gameover found" << endl;
 	return true;
 }
 
@@ -128,7 +131,7 @@ float Board::utility(char color) {
 
 float Board::evaluate(char color) {
 	int blue, orange = 0;
-
+	return blue;
 }
 
 string Board::boardToStr() {
