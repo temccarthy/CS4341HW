@@ -5,6 +5,17 @@ using namespace std;
 #include <vector>
 #include "board.hpp"
 
+// we don't do anything with ourColor?
+Board::Board(char color) {
+	ourColor = color;
+	memset(board, 0, sizeof(board));
+
+	board[27] = 'b'; //3,3
+	board[28] = 'o'; //3,4
+	board[35] = 'o'; //4,3
+	board[36] = 'b'; //4,4
+}
+
 bool outOfBounds(int row, int col) {
 	return (row < 0) || (row > 7) || (col < 0) || (col > 7);
 }
@@ -16,16 +27,6 @@ char Board::getPiece(int row, int col) {
 
 int Board::getPieceNumFromCoords(int row, int col) {
 	return row * 8 + col;
-}
-
-// we don't do anything with ourColor?
-Board::Board(char ourColor) {
-	memset(board, 0, sizeof(board));
-
-	board[27] = 'b'; //3,3
-	board[28] = 'o'; //3,4
-	board[35] = 'o'; //4,3
-	board[36] = 'b'; //4,4
 }
 
 Board* Board::copyBoard() {
@@ -110,7 +111,7 @@ bool Board::isGameOver() {
 	return true;
 }
 
-float Board::utility(char color) {
+float Board::utility() {
 	int blue, orange = 0;
 	for (int i = 0; i < 64; i++) {
 		if (board[i] == 'b'){
@@ -122,14 +123,14 @@ float Board::utility(char color) {
 
 	if (blue == orange) {
 		return 0.5;
-	} else if ((color == 'b' && blue > orange)||(color == 'o' && blue < orange)) {
+	} else if ((ourColor == 'b' && blue > orange)||(ourColor == 'o' && blue < orange)) {
 		return 1;
 	} else {
 		return 0;
 	}
 }
 
-float Board::evaluate(char color) {
+float Board::evaluate() {
 	int blue, orange = 0;
 	return blue;
 }

@@ -18,7 +18,7 @@ int Minimax::minimaxSearch(Board* board) {
 UtilityMovePair* Minimax::maxValue(Board* board) {
 	// if game over, return utility value with null move
 	if (board->isGameOver()){
-		UtilityMovePair* ret = new UtilityMovePair(0, board->utility('b')); // 0 should be null
+		UtilityMovePair* ret = new UtilityMovePair(0, board->utility()); // 0 should be null
 		cout << "gameover utility: " << ret->utility << endl;
 		free(board);
 		return ret;
@@ -47,6 +47,7 @@ UtilityMovePair* Minimax::maxValue(Board* board) {
 
 			// ab pruning - skips rest of the checks bc the child mins aren't bigger than this max
 			if ((*chosenMove).utility >= beta) {
+				cout << "beta cut!" << endl;
 				return chosenMove;
 			}
 
@@ -66,7 +67,7 @@ UtilityMovePair* Minimax::maxValue(Board* board) {
 UtilityMovePair* Minimax::minValue(Board* board) {
 	// if game over, return utility value with null move
 	if (board->isGameOver()){
-		UtilityMovePair* ret = new UtilityMovePair(0, board->utility('b')); // 0 should be null
+		UtilityMovePair* ret = new UtilityMovePair(0, board->utility()); // 0 should be null
 		cout << "gameover utility: " << ret->utility << endl;
 		free(board);
 		return ret;
@@ -95,6 +96,7 @@ UtilityMovePair* Minimax::minValue(Board* board) {
 
 			// ab pruning - skips rest of the checks bc the child mins aren't bigger than this max
 			if ((*chosenMove).utility <= alpha) {
+				cout << "alpha cut!" << endl;
 				return chosenMove;
 			}
 

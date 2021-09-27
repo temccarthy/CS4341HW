@@ -51,7 +51,7 @@ int main() {
 //	cout << testBoard.boardToStr() << endl;
 
 	bool playing = true;
-	Board b = Board('b');
+	Board b = Board('b'); // TODO: determine which color we are
 
 	fstream move_file;
 	string lastMove, opponentMove;
@@ -92,6 +92,9 @@ int main() {
 		moveToMake = m.minimaxSearch(&b);
 		cout << "move to make: " << moveToMake << endl;
 		b.setPiece(moveToMake, 'b'); // TODO: assuming we're blue
+
+		// write move to move_file
+		writeOurMove(&move_file, moveToMake);
 
 		// loop
 	}

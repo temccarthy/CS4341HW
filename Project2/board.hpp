@@ -15,24 +15,30 @@ using namespace std;
 #include <vector>
 
 class Board {
-	char board[64];
+	char board[64]; // the board array
+	char ourColor; // which color we are
 
 public:
 	Board(char ourColor);
 	Board(Board* board);
+
 	Board* copyBoard();
 
 	char getPiece(int row, int col);
+	int getPieceNumFromCoords(int row, int col);
+
 	bool setPiece(int row, int col, char color);
 	bool setPiece(char row, int col, char color);
 	bool setPiece(int boardPos, char color);
-	string boardToStr();
-	int getPieceNumFromCoords(int row, int col);
+
 	vector<int> flippedPieces(int row, int col, char color);
-	void testCases();
+
 	bool isGameOver();
-	float utility(char color);
-	float evaluate(char color);
+	float utility();
+	float evaluate();
+
+	void testCases();
+	string boardToStr();
 };
 
 #endif /* BOARD_HPP_ */
