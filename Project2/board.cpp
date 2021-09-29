@@ -85,7 +85,7 @@ vector<int> Board::flippedPieces(int row, int col, char color){
 			} else if (colorCurr==color && potentialFlipped.size()>0) {
 				legalMove = true;
 				break;	
-			} else {
+			} else if(colorCurr != color) {
 				int pieceNum = getPieceNumFromCoords(rowCurr, colCurr);
 				potentialFlipped.push_back(pieceNum);
 			}

@@ -17,7 +17,7 @@ Minimax::Minimax(float a, float b, char color){
 		opponentColor = 'b';
 	}
 
-	iterativeLimit = 1;
+	iterativeLimit = 2;
 	ply = 0;
 }
 
@@ -33,7 +33,7 @@ int Minimax::minimaxSearch(Board* board) {
 UtilityMovePair* Minimax::maxValue(Board* board, int moveToMake) {
 	// TODO: iterative deepening - iteratively limit the depth we go to (and call eval) and try again until time
 
-	
+	cout << "ply: " << ply << endl;
 	if(ply >= iterativeLimit){
 		//run eval function on board and return its evaluation score and piece index when we've reached the iterative limit
 
