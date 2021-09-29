@@ -16,20 +16,34 @@ Minimax::Minimax(float a, float b, char color){
 	}else{
 		opponentColor = 'b';
 	}
+
+	iterativeLimit = 1;
+	ply = 0;
 }
 
 // runs search, returns the move
 int Minimax::minimaxSearch(Board* board) {
 	// TODO: start a timer here, when timer over start evaluating moves instead of trying to get to the bottom of the tree
 	cout << "starting minimax search" << endl;
-	UtilityMovePair* pair = maxValue(board);
+	UtilityMovePair* pair = maxValue(board,0);
 	return (*pair).move;
 }
 
 // tries to get best move for us (maximize utility)
-UtilityMovePair* Minimax::maxValue(Board* board) {
+UtilityMovePair* Minimax::maxValue(Board* board, int moveToMake) {
 	// TODO: iterative deepening - iteratively limit the depth we go to (and call eval) and try again until time
 
+	
+	if(ply >= iterativeLimit){
+		//run eval function on board and return its evaluation score and piece index when we've reached the iterative limit
+
+		UtilityMovePair* evaledMove = new UtilityMovePair(moveToMake, board->evaluate());
+		ply = 0;
+		cout << "hit iterative limit " << endl;
+		return evaledMove;
+	}else{
+		ply++;
+	}
 	// if game over, return utility value with null move
 	if (board->isGameOver()){
 		UtilityMovePair* ret = new UtilityMovePair(0, board->utility()); // 0 should be null
@@ -50,7 +64,11 @@ UtilityMovePair* Minimax::maxValue(Board* board) {
 			cout << ourColor << " move at " << i << endl << boardCopy->boardToStr() << endl;
 
 			// try to find opponent's best move (which minimizes utility)
-			currMove = minValue(boardCopy);
+			if (ply==1){
+				currMove = minValue(boardCopy, i);
+			}else{
+				currMove = minValue(boardCopy, moveToMake);
+			}
 			currMove->move = i;
 
 			// if the new move has a better value, the chosen move becomes the new move
@@ -78,7 +96,10 @@ UtilityMovePair* Minimax::maxValue(Board* board) {
 }
 
 // tries to get best move for opponents (minimizes utility)
-UtilityMovePair* Minimax::minValue(Board* board) {
+UtilityMovePair* Minimax::minValue(Board* board, int moveToMake) {
+
+	ply++;
+
 	// if game over, return utility value with null move
 	if (board->isGameOver()){
 		UtilityMovePair* ret = new UtilityMovePair(0, board->utility()); // 0 should be null
@@ -99,7 +120,7 @@ UtilityMovePair* Minimax::minValue(Board* board) {
 			cout << opponentColor << " move at " << i << endl << boardCopy->boardToStr() << endl;
 
 			// try to find opponent's best move (which minimizes utility)
-			currMove = maxValue(boardCopy);
+			currMove = maxValue(boardCopy,moveToMake);
 			currMove->move = i;
 
 			// if the new move has a lower value, the chosen move becomes the new move

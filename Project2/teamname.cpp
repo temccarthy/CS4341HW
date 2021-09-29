@@ -51,7 +51,7 @@ int main() {
 //	cout << testBoard.boardToStr() << endl;
 
 	bool playing = true;
-	char ourColor = 'b';
+	char ourColor = 'o';
 	char opponentColor;
 	if(ourColor == 'b'){
 		opponentColor = 'o';

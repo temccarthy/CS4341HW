@@ -131,25 +131,42 @@ float Board::utility() {
 }
 
 
-//calculates the total number of legal moves across the board for a color
-int Board::mobility(char color){
+//calculates the total number of legal moves across the board for a color - flipping fewer pieces is better
+int Board::mobility(){
 	int legalMoves = 0;
 
 	for (int row=0; row<8; row++){
 		for (int col=0; col<8; col++){
-			if (flippedPieces(row, col, color).size() > 0){
+			if (flippedPieces(row, col, ourColor).size() > 0){
 				legalMoves++;
 			}
 		}
 	}
+	
+	return legalMoves;
+}
 
+//calculates the number of stable pieces
+//currently only counts the number of held corner pieces
+//TODO: calculate all stable pieces
+int Board::numberOfStableDiscs(){
+	//corner piece numner 0, 7, 56, 63
+
+	int heldStablePieces = 0;
+
+	if(getPiece(0,0) == ourColor) heldStablePieces++;
+	if(getPiece(0,0) == ourColor) heldStablePieces++;
+	if(getPiece(0,0) == ourColor) heldStablePieces++;
+	if(getPiece(0,0) == ourColor) heldStablePieces++; 
+
+	return heldStablePieces;
 }
 
 // TODO: finish eval fcn
 float Board::evaluate() {
 	int blue, orange = 0;
 
-	int legalMoves = mobility(ourColor);
+	int legalMoves = mobility();
 
 	return blue;
 }
