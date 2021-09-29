@@ -17,20 +17,19 @@ Minimax::Minimax(float a, float b, char color){
 		opponentColor = 'b';
 	}
 
-	iterativeLimit = 2;
-	ply = 0;
+	iterativeLimit = 6;
 }
 
 // runs search, returns the move
 int Minimax::minimaxSearch(Board* board) {
 	// TODO: start a timer here, when timer over start evaluating moves instead of trying to get to the bottom of the tree
 	cout << "starting minimax search" << endl;
-	UtilityMovePair* pair = maxValue(board,0);
+	UtilityMovePair* pair = maxValue(board, 0, 0);
 	return (*pair).move;
 }
 
 // tries to get best move for us (maximize utility)
-UtilityMovePair* Minimax::maxValue(Board* board, int moveToMake) {
+UtilityMovePair* Minimax::maxValue(Board* board, int moveToMake, int ply) {
 	// TODO: iterative deepening - iteratively limit the depth we go to (and call eval) and try again until time
 
 	cout << "ply: " << ply << endl;
@@ -41,8 +40,6 @@ UtilityMovePair* Minimax::maxValue(Board* board, int moveToMake) {
 		ply = 0;
 		cout << "hit iterative limit " << endl;
 		return evaledMove;
-	}else{
-		ply++;
 	}
 	// if game over, return utility value with null move
 	if (board->isGameOver()){
@@ -65,9 +62,9 @@ UtilityMovePair* Minimax::maxValue(Board* board, int moveToMake) {
 
 			// try to find opponent's best move (which minimizes utility)
 			if (ply==1){
-				currMove = minValue(boardCopy, i);
+				currMove = minValue(boardCopy, i, (ply+1));
 			}else{
-				currMove = minValue(boardCopy, moveToMake);
+				currMove = minValue(boardCopy, moveToMake, (ply+1));
 			}
 			currMove->move = i;
 
@@ -96,9 +93,7 @@ UtilityMovePair* Minimax::maxValue(Board* board, int moveToMake) {
 }
 
 // tries to get best move for opponents (minimizes utility)
-UtilityMovePair* Minimax::minValue(Board* board, int moveToMake) {
-
-	ply++;
+UtilityMovePair* Minimax::minValue(Board* board, int moveToMake, int ply) {
 
 	// if game over, return utility value with null move
 	if (board->isGameOver()){
@@ -120,7 +115,7 @@ UtilityMovePair* Minimax::minValue(Board* board, int moveToMake) {
 			cout << opponentColor << " move at " << i << endl << boardCopy->boardToStr() << endl;
 
 			// try to find opponent's best move (which minimizes utility)
-			currMove = maxValue(boardCopy,moveToMake);
+			currMove = maxValue(boardCopy,moveToMake, (ply+1));
 			currMove->move = i;
 
 			// if the new move has a lower value, the chosen move becomes the new move

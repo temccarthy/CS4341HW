@@ -164,7 +164,7 @@ int Board::numberOfStableDiscs(){
 
 // TODO: finish eval fcn
 float Board::evaluate() {
-	int blue, orange = 0;
+	int blue, orange = 1;
 
 	int legalMoves = mobility();
 

@@ -24,14 +24,13 @@ class Minimax {
 	float alpha, beta;
 	char ourColor,opponentColor;
 	int iterativeLimit;
-	int ply;
 
 public:
 	Minimax(float a, float b, char color);
 	int minimaxSearch(Board* board);
 private:
-	UtilityMovePair* maxValue(Board* board, int moveToMake);
-	UtilityMovePair* minValue(Board* board, int moveToMake);
+	UtilityMovePair* maxValue(Board* board, int moveToMake, int ply);
+	UtilityMovePair* minValue(Board* board, int moveToMake, int ply);
 };
 
 
