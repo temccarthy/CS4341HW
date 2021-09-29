@@ -51,12 +51,19 @@ int main() {
 //	cout << testBoard.boardToStr() << endl;
 
 	bool playing = true;
-	Board b = Board('b'); // TODO: determine which color we are
+	char ourColor = 'b';
+	char opponentColor;
+	if(ourColor == 'b'){
+		opponentColor = 'o';
+	}else{
+		opponentColor = 'b';
+	}
+	Board b = Board(ourColor); // TODO: determine which color we are
 
 	fstream move_file;
 	string lastMove, opponentMove;
 	int moveToMake;
-	Minimax m = Minimax();
+	Minimax m = Minimax(0.0,0.0,ourColor);
 
 	while (playing) {
 		// start by looking for name.go file
@@ -84,7 +91,7 @@ int main() {
 		// play opponent move on board
 		// still need to translate from "B 3" to 2, 3
 		// cout << opponentMove[0] << opponentMove[2] << endl;
-		b.setPiece(opponentMove[0], opponentMove[2] - '0', 'o'); // TODO: need to keep track of who is which color
+		b.setPiece(opponentMove[0], opponentMove[2] - '0', opponentColor); // TODO: need to keep track of who is which color
 		cout << "board after opponent" << endl;
 		cout << b.boardToStr() << endl;
 

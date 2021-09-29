@@ -130,11 +130,30 @@ float Board::utility() {
 	}
 }
 
+
+//calculates the total number of legal moves across the board for a color
+int Board::mobility(char color){
+	int legalMoves = 0;
+
+	for (int row=0; row<8; row++){
+		for (int col=0; col<8; col++){
+			if (flippedPieces(row, col, color).size() > 0){
+				legalMoves++;
+			}
+		}
+	}
+
+}
+
 // TODO: finish eval fcn
 float Board::evaluate() {
 	int blue, orange = 0;
+
+	int legalMoves = mobility(ourColor);
+
 	return blue;
 }
+
 
 string Board::boardToStr() {
 	string output("");
