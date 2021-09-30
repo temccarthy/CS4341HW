@@ -35,6 +35,17 @@ string readLastMove(fstream* fin) {
 	return prevLine;
 }
 
+char determineOurColor(fstream* fin) {
+	string firstLine;
+
+	fin->seekg(0, fin->beg);
+	if (getline(*fin, firstLine)) {
+		return 'o'; // there's a move already so we go second so we're orange
+	} else {
+		return 'b'; // there's no moves in move_file so we go first so we're blue
+	}
+}
+
 void writeOurMove(fstream* fin, int move) { // TODO: UNTESTED
 	char col = 65 + move%8;
 	char row = 31 + move/8;
@@ -51,6 +62,8 @@ int main() {
 //	cout << testBoard.boardToStr() << endl;
 
 	bool playing = true;
+	bool ourColorDetermined = false;
+
 	char ourColor = 'b';
 	char opponentColor;
 	if(ourColor == 'b'){
@@ -70,13 +83,20 @@ int main() {
 		while (!goFileExists()) {
 			// spin while waiting
 		}
-		playing = false; // DEBUG
+		playing = false; // TODO: remove this later; test that multiple moves in a row works
 
 		cout << "go file found; opening move_file" << endl;
 
 		// open move_file and read last line
 		move_file.open("move_file");
 		lastMove = readLastMove(&move_file);
+		if (!ourColorDetermined) {
+			char ourCol = determineOurColor(&move_file);
+			cout << "our color: " << ourCol << endl;
+			ourColorDetermined = true;
+		}
+		break;
+
 		move_file.close();
 
 		cout << "last move was: " << lastMove << endl;
