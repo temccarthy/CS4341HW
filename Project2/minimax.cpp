@@ -16,7 +16,6 @@ Minimax::Minimax(float a, float b){
 
 // runs search, returns the move
 int Minimax::minimaxSearch(Board* board) {
-	// TODO: start a timer here, when timer over start evaluating moves instead of trying to get to the bottom of the tree
 	cout << "starting minimax search" << endl;
 	Timer t = Timer();
 	t.setTimeout([&]() {
