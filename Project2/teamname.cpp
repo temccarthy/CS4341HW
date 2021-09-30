@@ -64,7 +64,7 @@ int main() {
 	bool playing = true;
 	bool ourColorDetermined = false;
 
-	Board b = Board(); // TODO: determine which color we are
+	Board b = Board();
 
 	fstream move_file;
 	string lastMove, opponentMove;
@@ -104,14 +104,14 @@ int main() {
 		// play opponent move on board
 		// still need to translate from "B 3" to 2, 3
 		// cout << opponentMove[0] << opponentMove[2] << endl;
-		b.setPiece(opponentMove[0], opponentMove[2] - '0', b.opponentColor); // TODO: need to keep track of who is which color
+		b.setPiece(opponentMove[0], opponentMove[2] - '0', b.opponentColor);
 		cout << "board after opponent" << endl;
 		cout << b.boardToStr() << endl;
 
 		// make a move
 		moveToMake = m.minimaxSearch(&b);
 		cout << "move to make: " << moveToMake << endl;
-		b.setPiece(moveToMake, b.ourColor); // TODO: assuming we're blue
+		b.setPiece(moveToMake, b.ourColor);
 
 		// write move to move_file
 		writeOurMove(&move_file, moveToMake);

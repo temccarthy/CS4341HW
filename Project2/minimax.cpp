@@ -40,7 +40,7 @@ UtilityMovePair* Minimax::maxValue(Board* board) {
 	for (int i = 0; i < 64; i++){
 
 		// if board can setPiece
-		if (boardCopy->setPiece(i/8, i%8, board->ourColor)){ // TODO: figure out which piece we are
+		if (boardCopy->setPiece(i/8, i%8, board->ourColor)){
 			cout << board->ourColor << " move at " << i << endl << boardCopy->boardToStr() << endl;
 
 			// try to find opponent's best move (which minimizes utility)
@@ -89,7 +89,7 @@ UtilityMovePair* Minimax::minValue(Board* board) {
 	for (int i = 0; i < 64; i++){
 
 		// if board can setPiece
-		if (boardCopy->setPiece(i/8, i%8, board->opponentColor)){ // TODO: figure out which piece we
+		if (boardCopy->setPiece(i/8, i%8, board->opponentColor)){
 			cout << board->opponentColor << " move at " << i << endl << boardCopy->boardToStr() << endl;
 
 			// try to find opponent's best move (which minimizes utility)
