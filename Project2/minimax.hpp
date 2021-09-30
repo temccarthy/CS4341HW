@@ -22,6 +22,7 @@ struct UtilityMovePair {
 
 class Minimax {
 	float alpha, beta;
+	bool timeUp;
 
 public:
 	Minimax(float a, float b);

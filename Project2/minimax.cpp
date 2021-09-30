@@ -6,16 +6,24 @@
  */
 
 #include "minimax.hpp"
+#include "timercpp.hpp"
 
 Minimax::Minimax(float a, float b){
 	alpha = a;
 	beta = b;
+	timeUp = false;
 }
 
 // runs search, returns the move
 int Minimax::minimaxSearch(Board* board) {
 	// TODO: start a timer here, when timer over start evaluating moves instead of trying to get to the bottom of the tree
 	cout << "starting minimax search" << endl;
+	Timer t = Timer();
+	t.setTimeout([&]() {
+		timeUp = true;
+		cout << "times up!" << endl;
+		t.stop();
+	}, 9000);
 	UtilityMovePair* pair = maxValue(board);
 	return (*pair).move;
 }
@@ -23,6 +31,14 @@ int Minimax::minimaxSearch(Board* board) {
 // tries to get best move for us (maximize utility)
 UtilityMovePair* Minimax::maxValue(Board* board) {
 	// TODO: iterative deepening - iteratively limit the depth we go to (and call eval) and try again until time
+
+	// if out of time, start evaluating board instead of generating more moves
+	if (timeUp) {
+		UtilityMovePair* ret = new UtilityMovePair(0, board->evaluate()); // 0 should be null
+		cout << "timeUp evaluation: " << ret->utility << endl;
+		free(board);
+		return ret;
+	}
 
 	// if game over, return utility value with null move
 	if (board->isGameOver()){
@@ -73,6 +89,14 @@ UtilityMovePair* Minimax::maxValue(Board* board) {
 
 // tries to get best move for opponents (minimizes utility)
 UtilityMovePair* Minimax::minValue(Board* board) {
+	// if out of time, start evaluating board instead of generating more moves
+	if (timeUp) {
+		UtilityMovePair* ret = new UtilityMovePair(0, board->evaluate()); // 0 should be null
+		cout << "timeUp evaluation: " << ret->utility << endl;
+		free(board);
+		return ret;
+	}
+
 	// if game over, return utility value with null move
 	if (board->isGameOver()){
 		UtilityMovePair* ret = new UtilityMovePair(0, board->utility()); // 0 should be null
