@@ -6,14 +6,23 @@ using namespace std;
 #include "board.hpp"
 
 // we don't do anything with ourColor?
-Board::Board(char color) {
-	ourColor = color;
+Board::Board() {
+	ourColor, opponentColor = 0;
 	memset(board, 0, sizeof(board));
 
 	board[27] = 'b'; //3,3
 	board[28] = 'o'; //3,4
 	board[35] = 'o'; //4,3
 	board[36] = 'b'; //4,4
+}
+
+void Board::setOurColor(char color) {
+	ourColor = color;
+	if (color == 'o') {
+		opponentColor = 'b';
+	} else {
+		opponentColor = 'o';
+	}
 }
 
 bool outOfBounds(int row, int col) {

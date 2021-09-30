@@ -7,15 +7,9 @@
 
 #include "minimax.hpp"
 
-Minimax::Minimax(float a, float b, char color){
+Minimax::Minimax(float a, float b){
 	alpha = a;
 	beta = b;
-	ourColor = color;
-	if(ourColor == 'b'){
-		opponentColor = 'o';
-	}else{
-		opponentColor = 'b';
-	}
 }
 
 // runs search, returns the move
@@ -46,8 +40,8 @@ UtilityMovePair* Minimax::maxValue(Board* board) {
 	for (int i = 0; i < 64; i++){
 
 		// if board can setPiece
-		if (boardCopy->setPiece(i/8, i%8, ourColor)){ // TODO: figure out which piece we are
-			cout << ourColor << " move at " << i << endl << boardCopy->boardToStr() << endl;
+		if (boardCopy->setPiece(i/8, i%8, board->ourColor)){ // TODO: figure out which piece we are
+			cout << board->ourColor << " move at " << i << endl << boardCopy->boardToStr() << endl;
 
 			// try to find opponent's best move (which minimizes utility)
 			currMove = minValue(boardCopy);
@@ -95,8 +89,8 @@ UtilityMovePair* Minimax::minValue(Board* board) {
 	for (int i = 0; i < 64; i++){
 
 		// if board can setPiece
-		if (boardCopy->setPiece(i/8, i%8, opponentColor)){ // TODO: figure out which piece we
-			cout << opponentColor << " move at " << i << endl << boardCopy->boardToStr() << endl;
+		if (boardCopy->setPiece(i/8, i%8, board->opponentColor)){ // TODO: figure out which piece we
+			cout << board->opponentColor << " move at " << i << endl << boardCopy->boardToStr() << endl;
 
 			// try to find opponent's best move (which minimizes utility)
 			currMove = maxValue(boardCopy);

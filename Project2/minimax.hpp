@@ -22,10 +22,9 @@ struct UtilityMovePair {
 
 class Minimax {
 	float alpha, beta;
-	char ourColor,opponentColor;
 
 public:
-	Minimax(float a, float b, char color);
+	Minimax(float a, float b);
 	int minimaxSearch(Board* board);
 private:
 	UtilityMovePair* maxValue(Board* board);

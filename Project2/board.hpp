@@ -16,13 +16,17 @@ using namespace std;
 
 class Board {
 	char board[64]; // the board array
-	char ourColor; // which color we are
-
 public:
-	Board(char ourColor);
+	char ourColor; // which color we are
+	char opponentColor; // opponent color
+
+
+	Board();
 	Board(Board* board);
 
 	Board* copyBoard();
+
+	void setOurColor(char color);
 
 	char getPiece(int row, int col);
 	int getPieceNumFromCoords(int row, int col);
