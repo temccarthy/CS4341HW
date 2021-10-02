@@ -52,7 +52,7 @@ UtilityMovePair* Minimax::maxValue(Board* board) {
 
 	// cout << "maxing board " << &boardCopy << endl;
 	// iterate through possible moves by seeing if setPiece is true
-	for (int i = 0; i < 64; i++){
+	for (int i : moveOrder){
 
 		// if board can setPiece
 		if (boardCopy->setPiece(i/8, i%8, board->ourColor)){
@@ -109,7 +109,7 @@ UtilityMovePair* Minimax::minValue(Board* board) {
 
 	// cout << "minning board " << &boardCopy << endl;
 	// iterate through possible moves by seeing if setPiece is true
-	for (int i = 0; i < 64; i++){
+	for (int i : moveOrder){
 
 		// if board can setPiece
 		if (boardCopy->setPiece(i/8, i%8, board->opponentColor)){
