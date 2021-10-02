@@ -55,14 +55,21 @@ void writeOurMove(fstream* fin, int move) { // TODO: UNTESTED
 
 int main() {
 
-	Board testBoard = Board();
-	testBoard.setOurColor('o');
-	testBoard.setPiece('C', 5, 'b'); // otherteam
-	// testBoard.setPiece(26, 'b'); // 2,1
-	cout << "test board:" << endl;
-	cout << testBoard.boardToStr() << endl;
+//	Board testBoard = Board();
+//	//testBoard.setOurColor('o');
+//	testBoard.setPiece('C', 5, 'b');
+//	testBoard.setPiece('C', 4, 'o');
+//	testBoard.setPiece(18, 'b');
+//	testBoard.setPiece(44, 'o');
+//	cout << testBoard.boardToStr() << endl;
+//	testBoard.setPiece(19, 'b');
+//
+//	// testBoard.setPiece(26, 'b'); // 2,1
+//	cout << "test board:" << endl;
+//	cout << testBoard.boardToStr() << endl;
 
-	bool playing = false;
+
+	bool playing = true;
 	bool ourColorDetermined = false;
 
 	Board b = Board();
