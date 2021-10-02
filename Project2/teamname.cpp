@@ -88,7 +88,7 @@ int main() {
 			cout << "our color: " << ourCol << endl;
 			b.setOurColor(ourCol);
 			ourColorDetermined = true;
-		}
+		} // TODO: if other player goes first, make their move, otherwise skip that part
 
 		move_file.close();
 
