@@ -6,41 +6,57 @@
  */
 
 #include "minimax.hpp"
+#include "timercpp.hpp"
 
 Minimax::Minimax(float a, float b){
 	alpha = a;
 	beta = b;
+	timeUp = false;
 }
 
-// runs search, returns the move
+// runs search, returns a move within ~9 seconds
 int Minimax::minimaxSearch(Board* board) {
-	// TODO: start a timer here, when timer over start evaluating moves instead of trying to get to the bottom of the tree
 	cout << "starting minimax search" << endl;
+	Timer t = Timer();
+	t.setTimeout([&]() {
+		timeUp = true;
+		cout << "times up!" << endl;
+		t.stop();
+	}, 9000);
+
 	UtilityMovePair* pair = maxValue(board);
 	return (*pair).move;
 }
 
-// tries to get best move for us (maximize utility)
+// tries to get best move for us (maximizes utility)
 UtilityMovePair* Minimax::maxValue(Board* board) {
 	// TODO: iterative deepening - iteratively limit the depth we go to (and call eval) and try again until time
 
+	// if out of time, start evaluating board instead of generating more moves
+	if (timeUp) {
+		UtilityMovePair* ret = new UtilityMovePair(0, board->evaluate());
+		cout << "timeUp evaluation: " << ret->utility << endl;
+		free(board);
+		return ret;
+	}
+
 	// if game over, return utility value with null move
 	if (board->isGameOver()){
-		UtilityMovePair* ret = new UtilityMovePair(0, board->utility()); // 0 should be null
+		UtilityMovePair* ret = new UtilityMovePair(0, board->utility());
 		cout << "gameover utility: " << ret->utility << endl;
 		free(board);
 		return ret;
 	}
+
 	UtilityMovePair* chosenMove = new UtilityMovePair(0, -100.0); // minimax value at this stage of the tree (v, a in the pseudocode)
 	UtilityMovePair* currMove; // move to be returned (v2, a2 in the pseudocode)
 	Board* boardCopy = new Board(*board);
 
-	// cout << "maxing board " << &boardCopy << endl;
-	// iterate through possible moves by seeing if setPiece is true
-	for (int i = 0; i < 64; i++){
+	// iterate through all moves by seeing if setPiece is true
+	for (int i : moveOrder){
 
 		// if board can setPiece
-		if (boardCopy->setPiece(i/8, i%8, board->ourColor)){ // TODO: figure out which piece we are
+		if (boardCopy->setPiece(i/8, i%8, board->ourColor)){
 			cout << board->ourColor << " move at " << i << endl << boardCopy->boardToStr() << endl;
 
 			// try to find opponent's best move (which minimizes utility)
@@ -73,6 +89,14 @@ UtilityMovePair* Minimax::maxValue(Board* board) {
 
 // tries to get best move for opponents (minimizes utility)
 UtilityMovePair* Minimax::minValue(Board* board) {
+	// if out of time, start evaluating board instead of generating more moves
+	if (timeUp) {
+		UtilityMovePair* ret = new UtilityMovePair(0, board->evaluate()); // 0 should be null
+		cout << "timeUp evaluation: " << ret->utility << endl;
+		free(board);
+		return ret;
+	}
+
 	// if game over, return utility value with null move
 	if (board->isGameOver()){
 		UtilityMovePair* ret = new UtilityMovePair(0, board->utility()); // 0 should be null
@@ -80,16 +104,16 @@ UtilityMovePair* Minimax::minValue(Board* board) {
 		free(board);
 		return ret;
 	}
-	UtilityMovePair* chosenMove = new UtilityMovePair(0, -100.0); // minimax value at this stage of the tree (v, a in the pseudocode)
+
+	UtilityMovePair* chosenMove = new UtilityMovePair(0, 100.0); // minimax value at this stage of the tree (v, a in the pseudocode)
 	UtilityMovePair* currMove; // move to be returned (v2, a2 in the pseudocode)
 	Board* boardCopy = new Board(*board);
 
-	// cout << "minning board " << &boardCopy << endl;
-	// iterate through possible moves by seeing if setPiece is true
-	for (int i = 0; i < 64; i++){
+	// iterate through all moves by seeing if setPiece is true
+	for (int i : moveOrder){
 
 		// if board can setPiece
-		if (boardCopy->setPiece(i/8, i%8, board->opponentColor)){ // TODO: figure out which piece we
+		if (boardCopy->setPiece(i/8, i%8, board->opponentColor)){
 			cout << board->opponentColor << " move at " << i << endl << boardCopy->boardToStr() << endl;
 
 			// try to find opponent's best move (which minimizes utility)
