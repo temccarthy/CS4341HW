@@ -48,8 +48,8 @@ UtilityMovePair* Minimax::maxValue(Board* board) {
 		return ret;
 	}
 
-	UtilityMovePair* chosenMove = new UtilityMovePair(0, -100.0); // minimax value at this stage of the tree (v, a in the pseudocode)
-	UtilityMovePair* currMove; // move to be returned (v2, a2 in the pseudocode)
+	UtilityMovePair* chosenMove = new UtilityMovePair(0, -100.0); // minimax value at this stage of the tree (a, v in the pseudocode)
+	UtilityMovePair* currMove; // move to be returned (a2, v2 in the pseudocode)
 	Board* boardCopy = new Board(*board);
 
 	// iterate through all moves by seeing if setPiece is true
@@ -70,7 +70,7 @@ UtilityMovePair* Minimax::maxValue(Board* board) {
 			}
 
 			// ab pruning - skips rest of the checks bc the child mins aren't bigger than this max
-			if ((*chosenMove).utility >= beta) {
+			if (chosenMove->utility >= beta) {
 				cout << "beta cut!" << endl;
 				return chosenMove;
 			}
@@ -105,8 +105,8 @@ UtilityMovePair* Minimax::minValue(Board* board) {
 		return ret;
 	}
 
-	UtilityMovePair* chosenMove = new UtilityMovePair(0, 100.0); // minimax value at this stage of the tree (v, a in the pseudocode)
-	UtilityMovePair* currMove; // move to be returned (v2, a2 in the pseudocode)
+	UtilityMovePair* chosenMove = new UtilityMovePair(0, 100.0); // minimax value at this stage of the tree (a, v in the pseudocode)
+	UtilityMovePair* currMove; // move to be returned (a2, v2 in the pseudocode)
 	Board* boardCopy = new Board(*board);
 
 	// iterate through all moves by seeing if setPiece is true
@@ -127,7 +127,7 @@ UtilityMovePair* Minimax::minValue(Board* board) {
 			}
 
 			// ab pruning - skips rest of the checks bc the child mins aren't bigger than this max
-			if ((*chosenMove).utility <= alpha) {
+			if (chosenMove->utility <= alpha) {
 				cout << "alpha cut!" << endl;
 				return chosenMove;
 			}

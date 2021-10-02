@@ -47,7 +47,7 @@ char determineOurColor(fstream* fin) {
 	}
 }
 
-void writeOurMove(fstream* fin, int move) { // TODO: UNTESTED
+void writeOurMove(fstream* fin, int move) {
 	fin->close();
 	fin->open("move_file", ios::in | ios::app);
 
