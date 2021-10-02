@@ -48,10 +48,15 @@ char determineOurColor(fstream* fin) {
 }
 
 void writeOurMove(fstream* fin, int move) { // TODO: UNTESTED
+	fin->close();
+	fin->open("move_file", ios::in | ios::app);
+
 	char col = 65 + move%8;
-	char row = 31 + move/8;
+	char row = 49 + move/8;
 	string moveString = teamname + " " + col + " " + row;
-	*fin << moveString << endl;
+	cout << "writing: " << moveString << endl;
+	fin->write(moveString.data(), moveString.size());
+	//*fin << moveString << endl;
 }
 
 int main() {
@@ -90,42 +95,53 @@ int main() {
 		cout << "go file found; opening move_file" << endl;
 
 		// open move_file and read last line
-		move_file.open("move_file");
-		if (!ourColorDetermined) {
-			char ourCol = determineOurColor(&move_file);
-			cout << "our color: " << ourCol << endl;
-			b.setOurColor(ourCol);
-			ourColorDetermined = true;
-		} // TODO: if other player goes first, make their move, otherwise skip that part
+		move_file.open("move_file", ios::in | ios::app);
+		if (move_file.is_open()) {
 
-		lastMove = readLastMove(&move_file);
+			if (!ourColorDetermined) {
+				char ourCol = determineOurColor(&move_file);
+				cout << "our color: " << ourCol << endl;
+				b.setOurColor(ourCol);
+				ourColorDetermined = true;
 
-		move_file.close();
+				if (ourCol == 'b') { // if no moves, we make a move first (doesn't matter which)
+					cout << "our move first: 34" << endl;
+					b.setPiece(34, 'b');
+					cout << "new board:\n" << b.boardToStr() << endl;
+					writeOurMove(&move_file, 34);
+					continue;
+				}
+			} // TODO: if other player goes first, make their move, otherwise skip that part
 
-		cout << "last move was: " << lastMove << endl;
+			lastMove = readLastMove(&move_file);
 
-		// if we made the last move, look for go file again
-		if (lastMove.find(teamname) != string::npos){
-			continue;
+			cout << "last move was: " << lastMove << endl;
+
+			// if we made the last move, look for go file again
+			if (lastMove.find(teamname) != string::npos){
+				continue;
+			}
+
+			// remove opponent name
+			opponentMove = lastMove.substr(lastMove.find(" ") + 1, lastMove.size());
+			// play opponent move on board
+			// still need to translate from "B 3" to 2, 3
+			// cout << opponentMove[0] << opponentMove[2] << endl;
+			b.setPiece(opponentMove[0], opponentMove[2] - '0', b.opponentColor);
+			cout << "board after opponent" << endl;
+			cout << b.boardToStr() << endl;
+
+			// make a move
+			moveToMake = m.minimaxSearch(&b);
+			cout << "move to make: " << moveToMake << endl;
+			b.setPiece(moveToMake, b.ourColor);
+			cout << "new board: \n" << b.boardToStr() << endl << endl;
+
+			// write move to move_file
+			writeOurMove(&move_file, moveToMake);
 		}
 
-		// remove opponent name
-		opponentMove = lastMove.substr(lastMove.find(" ") + 1, lastMove.size());
-		// play opponent move on board
-		// still need to translate from "B 3" to 2, 3
-		// cout << opponentMove[0] << opponentMove[2] << endl;
-		b.setPiece(opponentMove[0], opponentMove[2] - '0', b.opponentColor);
-		cout << "board after opponent" << endl;
-		cout << b.boardToStr() << endl;
-
-		// make a move
-		moveToMake = m.minimaxSearch(&b);
-		cout << "move to make: " << moveToMake << endl;
-		b.setPiece(moveToMake, b.ourColor);
-		cout << "new board: \n" << b.boardToStr() << endl << endl;
-
-		// write move to move_file
-		writeOurMove(&move_file, moveToMake);
+		move_file.close();
 
 		// loop
 	}
