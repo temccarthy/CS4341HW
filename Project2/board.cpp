@@ -44,8 +44,8 @@ Board* Board::copyBoard() {
 }
 
 // only for reading from textfile
-bool Board::setPiece(char row, int col, char color) {
-	return setPiece(row-64, col-1, color);
+bool Board::setPiece(char col, int row, char color) {
+	return setPiece(row-1, col-65, color);
 }
 
 bool Board::setPiece(int boardPos, char color) {
@@ -53,6 +53,7 @@ bool Board::setPiece(int boardPos, char color) {
 }
 
 bool Board::setPiece(int row, int col, char color) {
+	cout << "setting " << col << "," << row << endl;
 	vector<int> flipped = flippedPieces(row, col, color);
 
 	if (!outOfBounds(row, col) && getPiece(row, col)==0 && flipped.size()>0) { // if inbounds and space empty	
