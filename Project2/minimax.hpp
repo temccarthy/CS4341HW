@@ -25,7 +25,7 @@ class Minimax {
 	bool timeUp;
 
 	// order to check moves in, instead of just checking 1, 2, 3, 4 etc
-	int* moveOrder = {27, 28, 36, 35, 34, 26, 18, 19,
+	int moveOrder[64] = {27, 28, 36, 35, 34, 26, 18, 19,
 					  20, 21, 29, 37, 45, 44, 43, 42,
 					  41, 33, 25, 17, 9, 10, 11, 12,
 					  13, 14, 22, 30, 38, 46, 54, 53,
