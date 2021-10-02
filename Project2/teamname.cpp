@@ -112,6 +112,7 @@ int main() {
 		moveToMake = m.minimaxSearch(&b);
 		cout << "move to make: " << moveToMake << endl;
 		b.setPiece(moveToMake, b.ourColor);
+		cout << "new board: \n" << b.boardToStr() << endl << endl;
 
 		// write move to move_file
 		writeOurMove(&move_file, moveToMake);

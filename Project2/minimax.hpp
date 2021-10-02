@@ -25,6 +25,7 @@ class Minimax {
 	bool timeUp;
 
 	// order to check moves in, instead of just checking 1, 2, 3, 4 etc
+	// it goes in a spiral from the middle out
 	int moveOrder[64] = {27, 28, 36, 35, 34, 26, 18, 19,
 					  20, 21, 29, 37, 45, 44, 43, 42,
 					  41, 33, 25, 17, 9, 10, 11, 12,
