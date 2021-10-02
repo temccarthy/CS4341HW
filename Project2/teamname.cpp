@@ -30,6 +30,9 @@ string readLastMove(fstream* fin) {
 	// maybe need to refactor if other players mess move_file up
 	while (getline(*fin, lastLine) && lastLine != ""){
 		prevLine = lastLine;
+//		if (fin->peek() == EOF) { // mess around with this?
+//			break;
+//		}
 	}
 
 	return prevLine;
