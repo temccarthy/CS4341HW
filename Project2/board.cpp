@@ -7,7 +7,6 @@ using namespace std;
 
 // we don't do anything with ourColor?
 Board::Board() {
-	ourColor, opponentColor = 0;
 	memset(board, 0, sizeof(board));
 
 	board[27] = 'b'; //3,3
@@ -181,13 +180,14 @@ string Board::boardToStr() {
 }
 
 void Board::testCases() {
+	Board* boardCopy = copyBoard();
 	bool cases = true;
 
-	cases &= !setPiece(1, 1, 'o'); // false
-	cases &= !setPiece(1, 1, 'b'); // false
-	cases &= setPiece(2, 3, 'o'); // true
-	cases &= !setPiece(1, 3, 'b'); // false
-	cases &= setPiece(2, 2, 'b'); // true
+	cases &= !boardCopy->setPiece(1, 1, 'o'); // false
+	cases &= !boardCopy->setPiece(1, 1, 'b'); // false
+	cases &= boardCopy->setPiece(2, 3, 'o'); // true
+	cases &= !boardCopy->setPiece(1, 3, 'b'); // false
+	cases &= boardCopy->setPiece(2, 2, 'b'); // true
 
 	if (cases)
 		cout << "all tests pass!" << endl;
@@ -195,6 +195,6 @@ void Board::testCases() {
 		cout << "tests fail" << endl;
 
 	cout << endl << "board after tests" << endl;
-	cout << boardToStr() << endl;
+	cout << boardCopy->boardToStr() << endl;
 	cout << "test" << endl;
 }

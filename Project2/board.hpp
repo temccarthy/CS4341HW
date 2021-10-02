@@ -17,8 +17,9 @@ using namespace std;
 class Board {
 	char board[64]; // the board array
 public:
-	char ourColor; // which color we are
-	char opponentColor; // opponent color
+	// default to we go first
+	char ourColor = 'b'; // which color we are
+	char opponentColor = 'o'; // opponent color
 
 
 	Board();
