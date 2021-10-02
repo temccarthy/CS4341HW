@@ -38,11 +38,12 @@ string readLastMove(fstream* fin) {
 char determineOurColor(fstream* fin) {
 	string firstLine;
 
-	fin->seekg(0, fin->beg);
-	if (getline(*fin, firstLine)) {
-		return 'o'; // there's a move already so we go second so we're orange
+	//fin->seekg(0, fin->beg);
+
+	if (fin->peek() == EOF) {
+		return 'b'; // there's a move already so we go second so we're orange
 	} else {
-		return 'b'; // there's no moves in move_file so we go first so we're blue
+		return 'o'; // there's no moves in move_file so we go first so we're blue
 	}
 }
 
@@ -90,13 +91,14 @@ int main() {
 
 		// open move_file and read last line
 		move_file.open("move_file");
-		lastMove = readLastMove(&move_file);
 		if (!ourColorDetermined) {
 			char ourCol = determineOurColor(&move_file);
 			cout << "our color: " << ourCol << endl;
 			b.setOurColor(ourCol);
 			ourColorDetermined = true;
 		} // TODO: if other player goes first, make their move, otherwise skip that part
+
+		lastMove = readLastMove(&move_file);
 
 		move_file.close();
 
