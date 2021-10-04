@@ -14,7 +14,7 @@ using namespace std;
 #include "board.hpp"
 #include "minimax.hpp"
 #include <thread>
-#include "Timer.cpp"
+
 
 string teamname = "teamname";
 
@@ -96,7 +96,7 @@ int main() {
 	string lastMove, opponentMove;
 	int moveToMake;
 	int secondMoveToMake;
-	Timer t = Timer();
+	Timer* t = new Timer();
 	
 	//Minimax m = Minimax(0.0,0.0,ourColor);
 
@@ -152,18 +152,22 @@ int main() {
 			// Minimax m2 = Minimax(0.0,0.0,ourColor);
 			// secondMoveToMake = m2.minimaxSearch(&b,4);
 			// cout << "move to make: " << moveToMake << endl;
-			int timeLimit = 9;
-			t.start();
+			int timeLimit = 9000; // 9000 milliseconds
+			t->start();
 			int ITL = 2;
 			int previousMove;
-			while(t.elapsedSeconds() < timeLimit){
-				Minimax m = Minimax(0.0,0.0,ourColor);
-				previousMove = m.minimaxSearch(&b,ITL);
-				ITL = ITL + 2;
-				moveToMake = previousMove;
+			while(t->elapsedMilliseconds() <= timeLimit){
+				Minimax m = Minimax(0.0, 0.0, ourColor, timeLimit);
+				previousMove = m.minimaxSearch(&b, ITL, t);
+				ITL += 2; // iterate by 2 ply 
+				cout << previousMove << ", " << moveToMake << endl;
+				if (!m.timeUp){
+					moveToMake = previousMove;
+				} else {
+					cout << "time up, disregarding last minimax return" << endl;
+				}
 			}
-
-
+			cout << "move we make actually " << previousMove << ", " << moveToMake << endl;
 			// for(int i = 2; i < 7; i = i+2){
 			// 	Minimax m = Minimax(0.0,0.0,ourColor);
 			// 	moveToMake = m.minimaxSearch(&b,i);
