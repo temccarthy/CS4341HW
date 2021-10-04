@@ -34,13 +34,15 @@ class Minimax {
 					  16, 8, 0, 1, 2, 3, 4, 5,
 					  6, 7, 15, 23, 31, 39, 47, 55,
 					  63, 62, 61, 60, 59, 58, 57, 56};
+	char ourColor,opponentColor;
+	int iterativeLimit;
 
 public:
-	Minimax(float a, float b);
+	Minimax(float a, float b, char color);
 	int minimaxSearch(Board* board);
 private:
-	UtilityMovePair* maxValue(Board* board);
-	UtilityMovePair* minValue(Board* board);
+	UtilityMovePair* maxValue(Board* board, int moveToMake, int ply);
+	UtilityMovePair* minValue(Board* board, int moveToMake, int ply);
 };
 
 

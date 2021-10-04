@@ -82,7 +82,14 @@ int main() {
 	bool ourColorDetermined = false;
 
 	Board b = Board();
-
+	// char ourColor = 'o';
+	// char opponentColor;
+	// if(ourColor == 'b'){
+	// 	opponentColor = 'o';
+	// }else{
+	// 	opponentColor = 'b';
+	// }
+	
 	fstream move_file;
 	string lastMove, opponentMove;
 	int moveToMake;
