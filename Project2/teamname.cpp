@@ -13,7 +13,7 @@ using namespace std;
 #include <sys/stat.h>
 #include "board.hpp"
 #include "minimax.hpp"
-#include <thread>
+
 
 
 string teamname = "teamname";
@@ -65,21 +65,6 @@ void writeOurMove(fstream* fin, int move) {
 }
 
 int main() {
-
-//	Board testBoard = Board();
-//	//testBoard.setOurColor('o');
-//	testBoard.setPiece('C', 5, 'b');
-//	testBoard.setPiece('C', 4, 'o');
-//	testBoard.setPiece(18, 'b');
-//	testBoard.setPiece(44, 'o');
-//	cout << testBoard.boardToStr() << endl;
-//	testBoard.setPiece(19, 'b');
-//
-//	// testBoard.setPiece(26, 'b'); // 2,1
-//	cout << "test board:" << endl;
-//	cout << testBoard.boardToStr() << endl;
-
-
 	bool playing = true;
 	bool ourColorDetermined = false;
 
@@ -89,7 +74,7 @@ int main() {
 	int moveToMake, prevMoveToMake;
 	int timeLimit = 9500; // 9000 milliseconds
 	int ITL;
-	Timer* t;
+	Timer* t, *stopTimer;
 
 	while (playing) {
 		// start by looking for name.go file
@@ -122,19 +107,25 @@ int main() {
 
 		cout << "last move was: " << lastMove << endl;
 
-		// if we made the last move, look for go file again
-		if (lastMove.find(teamname) != string::npos){
-			move_file.close();
-			continue;
+		// play opponent move on board (only if they didn't pass)
+		if (lastMove.find(teamname) != string::npos) {
+			// remove opponent name
+			opponentMove = lastMove.substr(lastMove.find(" ") + 1, lastMove.size());
+
+			b.setPiece(opponentMove[0], opponentMove[2] - '0', b.opponentColor);
 		}
-
-		// remove opponent name
-		opponentMove = lastMove.substr(lastMove.find(" ") + 1, lastMove.size());
-
-		// play opponent move on board
-		b.setPiece(opponentMove[0], opponentMove[2] - '0', b.opponentColor);
-		cout << "board after opponent" << endl;
+		cout << "board after last Move" << endl;
 		cout << b.boardToStr() << endl;
+
+		// detect if we need to pass
+		if (b.mobility(b.ourColor) == 0) {
+			continue;
+		} 
+
+		// detect if gameOver
+		if (b.isGameOver()) {
+			break;
+		}
 
 		//MINIMAX STARTS HERE
 		// reset and start timer
@@ -165,7 +156,13 @@ int main() {
 
 		move_file.close(); // close the file for other team to read
 
-		// loop again
+		stopTimer = new Timer();
+		stopTimer->start();
+		while (stopTimer->elapsedMilliseconds() < 2000){
+			// loop while waiting for go file to disappear
+		}
+
+		// make move again
 	}
 	return 0;
 }
