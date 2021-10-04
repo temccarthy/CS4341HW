@@ -26,9 +26,9 @@ professional human players. Typically, pros will try and maximize mobility and m
 indicator, explains why our program was able to easily defeat human and random opponents.
 
 Contributions:
-    Gabriel, Shawn, and Tim each contributed equal portions to this project and much of the code was written using peer programming. Gabriel worked mostly on the Board class and 
-evaluation functions as well as the iterative deepening search. Shawn worked mostly on the iterative deepening search, the timer, and communication with the referee. Tim worked 
-primarily on minimax search and teamname.cpp.
+    Gabriel, Tim, and Shawn each contributed equal portions to this project and much of the code was written using peer programming. Gabriel worked mostly on the Board class and 
+evaluation functions as well as the iterative deepening search. Tim worked primarily on minimax search and teamname.cpp. Shawn worked mostly on the iterative deepening search, 
+the timer, and communication with the referee.
 
 Prerequisites:
     * C++  10.3.0 or later
