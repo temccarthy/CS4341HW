@@ -10,7 +10,7 @@ mobility, frontiers, and corners to calculate utility. Mobility is the number of
 of the board. Each of these are scaled: each mobility space is 0.05, each frontier is -0.05, and each corner is 0.2. These heuristics were based off of heuristics used by 
 reasearchers at the University of Washington, Cornell, and Michael Buro and Kartik Kukreja. 
     To decide what branches to expand, we implemented alpha-beta pruning with iterative deepening search. We also explore positions from the inner parts of the board to the 
-edges. A timer keeps track of how long the program has been running and terminates iterative-deeping search once 9 seconds has gone by to be sure our turn finishes inside the 10 
+edges. A timer keeps track of how long the program has been running and terminates iterative-deeping search once 9.75 seconds has gone by to be sure our turn finishes inside the 10 
 second time limit.
 
 Results:
