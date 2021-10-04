@@ -18,6 +18,11 @@ struct UtilityMovePair {
 		move = m;
 		utility = u;
 	}
+
+	bool equals(UtilityMovePair* newPair){
+		return (move == newPair->move && utility == newPair->utility);
+	}
+	
 };
 
 class Minimax {
@@ -35,14 +40,14 @@ class Minimax {
 					  6, 7, 15, 23, 31, 39, 47, 55,
 					  63, 62, 61, 60, 59, 58, 57, 56};
 	char ourColor,opponentColor;
-	int iterativeLimit;
+	//int iterativeLimit = 1;
 
 public:
 	Minimax(float a, float b, char color);
 	int minimaxSearch(Board* board);
 private:
-	UtilityMovePair* maxValue(Board* board, int moveToMake, int ply);
-	UtilityMovePair* minValue(Board* board, int moveToMake, int ply);
+	UtilityMovePair* maxValue(Board* board, int moveToMake, int ply, int ITL);
+	UtilityMovePair* minValue(Board* board, int moveToMake, int ply, int ITL);
 };
 
 

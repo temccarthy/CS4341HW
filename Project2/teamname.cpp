@@ -56,7 +56,7 @@ void writeOurMove(fstream* fin, int move) {
 
 	char col = 65 + move%8;
 	char row = 49 + move/8;
-	string moveString = teamname + " " + col + " " + row;
+	string moveString = teamname + " " + col + " " + row + '\n';
 	cout << "writing: " << moveString << endl;
 	fin->write(moveString.data(), moveString.size());
 	//*fin << moveString << endl;
@@ -113,7 +113,6 @@ int main() {
 				cout << "our color: " << ourCol << endl;
 				b.setOurColor(ourCol);
 				ourColorDetermined = true;
-
 				if (ourCol == 'b') { // if no moves, we make a move first (doesn't matter which)
 					cout << "our move first: 34" << endl;
 					b.setPiece(34, 'b');
