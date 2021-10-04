@@ -10,6 +10,7 @@
 
 using namespace std;
 #include "board.hpp"
+#include "Timer.cpp"
 
 struct UtilityMovePair {
 	int move;
@@ -18,11 +19,15 @@ struct UtilityMovePair {
 		move = m;
 		utility = u;
 	}
+
+	bool equals(UtilityMovePair* newPair){
+		return (move == newPair->move && utility == newPair->utility);
+	}
+	
 };
 
 class Minimax {
-	float alpha, beta;
-	bool timeUp;
+	bool hitITL;
 
 	// order to check moves in, instead of just checking 1, 2, 3, 4 etc
 	// it goes in a spiral from the middle out
@@ -35,17 +40,16 @@ class Minimax {
 					  6, 7, 15, 23, 31, 39, 47, 55,
 					  63, 62, 61, 60, 59, 58, 57, 56};
 	char ourColor,opponentColor;
-	int iterativeLimit;
-
 public:
-	Minimax(float a, float b, char color);
-	int minimaxSearch(Board* board);
+	int timeLimit;
+	bool timeUp = false;
+
+	Minimax(int timeLimit);
+	int minimaxSearch(Board* board, int ITL, Timer* t);
 private:
-	UtilityMovePair* maxValue(Board* board, int moveToMake, int ply);
-	UtilityMovePair* minValue(Board* board, int moveToMake, int ply);
+	UtilityMovePair* maxValue(Board* board, int ply, int ITL, float alpha, float beta, Timer* t);
+	UtilityMovePair* minValue(Board* board, int ply, int ITL, float alpha, float beta, Timer* t);
 };
-
-
 
 #endif /* MINIMAX_HPP_ */
 

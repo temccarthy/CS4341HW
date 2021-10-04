@@ -6,57 +6,43 @@
  */
 
 #include "minimax.hpp"
-#include "Timer.cpp"
 
-Minimax::Minimax(float a, float b, char color){
-	alpha = a;
-	beta = b;
+Minimax::Minimax(int tl){
+	timeLimit = tl;
 	timeUp = false;
-	ourColor = color;
-	if(ourColor == 'b'){
-		opponentColor = 'o';
-	}else{
-		opponentColor = 'b';
-	}
-	iterativeLimit = 1;
-	
 }
 
 // runs search, returns a move within ~9 seconds
-int Minimax::minimaxSearch(Board* board) {
-	cout << "starting minimax search" << endl;
-	int timeLimit = 9;
-	Timer t = Timer();
-	t.start();
+int Minimax::minimaxSearch(Board* board, int ITL, Timer* t) {
+	cout << "starting minimax search w/ ITL = " << ITL << endl;
+		
 	UtilityMovePair* pair;
+	pair = maxValue(board, 0, ITL, -100, 100, t); // start minimax recursion
 
-	 while(t.elapsedSeconds() < timeLimit){
-		pair = maxValue(board, 0, 0);
-		iterativeLimit ++;
-		cout << t.elapsedSeconds() << endl;
-	 }
-
-	return (*pair).move;
+	return pair->move;
 }
 
-
 // tries to get best move for us (maximize utility)
-UtilityMovePair* Minimax::maxValue(Board* board, int moveToMake, int ply) {
-	// TODO: iterative deepening - iteratively limit the depth we go to (and call eval) and try again until time
+UtilityMovePair* Minimax::maxValue(Board* board, int ply, int ITL, float alpha, float beta, Timer* t) {
+	// stop recursion if out of time - return junk so we can use last completed iterative deepening result
+	if (t->elapsedMilliseconds() >= timeLimit){
+		timeUp = true;
+		UtilityMovePair* unfinished = new UtilityMovePair(-1, 1000);
+		free(board);
+		// cout << "timer finished" << endl;
+		return unfinished;
+	}
 
-	cout << "ply: " << ply << endl;
-	if(ply >= iterativeLimit){
-		//run eval function on board and return its evaluation score and piece index when we've reached the iterative limit
-
-		UtilityMovePair* evaledMove = new UtilityMovePair(moveToMake, board->evaluate());
-		ply = 0;
-		cout << "hit iterative limit " << endl;
+	// stop recursion if iterative deepening limit reached - return evaluation of board 
+	if(ply >= ITL){
+		UtilityMovePair* evaledMove = new UtilityMovePair(0, board->evaluate());
+		free(board);
 		return evaledMove;
 	}
-	// if game over, return utility value with null move
+	// stop recursion if gameOver - return utility of board
 	if (board->isGameOver()){
 		UtilityMovePair* ret = new UtilityMovePair(0, board->utility());
-		cout << "gameover utility: " << ret->utility << endl;
+		// cout << "gameover utility: " << ret->utility << endl;
 		free(board);
 		return ret;
 	}
@@ -70,15 +56,10 @@ UtilityMovePair* Minimax::maxValue(Board* board, int moveToMake, int ply) {
 
 		// if board can setPiece
 		if (boardCopy->setPiece(i/8, i%8, board->ourColor)){
-			cout << board->ourColor << " move at " << i << endl << boardCopy->boardToStr() << endl;
 
 			// try to find opponent's best move (which minimizes utility)
-			if (ply==1){
-				currMove = minValue(boardCopy, i, (ply+1));
-			}else{
-				currMove = minValue(boardCopy, moveToMake, (ply+1));
-			}
-			currMove->move = i;
+			currMove = minValue(boardCopy, ply+1, ITL, alpha, beta, t);
+			currMove->move = i; // set the move value (was originally returned as 0)
 
 			// if the new move has a better value, the chosen move becomes the new move
 			if (currMove->utility > chosenMove->utility) {
@@ -86,17 +67,14 @@ UtilityMovePair* Minimax::maxValue(Board* board, int moveToMake, int ply) {
 				alpha = max(alpha, chosenMove->utility); // set alpha
 			}
 
-			// ab pruning - skips rest of the checks bc the child mins aren't bigger than this max
+			// ab pruning
 			if (chosenMove->utility >= beta) {
-				cout << "beta cut!" << endl;
+				// cout << "beta cut!" << endl;
 				return chosenMove;
 			}
 
 			// resets board for trying next possible setPiece
-//			cout << "new board\n" << boardCopy->boardToStr() << endl;
 			boardCopy = board->copyBoard();
-			//cout << " after\n" << boardCopy->boardToStr() << endl;
-
 		}
 	}
 
@@ -105,20 +83,26 @@ UtilityMovePair* Minimax::maxValue(Board* board, int moveToMake, int ply) {
 }
 
 // tries to get best move for opponents (minimizes utility)
-UtilityMovePair* Minimax::minValue(Board* board, int moveToMake, int ply) {
-	// if out of time, start evaluating board instead of generating more moves
+UtilityMovePair* Minimax::minValue(Board* board, int ply, int ITL, float alpha, float beta, Timer* t) {
+	// stop recursion if out of time - return junk so we can use last completed iterative deepening result
+	if (t->elapsedMilliseconds() >= timeLimit){
+		timeUp = true;
+		UtilityMovePair* unfinished = new UtilityMovePair(-1, -1000);
+		free(board);
+		// cout << "timer finished" << endl;
+		return unfinished;
+	}
 
-	if(ply >= iterativeLimit){
-		//run eval function on board and return its evaluation score and piece index when we've reached the iterative limit
-
-		UtilityMovePair* evaledMove = new UtilityMovePair(moveToMake, board->evaluate());
-		cout << "hit iterative limit " << endl;
+	// stop recursion if iterative deepening limit reached - return evaluation of board 
+	if(ply >= ITL){
+		UtilityMovePair* evaledMove = new UtilityMovePair(0, board->evaluate());
+		free(board);
 		return evaledMove;
 	}
-	// if game over, return utility value with null move
+	// stop recursion if gameOver - return utility of board
 	if (board->isGameOver()){
-		UtilityMovePair* ret = new UtilityMovePair(0, board->utility()); // 0 should be null
-		cout << "gameover utility: " << ret->utility << endl;
+		UtilityMovePair* ret = new UtilityMovePair(0, board->utility());
+		// cout << "gameover utility: " << ret->utility << endl;
 		free(board);
 		return ret;
 	}
@@ -132,11 +116,11 @@ UtilityMovePair* Minimax::minValue(Board* board, int moveToMake, int ply) {
 
 		// if board can setPiece
 		if (boardCopy->setPiece(i/8, i%8, board->opponentColor)){
-			cout << board->opponentColor << " move at " << i << endl << boardCopy->boardToStr() << endl;
+			// cout << board->opponentColor << " move at " << i << endl << boardCopy->boardToStr() << endl;
 
 			// try to find opponent's best move (which minimizes utility)
-			currMove = maxValue(boardCopy,moveToMake, (ply+1));
-			currMove->move = i;
+			currMove = maxValue(boardCopy, (ply+1), ITL, alpha, beta, t);
+			currMove->move = i; // set the move value (was originally returned as 0)
 
 			// if the new move has a lower value, the chosen move becomes the new move
 			if (currMove->utility < chosenMove->utility) {
@@ -144,20 +128,17 @@ UtilityMovePair* Minimax::minValue(Board* board, int moveToMake, int ply) {
 				beta = min(beta, chosenMove->utility); // set beta
 			}
 
-			// ab pruning - skips rest of the checks bc the child mins aren't bigger than this max
+			// ab pruning
 			if (chosenMove->utility <= alpha) {
-				cout << "alpha cut!" << endl;
+				// cout << "alpha cut!" << endl;
 				return chosenMove;
 			}
 
 			// resets board for trying next possible setPiece
-//			cout << "new board\n" << boardCopy->boardToStr() << endl;
 			boardCopy = board->copyBoard();
-			//cout << " after\n" << boardCopy->boardToStr() << endl;
-
 		}
 	}
 
-	// return the move with the best utility
+	// return the move with the worst utility
 	return chosenMove;
 }

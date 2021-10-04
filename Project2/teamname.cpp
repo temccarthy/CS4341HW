@@ -14,7 +14,9 @@ using namespace std;
 #include "board.hpp"
 #include "minimax.hpp"
 
-string teamname = "teamname";
+
+
+string teamname = "teamname"; //possible name Takahashi - 2019 world champion 
 
 // from https://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-14-17-c
 inline bool goFileExists() {
@@ -38,10 +40,9 @@ string readLastMove(fstream* fin) {
 	return prevLine;
 }
 
+//returns the corrent color based on move order
 char determineOurColor(fstream* fin) {
 	string firstLine;
-
-	//fin->seekg(0, fin->beg);
 
 	if (fin->peek() == EOF) {
 		return 'b'; // there's a move already so we go second so we're orange
@@ -50,121 +51,123 @@ char determineOurColor(fstream* fin) {
 	}
 }
 
+//Writes our move to move_file
 void writeOurMove(fstream* fin, int move) {
 	fin->close();
 	fin->open("move_file", ios::in | ios::app);
 
 	char col = 65 + move%8;
 	char row = 49 + move/8;
-	string moveString = teamname + " " + col + " " + row;
+	string moveString = teamname + " " + col + " " + row + '\n';
 	cout << "writing: " << moveString << endl;
 	fin->write(moveString.data(), moveString.size());
 	//*fin << moveString << endl;
 }
 
 int main() {
-
-//	Board testBoard = Board();
-//	//testBoard.setOurColor('o');
-//	testBoard.setPiece('C', 5, 'b');
-//	testBoard.setPiece('C', 4, 'o');
-//	testBoard.setPiece(18, 'b');
-//	testBoard.setPiece(44, 'o');
-//	cout << testBoard.boardToStr() << endl;
-//	testBoard.setPiece(19, 'b');
-//
-//	// testBoard.setPiece(26, 'b'); // 2,1
-//	cout << "test board:" << endl;
-//	cout << testBoard.boardToStr() << endl;
-
-
 	bool playing = true;
 	bool ourColorDetermined = false;
 
 	Board b = Board();
-	char ourColor = 'b';
-	char opponentColor;
-	if(ourColor == 'b'){
-		opponentColor = 'o';
-	}else{
-		opponentColor = 'b';
-	}
-	
 	fstream move_file;
 	string lastMove, opponentMove;
-	int moveToMake;
-	Minimax m = Minimax(0.0,0.0,ourColor);
+	int moveToMake, prevMoveToMake;
+	int timeLimit = 9500; // 9000 milliseconds
+	int ITL;
+	Timer* t, *stopTimer;
 
 	while (playing) {
 		// start by looking for name.go file
 		while (!goFileExists()) {
 			// spin while waiting
 		}
-		playing = false; // TODO: remove this later; test that multiple moves in a row works
 
 		cout << "go file found; opening move_file" << endl;
 
-		// open move_file and read last line/
+		// open move_file and read last line
 		move_file.open("move_file", ios::in | ios::app);
-		if (move_file.is_open()) {
 
-			if (!ourColorDetermined) {
-				char ourCol = determineOurColor(&move_file);
-				cout << "our color: " << ourCol << endl;
-				b.setOurColor(ourCol);
-				ourColorDetermined = true;
+		// determine which color we are (only occurs once)
+		if (!ourColorDetermined) {
+			char ourCol = determineOurColor(&move_file);
+			cout << "setting our color: " << ourCol << endl;
+			b.setOurColor(ourCol);
+			ourColorDetermined = true;
 
-				if (ourCol == 'b') { // if no moves, we make a move first (doesn't matter which)
-					cout << "our move first: 34" << endl;
-					b.setPiece(34, 'b');
-					cout << "new board:\n" << b.boardToStr() << endl;
-					writeOurMove(&move_file, 34);
-					continue;
-				}
-			} // TODO: if other player goes first, make their move, otherwise skip that part
-
-			lastMove = readLastMove(&move_file);
-
-			cout << "last move was: " << lastMove << endl;
-
-			// if we made the last move, look for go file again
-			if (lastMove.find(teamname) != string::npos){
+			if (ourCol == 'b') { // if no moves, we make a move first (doesn't matter which)
+				cout << "our move first: 34" << endl;
+				b.setPiece(34, 'b');
+				cout << "new board:\n" << b.boardToStr() << endl;
+				writeOurMove(&move_file, 34);
 				continue;
 			}
-
-			// remove opponent name
-			opponentMove = lastMove.substr(lastMove.find(" ") + 1, lastMove.size());
-			// play opponent move on board
-			// still need to translate from "B 3" to 2, 3
-			// cout << opponentMove[0] << opponentMove[2] << endl;
-			b.setPiece(opponentMove[0], opponentMove[2] - '0', b.opponentColor);
-			cout << "board after opponent" << endl;
-			cout << b.boardToStr() << endl;
-
-			// make a move
-			moveToMake = m.minimaxSearch(&b);
-			cout << "move to make: " << moveToMake << endl;
-			b.setPiece(moveToMake, b.ourColor);
-			cout << "new board: \n" << b.boardToStr() << endl << endl;
-
-			// write move to move_file
-			writeOurMove(&move_file, moveToMake);
 		}
 
-		move_file.close();
+		lastMove = readLastMove(&move_file);
 
-		// loop
+		cout << "last move was: " << lastMove << endl;
+
+		// play opponent move on board (only if they didn't pass)
+		opponentMove = lastMove.substr(lastMove.find(" ") + 1, lastMove.size());
+		b.setPiece(opponentMove[0], opponentMove[2] - '0', b.opponentColor);
+		
+		cout << "board after last move:" << endl;
+		cout << b.boardToStr() << endl;
+
+		// detect if gameOver
+		if (b.isGameOver()) {
+			cout << "GAME OVER" << endl;
+			break;
+		}
+
+		// detect if we need to pass
+		if (b.mobility(b.ourColor) == 0) {
+			cout << "PASS" << endl;
+			continue;
+		} 
+
+		//MINIMAX STARTS HERE
+		// reset and start timer
+		t = new Timer();
+		t->start();
+		ITL = 2;
+		while(t->elapsedMilliseconds() < timeLimit){
+			Minimax m = Minimax(timeLimit);
+			prevMoveToMake = m.minimaxSearch(&b, ITL, t);
+			if (!m.timeUp){
+				moveToMake = prevMoveToMake;
+				cout << "Eval completed at iterative limit: " << ITL << endl;
+				cout << "Move decided: " << moveToMake << "\n\n";
+			}
+
+			if (ITL > 60) {
+				break;
+			}
+
+			ITL += 2; // iterate depth limit by 2 ply 
+		}
+		t->stop();
+		//END MINIMAX
+		cout << "total time taken to make move (ms): " << t->elapsedMilliseconds() << endl;
+		cout << "final minimax decided move: " << moveToMake << endl;
+
+		//set piece for decided move
+		b.setPiece(moveToMake, b.ourColor);
+		cout << "board after our move: \n" << b.boardToStr() << endl << endl;
+
+		// write move to move_file
+		writeOurMove(&move_file, moveToMake);
+
+		move_file.close(); // close the file for other team to read
+
+		stopTimer = new Timer();
+		stopTimer->start();
+		while (stopTimer->elapsedMilliseconds() < 500){
+			// loop while waiting for go file to disappear
+		}
+		stopTimer->stop();
+
+		// make move again
 	}
-
-	// start by looking for name.go file
-	// wait otherwise
-	// when team.go exists, read move_file
-	// if other team didn't make a move: close and wait
-	// if other team made a move:
-	// parse new info from move_file and update board
-	// make move (within 10 sec)
-	// append move to move_file
-	// wait again and repeat
-
 	return 0;
 }

@@ -15,8 +15,10 @@ main
 .cproject
 .project
 **/.settings/
-move_file
+**/move_file
 teamname.go
+
+*.json
 
 # Distribution / packaging
 .Python
