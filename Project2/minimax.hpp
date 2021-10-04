@@ -27,7 +27,7 @@ struct UtilityMovePair {
 
 class Minimax {
 	float alpha, beta;
-	bool timeUp;
+	bool hitITL;
 
 	// order to check moves in, instead of just checking 1, 2, 3, 4 etc
 	// it goes in a spiral from the middle out
@@ -48,6 +48,8 @@ public:
 private:
 	UtilityMovePair* maxValue(Board* board, int moveToMake, int ply, int ITL);
 	UtilityMovePair* minValue(Board* board, int moveToMake, int ply, int ITL);
+	void setITL(bool val);
+	bool getITL();
 };
 
 

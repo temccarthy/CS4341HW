@@ -13,14 +13,14 @@
 Minimax::Minimax(float a, float b, char color){
 	alpha = a;
 	beta = b;
-	timeUp = false;
+	hitITL = false;
 	ourColor = color;
 	if(ourColor == 'b'){
 		opponentColor = 'o';
 	}else{
 		opponentColor = 'b';
 	}
-		
+	hitITL = false;
 }
 
 // runs search, returns a move within ~9 seconds
@@ -31,11 +31,17 @@ int Minimax::minimaxSearch(Board* board) {
 	t.start();
 	UtilityMovePair* pair;
 	UtilityMovePair* lastPair = new UtilityMovePair(-100,-100);
-	int ITL = 10;
+
+	int ITL = 1;
 
 	 while(t.elapsedSeconds() < timeLimit){
 
 		pair = maxValue(board, 0, 0, ITL);
+		if(getITL()){
+			cout << "hitITL is true!" << endl;
+			ITL++;
+			hitITL = false;
+		} 
 	
 		// cout << "movePair- move: " << pair->move << " utility: " << pair->utility << endl;
 		// cout << "lastPair- move: " << lastPair->move << " utility: " << lastPair->utility << endl;
@@ -50,10 +56,16 @@ int Minimax::minimaxSearch(Board* board) {
 
 		cout << "Eval completed at ITL: " << ITL << endl;
 		cout << "Time elapsed: " << t.elapsedSeconds() << endl;
-		//ITL++;
 	 }
 
 	return (*pair).move;
+}
+
+bool Minimax::getITL(){
+	return hitITL;
+}
+void Minimax::setITL(bool val){
+	hitITL = val;
 }
 
 
@@ -68,6 +80,7 @@ UtilityMovePair* Minimax::maxValue(Board* board, int moveToMake, int ply, int IT
 		UtilityMovePair* evaledMove = new UtilityMovePair(moveToMake, board->evaluate());
 		ply = 0;
 		cout << "hit iterative limit " << endl;
+		setITL(true);
 		return evaledMove;
 	}
 	// if game over, return utility value with null move
