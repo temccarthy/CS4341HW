@@ -14,6 +14,7 @@ using namespace std;
 #include "board.hpp"
 #include "minimax.hpp"
 #include <thread>
+#include "Timer.cpp"
 
 string teamname = "teamname";
 
@@ -95,6 +96,8 @@ int main() {
 	string lastMove, opponentMove;
 	int moveToMake;
 	int secondMoveToMake;
+	Timer t = Timer();
+	
 	//Minimax m = Minimax(0.0,0.0,ourColor);
 
 	while (playing) {
@@ -149,11 +152,22 @@ int main() {
 			// Minimax m2 = Minimax(0.0,0.0,ourColor);
 			// secondMoveToMake = m2.minimaxSearch(&b,4);
 			// cout << "move to make: " << moveToMake << endl;
-
-			for(int i = 2; i < 7; i = i+2){
+			int timeLimit = 9;
+			t.start();
+			int ITL = 2;
+			int previousMove;
+			while(t.elapsedSeconds() < timeLimit){
 				Minimax m = Minimax(0.0,0.0,ourColor);
-				moveToMake = m.minimaxSearch(&b,i);
+				previousMove = m.minimaxSearch(&b,ITL);
+				ITL = ITL + 2;
+				moveToMake = previousMove;
 			}
+
+
+			// for(int i = 2; i < 7; i = i+2){
+			// 	Minimax m = Minimax(0.0,0.0,ourColor);
+			// 	moveToMake = m.minimaxSearch(&b,i);
+			// }
 
 			//set piece for decided move
 			b.setPiece(moveToMake, b.ourColor);

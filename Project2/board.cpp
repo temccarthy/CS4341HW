@@ -176,7 +176,7 @@ float Board::evaluate() {
 
 	int legalMoves = mobility();
 
-	return blue;
+	return legalMoves;
 }
 
 
