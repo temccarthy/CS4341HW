@@ -18,6 +18,8 @@ main
 move_file
 teamname.go
 
+*.json
+
 # Distribution / packaging
 .Python
 build/
