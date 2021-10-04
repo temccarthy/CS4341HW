@@ -41,8 +41,9 @@ public:
 	bool isGameOver();
 	float utility();
 	float evaluate();
-	int mobility();
-	int numberOfStableDiscs();
+	int mobility(char color);
+	int numberOfStableDiscs(char color);
+	int numberOfCorners(char color);
 
 	void testCases();
 	string boardToStr();
