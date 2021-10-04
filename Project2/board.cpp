@@ -140,12 +140,12 @@ float Board::utility() {
 
 
 //calculates the total number of legal moves across the board for a color - flipping fewer pieces is better
-int Board::mobility(){
+int Board::mobility(char color){
 	int legalMoves = 0;
 
 	for (int row=0; row<8; row++){
 		for (int col=0; col<8; col++){
-			if (flippedPieces(row, col, ourColor).size() > 0){
+			if (flippedPieces(row, col, color).size() > 0){
 				legalMoves++;
 			}
 		}
@@ -157,7 +157,7 @@ int Board::mobility(){
 //calculates the number of stable pieces
 //currently only counts the number of held corner pieces
 //TODO: calculate all stable pieces
-int Board::numberOfStableDiscs(){
+int Board::numStableDiscs(char color){
 	//corner piece numner 0, 7, 56, 63
 
 	int heldStablePieces = 0;
@@ -170,13 +170,52 @@ int Board::numberOfStableDiscs(){
 	return heldStablePieces;
 }
 
-// TODO: finish eval fcn
-float Board::evaluate() {
-	int blue, orange = 1;
+int Board::numCorners(char color){
 
-	int legalMoves = mobility();
+	int corners = 0;
 
-	return legalMoves;
+	if(getPiece(0,0) == color) corners++;
+	if(getPiece(0,7) == color) corners++;
+	if(getPiece(7,0) == color) corners++;
+	if(getPiece(7,7) == color) corners++; 
+
+	return corners;
+}
+
+int Board::numFrontierDiscs(char color){
+	int numFrontierDiscs = 0;
+	int directions[8][2] = { { -1, 0 }, { -1, -1 }, { -1, 1 }, { 1, 0 },
+			{ 1, -1 }, { 1, 1 }, { 0, -1 }, { 0, 1 } };
+
+	for (int i = 7; i > -1; i--) {
+		for (int j = 0; j < 8; j++) {
+			char colorCurr = getPiece(i, j);
+			if (color == colorCurr){
+				for(int* dir : directions) { // iterate through all directions
+				int rowCurr = i;
+				int colCurr = j;		
+				rowCurr += dir[0];
+				colCurr += dir[1];
+				if (!outOfBounds(rowCurr, colCurr)){
+					char boarder = getPiece(rowCurr, colCurr);
+					if (boarder==0) {
+					numFrontierDiscs++;
+					}
+				}		
+			}
+			}
+		}
+	}
+	return numFrontierDiscs;
+}
+
+float Board::evaluate(){
+	int utility = 0;
+	utility += (mobility(ourColor)-mobility(opponentColor))*0.05;
+	utility += (numCorners(ourColor)-numCorners(opponentColor))*0.20;
+	utility += (numFrontierDiscs(opponentColor)-numFrontierDiscs(ourColor)*0.05);
+
+	return utility;
 }
 
 

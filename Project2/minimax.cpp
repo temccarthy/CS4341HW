@@ -111,10 +111,10 @@ UtilityMovePair* Minimax::maxValue(Board* board, int moveToMake, int ply, int IT
 			}
 
 			// ab pruning - skips rest of the checks bc the child mins aren't bigger than this max
-			if (chosenMove->utility >= beta) {
-				cout << "beta cut!" << endl;
-				return chosenMove;
-			}
+			// if (chosenMove->utility >= beta) {
+			// 	cout << "beta cut!" << endl;
+			// 	return chosenMove;
+			// }
 
 			// resets board for trying next possible setPiece
 //			cout << "new board\n" << boardCopy->boardToStr() << endl;
@@ -169,10 +169,10 @@ UtilityMovePair* Minimax::minValue(Board* board, int moveToMake, int ply, int IT
 			}
 
 			// ab pruning - skips rest of the checks bc the child mins aren't bigger than this max
-			if (chosenMove->utility <= alpha) {
-				cout << "alpha cut!" << endl;
-				return chosenMove;
-			}
+			// if (chosenMove->utility <= alpha) {
+			// 	cout << "alpha cut!" << endl;
+			// 	return chosenMove;
+			// }
 
 			// resets board for trying next possible setPiece
 //			cout << "new board\n" << boardCopy->boardToStr() << endl;
