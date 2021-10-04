@@ -101,31 +101,30 @@ int main() {
 				writeOurMove(&move_file, 34);
 				continue;
 			}
-		} // TODO: if other player goes first, make their move, otherwise skip that part
+		}
 
 		lastMove = readLastMove(&move_file);
 
 		cout << "last move was: " << lastMove << endl;
 
 		// play opponent move on board (only if they didn't pass)
-		if (lastMove.find(teamname) != string::npos) {
-			// remove opponent name
-			opponentMove = lastMove.substr(lastMove.find(" ") + 1, lastMove.size());
-
-			b.setPiece(opponentMove[0], opponentMove[2] - '0', b.opponentColor);
-		}
-		cout << "board after last Move" << endl;
+		opponentMove = lastMove.substr(lastMove.find(" ") + 1, lastMove.size());
+		b.setPiece(opponentMove[0], opponentMove[2] - '0', b.opponentColor);
+		
+		cout << "board after last move:" << endl;
 		cout << b.boardToStr() << endl;
-
-		// detect if we need to pass
-		if (b.mobility(b.ourColor) == 0) {
-			continue;
-		} 
 
 		// detect if gameOver
 		if (b.isGameOver()) {
+			cout << "GAME OVER" << endl;
 			break;
 		}
+
+		// detect if we need to pass
+		if (b.mobility(b.ourColor) == 0) {
+			cout << "PASS" << endl;
+			continue;
+		} 
 
 		//MINIMAX STARTS HERE
 		// reset and start timer
@@ -141,8 +140,13 @@ int main() {
 				cout << "Move decided: " << moveToMake << "\n\n";
 			}
 
+			if (ITL > 60) {
+				break;
+			}
+
 			ITL += 2; // iterate depth limit by 2 ply 
 		}
+		t->stop();
 		//END MINIMAX
 		cout << "total time taken to make move (ms): " << t->elapsedMilliseconds() << endl;
 		cout << "final minimax decided move: " << moveToMake << endl;
@@ -158,9 +162,10 @@ int main() {
 
 		stopTimer = new Timer();
 		stopTimer->start();
-		while (stopTimer->elapsedMilliseconds() < 2000){
+		while (stopTimer->elapsedMilliseconds() < 500){
 			// loop while waiting for go file to disappear
 		}
+		stopTimer->stop();
 
 		// make move again
 	}

@@ -221,8 +221,11 @@ float Board::evaluate(){
 
 string Board::boardToStr() {
 	string output("");
+	string nums = "12345678";
 	for (int i = 7; i > -1; i--) {
+		output += nums[i];
 		for (int j = 0; j < 8; j++) {
+			
 			if (getPiece(i, j) == 0) {
 				output += " ";
 			} else {
@@ -232,6 +235,7 @@ string Board::boardToStr() {
 		}
 		output += "|\n";
 	}
+	cout << " A B C D E F G H\n";
 	return output;
 }
 
