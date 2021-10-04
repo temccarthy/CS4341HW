@@ -16,7 +16,7 @@ using namespace std;
 
 
 
-string teamname = "teamname";
+string teamname = "teamname"; //possible name Takahashi - 2019 world champion
 
 // from https://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-14-17-c
 inline bool goFileExists() {

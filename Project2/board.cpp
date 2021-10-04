@@ -5,7 +5,7 @@ using namespace std;
 #include <vector>
 #include "board.hpp"
 
-// we don't do anything with ourColor?
+//Board contructor
 Board::Board() {
 	memset(board, 0, sizeof(board));
 
@@ -15,6 +15,7 @@ Board::Board() {
 	board[36] = 'b'; //4,4
 }
 
+//Sets our color to the correct one
 void Board::setOurColor(char color) {
 	ourColor = color;
 	if (color == 'o') {
@@ -24,43 +25,53 @@ void Board::setOurColor(char color) {
 	}
 }
 
+//Returns true if a coordinate is out of bounds
 bool outOfBounds(int row, int col) {
 	return (row < 0) || (row > 7) || (col < 0) || (col > 7);
 }
 
+//returns a board piece at a coordinate
 char Board::getPiece(int row, int col) {
 	//get the piece from the coordinates passed in
 	return board[row * 8 + col];
 }
 
+//returns a board piece at a coordinate
 int Board::getPieceNumFromCoords(int row, int col) {
 	return row * 8 + col;
 }
 
+//Function for copying a board
 Board* Board::copyBoard() {
 	Board* newBoard = (Board*) malloc(sizeof(Board));
 	memcpy(newBoard, board, sizeof(Board));
 	return newBoard;
 }
 
-// only for reading from textfile
+//Attempts to Set a piece on the board
+//Returns true and updates the board if the move is valid
+//only for reading from textfile
 bool Board::setPiece(char col, int row, char color) {
 	return setPiece(row-1, col-65, color);
 }
 
+//Attempts to Set a piece on the board
+//Returns true and updates the board if the move is valid
 bool Board::setPiece(int boardPos, char color) {
 	return setPiece(boardPos/8, boardPos%8, color);
 }
 
+//Attempts to Set a piece on the board
+//Returns true and updates the board if the move is valid
 bool Board::setPiece(int row, int col, char color) {
 	vector<int> flipped = flippedPieces(row, col, color);
 
-	if (!outOfBounds(row, col) && getPiece(row, col)==0 && flipped.size()>0) { // if inbounds and space empty	
+	if (!outOfBounds(row, col) && getPiece(row, col)==0 && flipped.size()>0) { // if inbounds and space empty and will flip pieces	
 		for (int pieceNum: flipped){
 			board[pieceNum] = color;
 		}
 		int pieceNum = getPieceNumFromCoords(row, col);
-		board[pieceNum] = color;
+		board[pieceNum] = color; //assigns the board piece to a certain color
 		return true;
 	}else{
 		return false;
