@@ -43,8 +43,6 @@ string readLastMove(fstream* fin) {
 char determineOurColor(fstream* fin) {
 	string firstLine;
 
-	//fin->seekg(0, fin->beg);
-
 	if (fin->peek() == EOF) {
 		return 'b'; // there's a move already so we go second so we're orange
 	} else {
