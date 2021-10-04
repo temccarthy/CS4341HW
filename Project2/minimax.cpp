@@ -27,7 +27,6 @@ int Minimax::minimaxSearch(Board* board, int ITL, Timer* t) {
 
 // tries to get best move for us (maximize utility)
 UtilityMovePair* Minimax::maxValue(Board* board, int moveToMake, int ply, int ITL, float alpha, float beta, Timer* t) {
-	// TODO: iterative deepening - iteratively limit the depth we go to (and call eval) and try again until time
 
 	cout << "ply: " << ply << endl;
 	// cout << t->elapsedMilliseconds() << "; " << timeLimit << endl;

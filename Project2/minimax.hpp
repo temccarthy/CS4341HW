@@ -40,8 +40,6 @@ class Minimax {
 					  6, 7, 15, 23, 31, 39, 47, 55,
 					  63, 62, 61, 60, 59, 58, 57, 56};
 	char ourColor,opponentColor;
-	//int iterativeLimit = 1;
-
 public:
 	int timeLimit;
 	bool timeUp = false;
