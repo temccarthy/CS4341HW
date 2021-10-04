@@ -66,7 +66,7 @@ bool Board::setPiece(int boardPos, char color) {
 bool Board::setPiece(int row, int col, char color) {
 	vector<int> flipped = flippedPieces(row, col, color);
 
-	if (!outOfBounds(row, col) && getPiece(row, col)==0 && flipped.size()>0) { // if inbounds and space empty and will flip pieces	
+	if (!outOfBounds(row, col) && getPiece(row, col)==0 && flipped.size()>0) { // if inbounds and space empty and will flip pieces - determining that a move is legal
 		for (int pieceNum: flipped){
 			board[pieceNum] = color;
 		}
@@ -78,6 +78,7 @@ bool Board::setPiece(int row, int col, char color) {
 	}
 }
 
+//returns a vector of all pieces that will be flipped from a given movw
 vector<int> Board::flippedPieces(int row, int col, char color){
 	int directions[8][2] = { { -1, 0 }, { -1, -1 }, { -1, 1 }, { 1, 0 },
 			{ 1, -1 }, { 1, 1 }, { 0, -1 }, { 0, 1 } };
@@ -94,23 +95,23 @@ vector<int> Board::flippedPieces(int row, int col, char color){
 		bool legalMove = false;
 		vector<int> potentialFlipped;
 		
-		while (!outOfBounds(rowCurr, colCurr)) {
+		while (!outOfBounds(rowCurr, colCurr)) { //while we are in bounds
 			rowCurr += dir[0];
 			colCurr += dir[1];
 		
 			char colorCurr = getPiece(rowCurr, colCurr);
-			if (colorCurr == 0) {
+			if (colorCurr == 0) { //break if the spot is empty
 				break;
-			} else if (colorCurr==color && potentialFlipped.size()>0) {
+			} else if (colorCurr==color && potentialFlipped.size()>0) { //if the move is legal 
 				legalMove = true;
 				break;	
-			} else if(colorCurr != color) {
+			} else if(colorCurr != color) { //if we are comparing two different colors
 				int pieceNum = getPieceNumFromCoords(rowCurr, colCurr);
 				potentialFlipped.push_back(pieceNum);
 			}
 		}
 
-		if (legalMove){
+		if (legalMove){ //if the move is legal, flip the pieces on the board and add them to the return vector
 			flipped.reserve(flipped.size() + distance(potentialFlipped.begin(),potentialFlipped.end()));
 			flipped.insert(flipped.end(),potentialFlipped.begin(),potentialFlipped.end());
 		}
@@ -119,6 +120,7 @@ vector<int> Board::flippedPieces(int row, int col, char color){
 	return flipped;
 }
 
+//returns true if the game is over
 bool Board::isGameOver() {
 	for (int row=0; row<8; row++){
 		for (int col=0; col<8; col++){
@@ -130,6 +132,8 @@ bool Board::isGameOver() {
 	return true;
 }
 
+//Returns the calculated utility of the current board
+//Utility is only used to determine if we have won, lost, or tied the game
 float Board::utility() {
 	int blue, orange = 0;
 	for (int i = 0; i < 64; i++) {
@@ -181,6 +185,7 @@ int Board::numStableDiscs(char color){
 	return heldStablePieces;
 }
 
+//Returns the number of corners held
 int Board::numCorners(char color){
 
 	int corners = 0;
@@ -193,6 +198,8 @@ int Board::numCorners(char color){
 	return corners;
 }
 
+//returns the number of fronteir discs
+//A frontier disc is one that lies next to an open tile
 int Board::numFrontierDiscs(char color){
 	int numFrontierDiscs = 0;
 	int directions[8][2] = { { -1, 0 }, { -1, -1 }, { -1, 1 }, { 1, 0 },
@@ -220,6 +227,8 @@ int Board::numFrontierDiscs(char color){
 	return numFrontierDiscs;
 }
 
+//returns an evaluation of the current board
+//combines all three evaluation heuristics to calculate eval score
 float Board::evaluate(){
 	int utility = 0;
 	utility += (mobility(ourColor)-mobility(opponentColor))*0.05;
@@ -229,7 +238,7 @@ float Board::evaluate(){
 	return utility;
 }
 
-
+//returns the board represented in a string for sanity
 string Board::boardToStr() {
 	string output("");
 	string nums = "12345678";
@@ -250,6 +259,7 @@ string Board::boardToStr() {
 	return output;
 }
 
+//Test cases for piece movement
 void Board::testCases() {
 	Board* boardCopy = copyBoard();
 	bool cases = true;

@@ -16,7 +16,7 @@ using namespace std;
 
 
 
-string teamname = "teamname"; //possible name Takahashi - 2019 world champion
+string teamname = "teamname"; //possible name Takahashi - 2019 world champion 
 
 // from https://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-14-17-c
 inline bool goFileExists() {
@@ -40,6 +40,7 @@ string readLastMove(fstream* fin) {
 	return prevLine;
 }
 
+//returns the corrent color based on move order
 char determineOurColor(fstream* fin) {
 	string firstLine;
 
@@ -50,6 +51,7 @@ char determineOurColor(fstream* fin) {
 	}
 }
 
+//Writes our move to move_file
 void writeOurMove(fstream* fin, int move) {
 	fin->close();
 	fin->open("move_file", ios::in | ios::app);
