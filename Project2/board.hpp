@@ -42,8 +42,9 @@ public:
 	float utility();
 	float evaluate();
 	int mobility(char color);
-	int numberOfStableDiscs(char color);
-	int numberOfCorners(char color);
+	int numStableDiscs(char color);
+	int numCorners(char color);
+	int numFrontierDiscs(char color);
 
 	void testCases();
 	string boardToStr();
