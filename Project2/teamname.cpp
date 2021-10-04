@@ -82,18 +82,18 @@ int main() {
 	bool ourColorDetermined = false;
 
 	Board b = Board();
-	// char ourColor = 'o';
-	// char opponentColor;
-	// if(ourColor == 'b'){
-	// 	opponentColor = 'o';
-	// }else{
-	// 	opponentColor = 'b';
-	// }
+	char ourColor = 'b';
+	char opponentColor;
+	if(ourColor == 'b'){
+		opponentColor = 'o';
+	}else{
+		opponentColor = 'b';
+	}
 	
 	fstream move_file;
 	string lastMove, opponentMove;
 	int moveToMake;
-	Minimax m = Minimax(0.0,0.0,'b');
+	Minimax m = Minimax(0.0,0.0,ourColor);
 
 	while (playing) {
 		// start by looking for name.go file
@@ -104,7 +104,7 @@ int main() {
 
 		cout << "go file found; opening move_file" << endl;
 
-		// open move_file and read last line
+		// open move_file and read last line/
 		move_file.open("move_file", ios::in | ios::app);
 		if (move_file.is_open()) {
 

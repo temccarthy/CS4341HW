@@ -6,7 +6,7 @@
  */
 
 #include "minimax.hpp"
-#include "timercpp.hpp"
+#include "Timer.cpp"
 
 Minimax::Minimax(float a, float b, char color){
 	alpha = a;
@@ -19,24 +19,23 @@ Minimax::Minimax(float a, float b, char color){
 		opponentColor = 'b';
 	}
 	iterativeLimit = 1;
+	
 }
 
 // runs search, returns a move within ~9 seconds
 int Minimax::minimaxSearch(Board* board) {
 	cout << "starting minimax search" << endl;
+	int timeLimit = 9;
 	Timer t = Timer();
-	t.setTimeout([&]() {
-		timeUp = true;
-		cout << "times up!" << endl;
-		t.stop();
-	}, 9000);
-
+	t.start();
 	UtilityMovePair* pair;
-	while(!timeUp){
+
+	 while(t.elapsedSeconds() < timeLimit){
 		pair = maxValue(board, 0, 0);
 		iterativeLimit ++;
-	}
-	
+		cout << t.elapsedSeconds() << endl;
+	 }
+
 	return (*pair).move;
 }
 
