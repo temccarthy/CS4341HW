@@ -124,6 +124,7 @@ int main() {
 
 		// if we made the last move, look for go file again
 		if (lastMove.find(teamname) != string::npos){
+			move_file.close();
 			continue;
 		}
 
