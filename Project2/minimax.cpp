@@ -6,7 +6,6 @@
  */
 
 #include "minimax.hpp"
-#include "Timer.cpp"
 
 
 
@@ -24,49 +23,45 @@ Minimax::Minimax(float a, float b, char color){
 }
 
 // runs search, returns a move within ~9 seconds
-int Minimax::minimaxSearch(Board* board) {
+int Minimax::minimaxSearch(Board* board, int ITL) {
 	cout << "starting minimax search" << endl;
 	int timeLimit = 9;
-	Timer t = Timer();
-	t.start();
-	UtilityMovePair* pair;
-	UtilityMovePair* lastPair = new UtilityMovePair(-100,-100);
-
-	int ITL = 1;
-
-	 while(t.elapsedSeconds() < timeLimit){
-
-		pair = maxValue(board, 0, 0, ITL);
-		if(getITL()){
-			cout << "hitITL is true!" << endl;
-			ITL++;
-			hitITL = false;
-		} 
+	// Timer t = Timer();
+	// t.start();
 	
-		// cout << "movePair- move: " << pair->move << " utility: " << pair->utility << endl;
-		// cout << "lastPair- move: " << lastPair->move << " utility: " << lastPair->utility << endl;
+	UtilityMovePair* lastPair = new UtilityMovePair(-100,-100);
+	UtilityMovePair* pair;
+	cout << "Starting Eval at ITL: " << ITL << endl;
+	pair = maxValue(board, 0, 0, ITL);
+	cout << "Eval completed at ITL: " << ITL << endl;
 
-		// if(!pair->equals(lastPair)){
-		// 	cout << "moves dont match!" << endl;
-		// 	lastPair->move = pair->move;
-		// 	lastPair->utility = pair->utility;
-		// 	cout << "new iterative limit " << iterativeLimit << endl;
-		// 	iterativeLimit++;
-		// }
 
-		cout << "Eval completed at ITL: " << ITL << endl;
-		cout << "Time elapsed: " << t.elapsedSeconds() << endl;
-	 }
+	// while(ITL < 7){
+	// 	cout << endl;
+	// 	cout << "Starting Eval at ITL: " << ITL << endl;
+	// 	pair = maxValue(board, 0, 0, ITL);
+	// 	cout << "Eval completed at ITL: " << ITL << endl;
+	// 	ITL = ITL + 2;
+	
+	// 	// cout << "movePair- move: " << pair->move << " utility: " << pair->utility << endl;
+	// 	// cout << "lastPair- move: " << lastPair->move << " utility: " << lastPair->utility << endl;
+
+	// 	// if(!pair->equals(lastPair)){
+	// 	// 	cout << "moves dont match!" << endl;
+	// 	// 	lastPair->move = pair->move;
+	// 	// 	lastPair->utility = pair->utility;
+	// 	// 	cout << "new iterative limit " << iterativeLimit << endl;
+	// 	// 	iterativeLimit++;
+	// 	// }
+
+		
+	// 	//cout << "Time elapsed: " << t.elapsedSeconds() << endl;
+  //	}
 
 	return (*pair).move;
 }
 
-bool Minimax::getITL(){
-	return hitITL;
-}
-void Minimax::setITL(bool val){
-	hitITL = val;
-}
+
 
 
 // tries to get best move for us (maximize utility)
@@ -80,7 +75,6 @@ UtilityMovePair* Minimax::maxValue(Board* board, int moveToMake, int ply, int IT
 		UtilityMovePair* evaledMove = new UtilityMovePair(moveToMake, board->evaluate());
 		ply = 0;
 		cout << "hit iterative limit " << endl;
-		setITL(true);
 		return evaledMove;
 	}
 	// if game over, return utility value with null move
@@ -118,7 +112,7 @@ UtilityMovePair* Minimax::maxValue(Board* board, int moveToMake, int ply, int IT
 
 			// ab pruning - skips rest of the checks bc the child mins aren't bigger than this max
 			if (chosenMove->utility >= beta) {
-				//cout << "beta cut!" << endl;
+				cout << "beta cut!" << endl;
 				return chosenMove;
 			}
 
@@ -176,7 +170,7 @@ UtilityMovePair* Minimax::minValue(Board* board, int moveToMake, int ply, int IT
 
 			// ab pruning - skips rest of the checks bc the child mins aren't bigger than this max
 			if (chosenMove->utility <= alpha) {
-				//cout << "alpha cut!" << endl;
+				cout << "alpha cut!" << endl;
 				return chosenMove;
 			}
 

@@ -44,12 +44,10 @@ class Minimax {
 
 public:
 	Minimax(float a, float b, char color);
-	int minimaxSearch(Board* board);
+	int minimaxSearch(Board* board, int ITL);
 private:
 	UtilityMovePair* maxValue(Board* board, int moveToMake, int ply, int ITL);
 	UtilityMovePair* minValue(Board* board, int moveToMake, int ply, int ITL);
-	void setITL(bool val);
-	bool getITL();
 };
 
 

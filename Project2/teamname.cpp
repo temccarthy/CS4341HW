@@ -13,6 +13,7 @@ using namespace std;
 #include <sys/stat.h>
 #include "board.hpp"
 #include "minimax.hpp"
+#include <thread>
 
 string teamname = "teamname";
 
@@ -93,7 +94,8 @@ int main() {
 	fstream move_file;
 	string lastMove, opponentMove;
 	int moveToMake;
-	Minimax m = Minimax(0.0,0.0,ourColor);
+	int secondMoveToMake;
+	//Minimax m = Minimax(0.0,0.0,ourColor);
 
 	while (playing) {
 		// start by looking for name.go file
@@ -140,9 +142,20 @@ int main() {
 			cout << "board after opponent" << endl;
 			cout << b.boardToStr() << endl;
 
-			// make a move
-			moveToMake = m.minimaxSearch(&b);
-			cout << "move to make: " << moveToMake << endl;
+			// // make a move
+			// moveToMake = m.minimaxSearch(&b,2);
+
+			// cout << "starting second search" << endl;
+			// Minimax m2 = Minimax(0.0,0.0,ourColor);
+			// secondMoveToMake = m2.minimaxSearch(&b,4);
+			// cout << "move to make: " << moveToMake << endl;
+
+			for(int i = 2; i < 7; i = i+2){
+				Minimax m = Minimax(0.0,0.0,ourColor);
+				moveToMake = m.minimaxSearch(&b,i);
+			}
+
+			//set piece for decided move
 			b.setPiece(moveToMake, b.ourColor);
 			cout << "new board: \n" << b.boardToStr() << endl << endl;
 
