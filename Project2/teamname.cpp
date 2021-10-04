@@ -84,21 +84,12 @@ int main() {
 	bool ourColorDetermined = false;
 
 	Board b = Board();
-	char ourColor = 'b';
-	char opponentColor;
-	if(ourColor == 'b'){
-		opponentColor = 'o';
-	}else{
-		opponentColor = 'b';
-	}
-	
 	fstream move_file;
 	string lastMove, opponentMove;
-	int moveToMake;
-	int secondMoveToMake;
-	Timer* t = new Timer();
-	
-	//Minimax m = Minimax(0.0,0.0,ourColor);
+	int moveToMake, prevMoveToMake;
+	int timeLimit = 9000; // 9000 milliseconds
+	int ITL;
+	Timer* t;
 
 	while (playing) {
 		// start by looking for name.go file
@@ -109,92 +100,69 @@ int main() {
 
 		cout << "go file found; opening move_file" << endl;
 
-		// open move_file and read last line/
+		// open move_file and read last line
 		move_file.open("move_file", ios::in | ios::app);
-		if (move_file.is_open()) {
 
-			if (!ourColorDetermined) {
-				char ourCol = determineOurColor(&move_file);
-				cout << "our color: " << ourCol << endl;
-				b.setOurColor(ourCol);
-				ourColorDetermined = true;
-				if (ourCol == 'b') { // if no moves, we make a move first (doesn't matter which)
-					cout << "our move first: 34" << endl;
-					b.setPiece(34, 'b');
-					cout << "new board:\n" << b.boardToStr() << endl;
-					writeOurMove(&move_file, 34);
-					continue;
-				}
-			} // TODO: if other player goes first, make their move, otherwise skip that part
+		if (!ourColorDetermined) {
+			char ourCol = determineOurColor(&move_file);
+			cout << "our color: " << ourCol << endl;
+			b.setOurColor(ourCol);
+			ourColorDetermined = true;
 
-			lastMove = readLastMove(&move_file);
-
-			cout << "last move was: " << lastMove << endl;
-
-			// if we made the last move, look for go file again
-			if (lastMove.find(teamname) != string::npos){
+			if (ourCol == 'b') { // if no moves, we make a move first (doesn't matter which)
+				cout << "our move first: 34" << endl;
+				b.setPiece(34, 'b');
+				cout << "new board:\n" << b.boardToStr() << endl;
+				writeOurMove(&move_file, 34);
 				continue;
 			}
+		} // TODO: if other player goes first, make their move, otherwise skip that part
 
-			// remove opponent name
-			opponentMove = lastMove.substr(lastMove.find(" ") + 1, lastMove.size());
-			// play opponent move on board
-			// still need to translate from "B 3" to 2, 3
-			// cout << opponentMove[0] << opponentMove[2] << endl;
-			b.setPiece(opponentMove[0], opponentMove[2] - '0', b.opponentColor);
-			cout << "board after opponent" << endl;
-			cout << b.boardToStr() << endl;
+		lastMove = readLastMove(&move_file);
 
-			// // make a move
-			// moveToMake = m.minimaxSearch(&b,2);
+		cout << "last move was: " << lastMove << endl;
 
-			// cout << "starting second search" << endl;
-			// Minimax m2 = Minimax(0.0,0.0,ourColor);
-			// secondMoveToMake = m2.minimaxSearch(&b,4);
-			// cout << "move to make: " << moveToMake << endl;
-			int timeLimit = 9000; // 9000 milliseconds
-			t->start();
-			int ITL = 2;
-			int previousMove;
-			while(t->elapsedMilliseconds() <= timeLimit){
-				Minimax m = Minimax(0.0, 0.0, ourColor, timeLimit);
-				previousMove = m.minimaxSearch(&b, ITL, t);
-				ITL += 2; // iterate by 2 ply 
-				cout << previousMove << ", " << moveToMake << endl;
-				if (!m.timeUp){
-					moveToMake = previousMove;
-				} else {
-					cout << "time up, disregarding last minimax return" << endl;
-				}
-			}
-			cout << "move we make actually " << previousMove << ", " << moveToMake << endl;
-			// for(int i = 2; i < 7; i = i+2){
-			// 	Minimax m = Minimax(0.0,0.0,ourColor);
-			// 	moveToMake = m.minimaxSearch(&b,i);
-			// }
-
-			//set piece for decided move
-			b.setPiece(moveToMake, b.ourColor);
-			cout << "new board: \n" << b.boardToStr() << endl << endl;
-
-			// write move to move_file
-			writeOurMove(&move_file, moveToMake);
+		// if we made the last move, look for go file again
+		if (lastMove.find(teamname) != string::npos){
+			continue;
 		}
+
+		// remove opponent name
+		opponentMove = lastMove.substr(lastMove.find(" ") + 1, lastMove.size());
+
+		// play opponent move on board
+		b.setPiece(opponentMove[0], opponentMove[2] - '0', b.opponentColor);
+		cout << "board after opponent" << endl;
+		cout << b.boardToStr() << endl;
+
+		// make a move
+		t = new Timer();
+		t->start(); // start the timer
+		ITL = 2;
+		
+		while(t->elapsedMilliseconds() <= timeLimit){
+			Minimax m = Minimax(0.0, 0.0, b.ourColor, timeLimit);
+			prevMoveToMake = m.minimaxSearch(&b, ITL, t);
+			ITL += 2; // iterate by 2 ply 
+			cout << prevMoveToMake << ", " << moveToMake << endl;
+			if (!m.timeUp){
+				moveToMake = prevMoveToMake;
+			} else {
+				cout << "time up, disregarding last minimax return" << endl;
+			}
+		}
+		cout << "move we make actually " << prevMoveToMake << ", " << moveToMake << endl;
+
+		//set piece for decided move
+		b.setPiece(moveToMake, b.ourColor);
+		cout << "new board: \n" << b.boardToStr() << endl << endl;
+
+		// write move to move_file
+		writeOurMove(&move_file, moveToMake);
 
 		move_file.close();
 
-		// loop
+		// loop again
 	}
-
-	// start by looking for name.go file
-	// wait otherwise
-	// when team.go exists, read move_file
-	// if other team didn't make a move: close and wait
-	// if other team made a move:
-	// parse new info from move_file and update board
-	// make move (within 10 sec)
-	// append move to move_file
-	// wait again and repeat
-
 	return 0;
 }
