@@ -7,17 +7,7 @@
 
 #include "minimax.hpp"
 
-
-
-Minimax::Minimax(float a, float b, char color, int tl){
-	hitITL = false;
-	ourColor = color;
-	if(ourColor == 'b'){
-		opponentColor = 'o';
-	}else{
-		opponentColor = 'b';
-	}
-	hitITL = false;
+Minimax::Minimax(int tl){
 	timeLimit = tl;
 	timeUp = false;
 }
@@ -25,8 +15,6 @@ Minimax::Minimax(float a, float b, char color, int tl){
 // runs search, returns a move within ~9 seconds
 int Minimax::minimaxSearch(Board* board, int ITL, Timer* t) {
 	cout << "starting minimax search" << endl;
-	// Timer t = Timer();
-	// t.start();
 	
 	UtilityMovePair* lastPair = new UtilityMovePair(-100,-100);
 	UtilityMovePair* pair;
@@ -34,34 +22,8 @@ int Minimax::minimaxSearch(Board* board, int ITL, Timer* t) {
 	pair = maxValue(board, 0, 0, ITL, -100, 100, t);
 	cout << "Eval completed at ITL: " << ITL << endl;
 
-
-	// while(ITL < 7){
-	// 	cout << endl;
-	// 	cout << "Starting Eval at ITL: " << ITL << endl;
-	// 	pair = maxValue(board, 0, 0, ITL);
-	// 	cout << "Eval completed at ITL: " << ITL << endl;
-	// 	ITL = ITL + 2;
-	
-	// 	// cout << "movePair- move: " << pair->move << " utility: " << pair->utility << endl;
-	// 	// cout << "lastPair- move: " << lastPair->move << " utility: " << lastPair->utility << endl;
-
-	// 	// if(!pair->equals(lastPair)){
-	// 	// 	cout << "moves dont match!" << endl;
-	// 	// 	lastPair->move = pair->move;
-	// 	// 	lastPair->utility = pair->utility;
-	// 	// 	cout << "new iterative limit " << iterativeLimit << endl;
-	// 	// 	iterativeLimit++;
-	// 	// }
-
-		
-	// 	//cout << "Time elapsed: " << t.elapsedSeconds() << endl;
-  //	}
-
 	return (*pair).move;
 }
-
-
-
 
 // tries to get best move for us (maximize utility)
 UtilityMovePair* Minimax::maxValue(Board* board, int moveToMake, int ply, int ITL, float alpha, float beta, Timer* t) {
@@ -124,7 +86,7 @@ UtilityMovePair* Minimax::maxValue(Board* board, int moveToMake, int ply, int IT
 			}
 
 			// resets board for trying next possible setPiece
-//			cout << "new board\n" << boardCopy->boardToStr() << endl;
+			// cout << "new board\n" << boardCopy->boardToStr() << endl;
 			boardCopy = board->copyBoard();
 			//cout << " after\n" << boardCopy->boardToStr() << endl;
 
@@ -188,7 +150,7 @@ UtilityMovePair* Minimax::minValue(Board* board, int moveToMake, int ply, int IT
 			}
 
 			// resets board for trying next possible setPiece
-//			cout << "new board\n" << boardCopy->boardToStr() << endl;
+			// cout << "new board\n" << boardCopy->boardToStr() << endl;
 			boardCopy = board->copyBoard();
 			//cout << " after\n" << boardCopy->boardToStr() << endl;
 

@@ -141,7 +141,7 @@ int main() {
 		ITL = 2;
 		
 		while(t->elapsedMilliseconds() <= timeLimit){
-			Minimax m = Minimax(0.0, 0.0, b.ourColor, timeLimit);
+			Minimax m = Minimax(timeLimit);
 			prevMoveToMake = m.minimaxSearch(&b, ITL, t);
 			ITL += 2; // iterate by 2 ply 
 			cout << prevMoveToMake << ", " << moveToMake << endl;
@@ -160,7 +160,7 @@ int main() {
 		// write move to move_file
 		writeOurMove(&move_file, moveToMake);
 
-		move_file.close();
+		move_file.close(); // close the file for other team to read
 
 		// loop again
 	}

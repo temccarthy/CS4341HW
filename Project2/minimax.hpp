@@ -46,7 +46,7 @@ public:
 	int timeLimit;
 	bool timeUp = false;
 
-	Minimax(float a, float b, char color, int timeLimit);
+	Minimax(int timeLimit);
 	int minimaxSearch(Board* board, int ITL, Timer* t);
 private:
 	UtilityMovePair* maxValue(Board* board, int moveToMake, int ply, int ITL, float alpha, float beta, Timer* t);
