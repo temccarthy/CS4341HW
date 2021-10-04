@@ -26,7 +26,6 @@ struct UtilityMovePair {
 };
 
 class Minimax {
-	float alpha, beta;
 	bool hitITL;
 
 	// order to check moves in, instead of just checking 1, 2, 3, 4 etc
@@ -46,8 +45,8 @@ public:
 	Minimax(float a, float b, char color);
 	int minimaxSearch(Board* board, int ITL);
 private:
-	UtilityMovePair* maxValue(Board* board, int moveToMake, int ply, int ITL);
-	UtilityMovePair* minValue(Board* board, int moveToMake, int ply, int ITL);
+	UtilityMovePair* maxValue(Board* board, int moveToMake, int ply, int ITL, float alpha, float beta);
+	UtilityMovePair* minValue(Board* board, int moveToMake, int ply, int ITL, float alpha, float beta);
 };
 
 
