@@ -36,8 +36,6 @@ int Minimax::minimaxSearch(Board* board) {
 		pair = maxValue(board, 0, 0);
 		iterativeLimit ++;
 	}
-
-
 	
 	return (*pair).move;
 }

@@ -93,7 +93,7 @@ int main() {
 	fstream move_file;
 	string lastMove, opponentMove;
 	int moveToMake;
-	Minimax m = Minimax(0.0,0.0);
+	Minimax m = Minimax(0.0,0.0,'b');
 
 	while (playing) {
 		// start by looking for name.go file
