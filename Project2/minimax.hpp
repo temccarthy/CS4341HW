@@ -47,11 +47,9 @@ public:
 	Minimax(int timeLimit);
 	int minimaxSearch(Board* board, int ITL, Timer* t);
 private:
-	UtilityMovePair* maxValue(Board* board, int moveToMake, int ply, int ITL, float alpha, float beta, Timer* t);
-	UtilityMovePair* minValue(Board* board, int moveToMake, int ply, int ITL, float alpha, float beta, Timer* t);
+	UtilityMovePair* maxValue(Board* board, int ply, int ITL, float alpha, float beta, Timer* t);
+	UtilityMovePair* minValue(Board* board, int ply, int ITL, float alpha, float beta, Timer* t);
 };
-
-
 
 #endif /* MINIMAX_HPP_ */
 
