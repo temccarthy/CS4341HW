@@ -12,6 +12,8 @@ reasearchers at the University of Washington, Cornell, and Michael Buro and Kart
     To decide what branches to expand, we implemented alpha-beta pruning with iterative deepening search. We also explore positions from the inner parts of the board to the 
 edges. A timer keeps track of how long the program has been running and terminates iterative-deeping search once 9 seconds has gone by to be sure our turn finishes inside the 10 
 second time limit.
+
+Results:
     For testing, we faced our program agaisnt human players, a random move player, and itself. We simply modified move_file manuallyy to test against humans. Our program won 
 easily for these tests. For a random move player, we had a simple program pick a legal move randomly. Our program easily beat this program as well. Lastly, we had our program 
 face itself. These games were much closer, with the player who goes second being the winner.
@@ -23,7 +25,7 @@ iterative deepening and alpha-beta pruning, we are able to calculate roughly 8 m
 professional human players. Typically, pros will try and maximize mobility and minimize frontiers. This combined with our detection for corners, perhaps the greatest game-
 indicator, explains why our program was able to easily defeat human and random opponents.
 
-Contribution:
+Contributions:
     Gabriel, Shawn, and Tim each contributed equal portions to this project and much of the code was written using peer programming. Gabriel worked mostly on the Board class and 
 evaluation functions as well as the iterative deepening search. Shawn worked mostly on the iterative deepening search, the timer, and communication with the referee. Tim worked 
 primarily on minimax search and teamname.cpp.
