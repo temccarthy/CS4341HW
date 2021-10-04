@@ -22,7 +22,12 @@ which would add weight to the evaluation function for discs that are considered 
 iterative deepening and alpha-beta pruning, we are able to calculate roughly 8 moves into the future. Our evaluation function also notes the most important stategies used by 
 professional human players. Typically, pros will try and maximize mobility and minimize frontiers. This combined with our detection for corners, perhaps the greatest game-
 indicator, explains why our program was able to easily defeat human and random opponents.
-    
+
+Contribution:
+    Gabriel, Shawn, and Tim each contributed equal portions to this project and much of the code was written using peer programming. Gabriel worked mostly on the Board class and 
+evaluation functions as well as the iterative deepening search. Shawn worked mostly on the iterative deepening search, the timer, and communication with the referee. Tim worked 
+primarily on minimax search and teamname.cpp.
+
 Prerequisites:
     * C++  10.3.0 or later
     * g++ 10.3.0 or later
@@ -30,6 +35,7 @@ Prerequisites:
 
 Compiling:
     Follow this tutorial to set up C++ and a compiler for Visual Studio Code: https://code.visualstudio.com/docs/languages/cpp
+    Compile using the method in the example program of the tutorial.
     
 Usage:
     ./teamname.cpp
