@@ -7,7 +7,6 @@ using namespace std;
 
 // we don't do anything with ourColor?
 Board::Board() {
-	ourColor, opponentColor = 0;
 	memset(board, 0, sizeof(board));
 
 	board[27] = 'b'; //3,3
@@ -45,8 +44,8 @@ Board* Board::copyBoard() {
 }
 
 // only for reading from textfile
-bool Board::setPiece(char row, int col, char color) {
-	return setPiece(row-64, col-1, color);
+bool Board::setPiece(char col, int row, char color) {
+	return setPiece(row-1, col-65, color);
 }
 
 bool Board::setPiece(int boardPos, char color) {
@@ -94,7 +93,7 @@ vector<int> Board::flippedPieces(int row, int col, char color){
 			} else if (colorCurr==color && potentialFlipped.size()>0) {
 				legalMove = true;
 				break;	
-			} else {
+			} else if(colorCurr != color) {
 				int pieceNum = getPieceNumFromCoords(rowCurr, colCurr);
 				potentialFlipped.push_back(pieceNum);
 			}
@@ -181,13 +180,14 @@ string Board::boardToStr() {
 }
 
 void Board::testCases() {
+	Board* boardCopy = copyBoard();
 	bool cases = true;
 
-	cases &= !setPiece(1, 1, 'o'); // false
-	cases &= !setPiece(1, 1, 'b'); // false
-	cases &= setPiece(2, 3, 'o'); // true
-	cases &= !setPiece(1, 3, 'b'); // false
-	cases &= setPiece(2, 2, 'b'); // true
+	cases &= !boardCopy->setPiece(1, 1, 'o'); // false
+	cases &= !boardCopy->setPiece(1, 1, 'b'); // false
+	cases &= boardCopy->setPiece(2, 3, 'o'); // true
+	cases &= !boardCopy->setPiece(1, 3, 'b'); // false
+	cases &= boardCopy->setPiece(2, 2, 'b'); // true
 
 	if (cases)
 		cout << "all tests pass!" << endl;
@@ -195,6 +195,6 @@ void Board::testCases() {
 		cout << "tests fail" << endl;
 
 	cout << endl << "board after tests" << endl;
-	cout << boardToStr() << endl;
+	cout << boardCopy->boardToStr() << endl;
 	cout << "test" << endl;
 }
