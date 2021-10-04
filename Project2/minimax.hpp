@@ -39,8 +39,8 @@ public:
 	Minimax(float a, float b);
 	int minimaxSearch(Board* board);
 private:
-	UtilityMovePair* maxValue(Board* board);
-	UtilityMovePair* minValue(Board* board);
+	UtilityMovePair* maxValue(Board* board, int iterLimit, int currPly);
+	UtilityMovePair* minValue(Board* board, int iterLimit, int currPly);
 };
 
 
