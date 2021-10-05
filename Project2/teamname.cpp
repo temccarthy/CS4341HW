@@ -160,7 +160,7 @@ int main() {
 
 		stopTimer = new Timer();
 		stopTimer->start();
-		while (stopTimer->elapsedMilliseconds() < 3000){ // TODO:
+		while (stopTimer->elapsedMilliseconds() < 500){ // wait .5 seconds before checking for move_file again
 			// loop while waiting for go file to disappear
 		}
 		stopTimer->stop();
