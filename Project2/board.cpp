@@ -107,6 +107,7 @@ vector<int> Board::flippedPieces(int row, int col, char color){
 				break;	
 			} else if(colorCurr != color) { //if we are comparing two different colors
 				int pieceNum = getPieceNumFromCoords(rowCurr, colCurr);
+				potentialFlipped.reserve(potentialFlipped.size() + 1);
 				potentialFlipped.push_back(pieceNum);
 			}
 		}
