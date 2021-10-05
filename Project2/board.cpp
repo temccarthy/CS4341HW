@@ -234,7 +234,7 @@ float Board::evaluate(){
 	int utility = 0;
 	utility += (mobility(ourColor)-mobility(opponentColor))*0.05;
 	utility += (numCorners(ourColor)-numCorners(opponentColor))*0.20;
-	utility += (numFrontierDiscs(opponentColor)-numFrontierDiscs(ourColor)*0.05);
+	utility += (numFrontierDiscs(opponentColor)-numFrontierDiscs(ourColor))*0.05;
 
 	return utility;
 }
