@@ -72,7 +72,7 @@ int main() {
 	fstream move_file;
 	string lastMove, opponentMove;
 	int moveToMake, prevMoveToMake;
-	int timeLimit = 9500; // 9000 milliseconds
+	int timeLimit = 9500; // 9500 milliseconds
 	int ITL;
 	Timer* t, *stopTimer;
 
@@ -162,7 +162,7 @@ int main() {
 
 		stopTimer = new Timer();
 		stopTimer->start();
-		while (stopTimer->elapsedMilliseconds() < 500){
+		while (stopTimer->elapsedMilliseconds() < 3000){ // TODO:
 			// loop while waiting for go file to disappear
 		}
 		stopTimer->stop();

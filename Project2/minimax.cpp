@@ -70,14 +70,19 @@ UtilityMovePair* Minimax::maxValue(Board* board, int ply, int ITL, float alpha, 
 			// ab pruning
 			if (chosenMove->utility >= beta) {
 				// cout << "beta cut!" << endl;
+				free(board);
+				free(boardCopy);
 				return chosenMove;
 			}
 
 			// resets board for trying next possible setPiece
+			free(boardCopy);
 			boardCopy = board->copyBoard();
 		}
 	}
 
+	free(boardCopy);
+	free(board);
 	// return the move with the best utility
 	return chosenMove;
 }
@@ -131,14 +136,19 @@ UtilityMovePair* Minimax::minValue(Board* board, int ply, int ITL, float alpha, 
 			// ab pruning
 			if (chosenMove->utility <= alpha) {
 				// cout << "alpha cut!" << endl;
+				free(board);
+				free(boardCopy);
 				return chosenMove;
 			}
 
 			// resets board for trying next possible setPiece
+			free(boardCopy);
 			boardCopy = board->copyBoard();
 		}
 	}
 
+	free(boardCopy);
+	free(board);
 	// return the move with the worst utility
 	return chosenMove;
 }
