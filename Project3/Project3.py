@@ -1,9 +1,16 @@
 import numpy.random
 from keras.models import Sequential
 from keras.layers import Dense, Activation
+from pandas import DataFrame
+import seaborn as sn
+from sklearn.metrics import confusion_matrix
+import matplotlib.pyplot as plt
+
 import numpy as np
 
+
 # pre-process data
+
 images = np.load('data/images.npy')
 labels = np.load('data/labels.npy')
 
@@ -44,6 +51,8 @@ model.add(Activation('relu'))
 #
 #
 # Fill in Model Here
+# model.add(Dense(10, kernel_initializer='he_normal')) # last layer
+# model.add(Activation('relu'))
 #
 #
 model.add(Dense(10, kernel_initializer='he_normal')) # last layer
@@ -66,3 +75,13 @@ history = model.fit(x_train, y_train,
 
 print(history.history)
 y_pred = model.predict(x_test)
+
+confm = confusion_matrix(np.argmax(y_test, axis=1), np.argmax(y_pred, axis=1))
+df = DataFrame(confm, index=[i for i in range(10)], columns=[i for i in range(10)])
+fig, ax = plt.subplots(figsize=(8,8))
+
+ax = sn.heatmap(df, cmap='Oranges', annot=True, linewidths=.5, fmt='g', ax=ax)
+plt.title("Confusion Matrix")
+plt.xlabel("Predicted")
+plt.ylabel("True")
+plt.show()
