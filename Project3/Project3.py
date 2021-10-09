@@ -12,7 +12,7 @@ import numpy as np
 # pre-process data
 
 images = np.load('data/images.npy')
-labels = np.load('data/labels.npy')
+# labels = np.load('data/labels.npy')
 
 num_samples = 6500
 num_classes = 10
@@ -45,14 +45,18 @@ y_test = numpy.array(y_test)
 
 # Model Template
 model = Sequential() # declare model
-model.add(Dense(10, input_shape=(28*28, ), kernel_initializer='he_normal')) # first layer
+model.add(Dense(5, input_shape=(28*28, ), kernel_initializer='he_normal')) # first layer
 model.add(Activation('relu'))
 #
 #
 #
 # Fill in Model Here
-# model.add(Dense(10, kernel_initializer='he_normal')) # last layer
-# model.add(Activation('relu'))
+model.add(Dense(3))
+model.add(Activation('selu'))
+model.add(Dense(10))
+model.add(Activation('selu'))
+model.add(Dense(10))
+model.add(Activation('relu'))
 #
 #
 model.add(Dense(10, kernel_initializer='he_normal')) # last layer
@@ -73,9 +77,20 @@ history = model.fit(x_train, y_train,
 
 # Report Results
 
-print(history.history)
+
 y_pred = model.predict(x_test)
 
+fig, axs = plt.subplots(2, 2)
+for i, h in enumerate(history.history.items()):
+    a = axs[i//2, i%2]
+    a.plot(h[1])
+    a.set_title(h[0])
+    a.set_xlabel("epoch")
+
+fig.tight_layout()
+plt.show()
+
+# plot confusion matrix
 confm = confusion_matrix(np.argmax(y_test, axis=1), np.argmax(y_pred, axis=1))
 df = DataFrame(confm, index=[i for i in range(10)], columns=[i for i in range(10)])
 fig, ax = plt.subplots(figsize=(8,8))
