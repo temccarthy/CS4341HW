@@ -7,8 +7,6 @@ import numpy as np
 images = np.load('data/images.npy')
 labels = np.load('data/labels.npy')
 
-print(images[0].shape)
-
 num_samples = 6500
 num_classes = 10
 samples_per_class = int(num_samples/num_classes)
@@ -28,6 +26,14 @@ for i in range(num_classes):
     y_train.extend([one_hot_v, ] * 390)
     y_val.extend([one_hot_v, ] * 98)
     y_test.extend([one_hot_v, ] * 162)
+
+#
+x_train = numpy.array(x_train)
+y_train = numpy.array(y_train)
+x_val = numpy.array(x_val)
+y_val = numpy.array(y_val)
+x_test = numpy.array(x_test)
+y_test = numpy.array(y_test)
 
 
 # Model Template
@@ -50,8 +56,7 @@ model.compile(optimizer='sgd',
               metrics=['accuracy'])
 
 # Train Model
-print(type(x_train[0]), type(y_train[0]))
-history = model.fit(x_train, y_train, 
+history = model.fit(x_train, y_train,
                     validation_data=(x_val, y_val),
                     epochs=10, 
                     batch_size=512)
@@ -60,4 +65,4 @@ history = model.fit(x_train, y_train,
 # Report Results
 
 print(history.history)
-model.predict()
+y_pred = model.predict(x_test)
