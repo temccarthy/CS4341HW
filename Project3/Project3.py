@@ -1,18 +1,13 @@
-import numpy.random
 from keras.models import Sequential
 from keras.layers import Dense, Activation
 from pandas import DataFrame
 import seaborn as sn
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
-
 import numpy as np
 
-
 # pre-process data
-
 images = np.load('data/images.npy')
-# labels = np.load('data/labels.npy')
 
 num_samples = 6500
 num_classes = 10
@@ -21,9 +16,10 @@ samples_per_class = int(num_samples/num_classes)
 x_train, x_val, x_test = [], [], []
 y_train, y_val, y_test = [], [], []
 
+# stratify samples into training, validation, and test
 for i in range(num_classes):
     img_class = images[samples_per_class*i:(samples_per_class*(i+1))]
-    numpy.random.shuffle(img_class)
+    np.random.shuffle(img_class)
     x_train.extend(img_class[:390])  # first 60% is training
     x_val.extend(img_class[390:488])  # next 15% is validation
     x_test.extend(img_class[488:])  # last 25% is test
@@ -34,13 +30,13 @@ for i in range(num_classes):
     y_val.extend([one_hot_v, ] * 98)
     y_test.extend([one_hot_v, ] * 162)
 
-#
-x_train = numpy.array(x_train)
-y_train = numpy.array(y_train)
-x_val = numpy.array(x_val)
-y_val = numpy.array(y_val)
-x_test = numpy.array(x_test)
-y_test = numpy.array(y_test)
+# set lists as numpy arrays
+x_train = np.array(x_train)
+y_train = np.array(y_train)
+x_val = np.array(x_val)
+y_val = np.array(y_val)
+x_test = np.array(x_test)
+y_test = np.array(y_test)
 
 
 # Model Template
@@ -74,18 +70,17 @@ history = model.fit(x_train, y_train,
                     epochs=10, 
                     batch_size=512)
 
-
-# Report Results
-
-
 y_pred = model.predict(x_test)
 
-fig, axs = plt.subplots(2, 2)
+# Report Results
+# plot training performance
+fig, axs = plt.subplots(1,2)
 for i, h in enumerate(history.history.items()):
-    a = axs[i//2, i%2]
+    a = axs[i]
     a.plot(h[1])
     a.set_title(h[0])
     a.set_xlabel("epoch")
+    if i == 1: break
 
 fig.tight_layout()
 plt.show()
@@ -100,3 +95,8 @@ plt.title("Confusion Matrix")
 plt.xlabel("Predicted")
 plt.ylabel("True")
 plt.show()
+
+# TODO: 3 visualizations of misclassified images
+# TODO: precision and recall calculations
+# TODO: write report
+# TODO: save best model
