@@ -227,7 +227,7 @@ float Board::numFrontierDiscs(char color){
 				int colCurr = j;		
 				rowCurr += dir[0];
 				colCurr += dir[1];
-				if (!outOfBounds(rowCurr, colCurr)){
+				if (!outOfBounds(rowCurr + dir[0], colCurr + dir[1])){
 					char boarder = getPiece(rowCurr, colCurr);
 					if (boarder==0) {
 					numFrontierDiscs++;
@@ -244,8 +244,8 @@ float Board::numFrontierDiscs(char color){
 //combines all three evaluation heuristics to calculate eval score
 float Board::evaluate(){
 	float utility = 0;
-	utility += (mobility(ourColor)-mobility(opponentColor))*0.05;
-	utility += (numCorners(ourColor)-numCorners(opponentColor))*10;
+	utility += (mobility(ourColor)-mobility(opponentColor))*0.5;
+	utility += (numCorners(ourColor)-numCorners(opponentColor))*20;
 	utility += (numFrontierDiscs(opponentColor)-numFrontierDiscs(ourColor))*0.05;
 	utility += (xAndCSpaces(opponentColor)-xAndCSpaces(ourColor))*5;
 
