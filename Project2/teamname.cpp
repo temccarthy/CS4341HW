@@ -113,6 +113,7 @@ int main() {
 			cout << "GAME OVER" << endl;
 			break;
 		}
+		
 
 		// detect if we need to pass
 		if (b.mobility(b.ourColor) == 0) {
@@ -127,7 +128,29 @@ int main() {
 		ITL = 2;
 		while(t->elapsedMilliseconds() < timeLimit){
 			Minimax m = Minimax(timeLimit);
-			prevMoveToMake = m.minimaxSearch(&b, ITL, t);
+			
+			
+			int remainingMoves = 0;
+			for (int row=0; row<8; row++){
+				for (int col=0; col<8; col++){
+					if (b.getPiece(row, col)==0){
+						remainingMoves++;
+					}
+				}
+			}
+			if (remainingMoves<=ITL){
+				for (int row=0; row<8; row++){
+					for (int col=0; col<8; col++){
+						if (b.flippedPieces(row, col, b.ourColor).size() > 0){
+							moveToMake = b.getPieceNumFromCoords(row, col);
+						}
+					}
+				}				
+				continue;
+			}else{
+				prevMoveToMake = m.minimaxSearch(&b, ITL, t);
+			}
+
 			if (!m.timeUp){
 				moveToMake = prevMoveToMake;
 				cout << "Eval completed at iterative limit: " << ITL << endl;
@@ -144,6 +167,7 @@ int main() {
 		//END MINIMAX
 		cout << "total time taken to make move (ms): " << t->elapsedMilliseconds() << endl;
 		cout << "final minimax decided move: " << moveToMake << endl;
+		cout << "Board evaluation: " << b.evaluate() << endl;
 
 		//set piece for decided move
 		b.setPiece(moveToMake, b.ourColor);
