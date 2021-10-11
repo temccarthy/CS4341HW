@@ -93,14 +93,6 @@ int main() {
 			cout << "setting our color: " << ourCol << endl;
 			b.setOurColor(ourCol);
 			ourColorDetermined = true;
-
-			if (ourCol == 'b') { // if no moves, we make a move first (doesn't matter which)
-				cout << "our move first: 34" << endl;
-				b.setPiece(34, 'b');
-				cout << "new board:\n" << b.boardToStr() << endl;
-				writeOurMove(&move_file, 34);
-				continue;
-			}
 		}
 
 		lastMove = readLastMove(&move_file);
