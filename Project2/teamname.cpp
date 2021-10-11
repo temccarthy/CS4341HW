@@ -162,10 +162,6 @@ int main() {
 		cout << "final minimax decided move: " << moveToMake << endl;
 		cout << "Board evaluation: " << b.evaluate() << endl;
 
-		//set piece for decided move
-		b.setPiece(moveToMake, b.ourColor);
-		cout << "board after our move: \n" << b.boardToStr() << endl << endl;
-
 		// detect if we need to pass
 		if (b.mobility(b.ourColor) == 0) {
 			cout << "PASS" << endl;
@@ -175,6 +171,9 @@ int main() {
 			cout << "writing: " << moveString << endl;
 			move_file.write(moveString.data(), moveString.size());
 		}else{
+			//set piece for decided move
+			b.setPiece(moveToMake, b.ourColor);
+			cout << "board after our move: \n" << b.boardToStr() << endl << endl;
 			// write move to move_file
 			writeOurMove(&move_file, moveToMake);
 		}
