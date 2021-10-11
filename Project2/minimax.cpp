@@ -19,6 +19,16 @@ int Minimax::minimaxSearch(Board* board, int ITL, Timer* t) {
 	UtilityMovePair* pair;
 	pair = maxValue(board, 0, ITL, -100, 100, t); // start minimax recursion
 
+	if (pair->move == -1){
+		for (int row=0; row<8; row++){
+					for (int col=0; col<8; col++){
+						if (board->flippedPieces(row, col, board->ourColor).size() > 0){
+							return board->getPieceNumFromCoords(row, col);
+						}
+					}
+				}
+	}
+
 	return pair->move;
 }
 
@@ -47,9 +57,41 @@ UtilityMovePair* Minimax::maxValue(Board* board, int ply, int ITL, float alpha, 
 		return ret;
 	}
 
-	UtilityMovePair* chosenMove = new UtilityMovePair(0, -10000.0); // minimax value at this stage of the tree (a, v in the pseudocode)
+	UtilityMovePair* chosenMove = new UtilityMovePair(-1, -10000.0); // minimax value at this stage of the tree (a, v in the pseudocode)
 	UtilityMovePair* currMove; // move to be returned (a2, v2 in the pseudocode)
 	Board* boardCopy = new Board(*board);
+
+	float legalMoves = 0;
+	for (int row=0; row<8; row++){
+		for (int col=0; col<8; col++){
+			if (board->flippedPieces(row, col, board->ourColor).size() > 0){
+				legalMoves++;
+			}
+		}
+	}	
+	if (legalMoves == 0){
+		// try to find opponent's best move (which minimizes utility)
+			currMove = minValue(boardCopy, ply+1, ITL, alpha, beta, t);
+			currMove->move = -1; // set the move value (was originally returned as 0)
+
+			// if the new move has a better value, the chosen move becomes the new move
+			if (currMove->utility > chosenMove->utility) {
+				chosenMove = currMove;
+				alpha = max(alpha, chosenMove->utility); // set alpha
+			}
+
+			// ab pruning
+			if (chosenMove->utility >= beta) {
+				// cout << "beta cut!" << endl;
+				free(board);
+				free(boardCopy);
+				return chosenMove;
+			}
+
+			// resets board for trying next possible setPiece
+			free(boardCopy);
+			boardCopy = board->copyBoard();
+	}
 
 	// iterate through all moves by seeing if setPiece is true
 	for (int i : moveOrder){
@@ -112,9 +154,41 @@ UtilityMovePair* Minimax::minValue(Board* board, int ply, int ITL, float alpha, 
 		return ret;
 	}
 
-	UtilityMovePair* chosenMove = new UtilityMovePair(0, 10000.0); // minimax value at this stage of the tree (a, v in the pseudocode)
+	UtilityMovePair* chosenMove = new UtilityMovePair(-1, 10000.0); // minimax value at this stage of the tree (a, v in the pseudocode)
 	UtilityMovePair* currMove; // move to be returned (a2, v2 in the pseudocode)
 	Board* boardCopy = new Board(*board);
+
+	float legalMoves = 0;
+	for (int row=0; row<8; row++){
+		for (int col=0; col<8; col++){
+			if (board->flippedPieces(row, col, board->opponentColor).size() > 0){
+				legalMoves++;
+			}
+		}
+	}	
+	if (legalMoves == 0){
+		// try to find opponent's best move (which minimizes utility)
+			currMove = maxValue(boardCopy, (ply+1), ITL, alpha, beta, t);
+			currMove->move = -1; // set the move value (was originally returned as 0)
+
+			// if the new move has a lower value, the chosen move becomes the new move
+			if (currMove->utility < chosenMove->utility) {
+				chosenMove = currMove;
+				beta = min(beta, chosenMove->utility); // set beta
+			}
+
+			// ab pruning
+			if (chosenMove->utility <= alpha) {
+				// cout << "alpha cut!" << endl;
+				free(board);
+				free(boardCopy);
+				return chosenMove;
+			}
+
+			// resets board for trying next possible setPiece
+			free(boardCopy);
+			boardCopy = board->copyBoard();
+	}
 
 	// iterate through all moves by seeing if setPiece is true
 	for (int i : moveOrder){

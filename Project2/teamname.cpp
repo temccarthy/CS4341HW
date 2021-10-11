@@ -113,13 +113,6 @@ int main() {
 			cout << "GAME OVER" << endl;
 			break;
 		}
-		
-
-		// detect if we need to pass
-		if (b.mobility(b.ourColor) == 0) {
-			cout << "PASS" << endl;
-			continue;
-		} 
 
 		//MINIMAX STARTS HERE
 		// reset and start timer
@@ -173,8 +166,18 @@ int main() {
 		b.setPiece(moveToMake, b.ourColor);
 		cout << "board after our move: \n" << b.boardToStr() << endl << endl;
 
-		// write move to move_file
-		writeOurMove(&move_file, moveToMake);
+		// detect if we need to pass
+		if (b.mobility(b.ourColor) == 0) {
+			cout << "PASS" << endl;
+			move_file.close();
+			move_file.open("move_file", ios::in | ios::app);
+			string moveString = teamname + " " + 'P' + " " + '1' + '\n';
+			cout << "writing: " << moveString << endl;
+			move_file.write(moveString.data(), moveString.size());
+		}else{
+			// write move to move_file
+			writeOurMove(&move_file, moveToMake);
+		}
 
 		move_file.close(); // close the file for other team to read
 
