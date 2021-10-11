@@ -95,7 +95,7 @@ vector<int> Board::flippedPieces(int row, int col, char color){
 		bool legalMove = false;
 		vector<int> potentialFlipped;
 		
-		while (!outOfBounds(rowCurr, colCurr)) { //while we are in bounds
+		while (!outOfBounds(rowCurr + dir[0], colCurr + dir[1])) { //while we are in bounds
 			rowCurr += dir[0];
 			colCurr += dir[1];
 		
@@ -158,8 +158,8 @@ float Board::utility() {
 
 
 //calculates the total number of legal moves across the board for a color - flipping fewer pieces is better
-int Board::mobility(char color){
-	int legalMoves = 0;
+float Board::mobility(char color){
+	float legalMoves = 0;
 
 	for (int row=0; row<8; row++){
 		for (int col=0; col<8; col++){
@@ -175,10 +175,10 @@ int Board::mobility(char color){
 //calculates the number of stable pieces
 //currently only counts the number of held corner pieces
 //TODO: calculate all stable pieces
-int Board::numStableDiscs(char color){
+float Board::numStableDiscs(char color){
 	//corner piece numner 0, 7, 56, 63
 
-	int heldStablePieces = 0;
+	float heldStablePieces = 0;
 
 	if(getPiece(0,0) == ourColor) heldStablePieces++;
 	if(getPiece(0,0) == ourColor) heldStablePieces++;
@@ -189,9 +189,9 @@ int Board::numStableDiscs(char color){
 }
 
 //Returns the number of corners held
-int Board::numCorners(char color){
+float Board::numCorners(char color){
 
-	int corners = 0;
+	float corners = 0;
 
 	if(getPiece(0,0) == color) corners++;
 	if(getPiece(0,7) == color) corners++;
@@ -201,10 +201,20 @@ int Board::numCorners(char color){
 	return corners;
 }
 
+float Board::xAndCSpaces(char color){
+	float xAndCSpaces = 0;
+	if((getPiece(0,0) == 0) && ((getPiece(0,1) == color) || (getPiece(1,0) == color) || (getPiece(1,1) == color))) xAndCSpaces++;
+	if((getPiece(0,7) == 0) && ((getPiece(0,6) == color) || (getPiece(1,7) == color) || (getPiece(1,6) == color))) xAndCSpaces++;
+	if((getPiece(7,0) == 0) && ((getPiece(6,0) == color) || (getPiece(7,1) == color) || (getPiece(6,1) == color))) xAndCSpaces++;
+	if((getPiece(7,7) == 0) && ((getPiece(7,6) == color) || (getPiece(6,7) == color) || (getPiece(6,6) == color))) xAndCSpaces++;
+	
+	return xAndCSpaces;
+}
+
 //returns the number of fronteir discs
 //A frontier disc is one that lies next to an open tile
-int Board::numFrontierDiscs(char color){
-	int numFrontierDiscs = 0;
+float Board::numFrontierDiscs(char color){
+	float numFrontierDiscs = 0;
 	int directions[8][2] = { { -1, 0 }, { -1, -1 }, { -1, 1 }, { 1, 0 },
 			{ 1, -1 }, { 1, 1 }, { 0, -1 }, { 0, 1 } };
 
@@ -233,10 +243,11 @@ int Board::numFrontierDiscs(char color){
 //returns an evaluation of the current board
 //combines all three evaluation heuristics to calculate eval score
 float Board::evaluate(){
-	int utility = 0;
+	float utility = 0;
 	utility += (mobility(ourColor)-mobility(opponentColor))*0.05;
-	utility += (numCorners(ourColor)-numCorners(opponentColor))*0.20;
+	utility += (numCorners(ourColor)-numCorners(opponentColor))*10;
 	utility += (numFrontierDiscs(opponentColor)-numFrontierDiscs(ourColor))*0.05;
+	utility += (xAndCSpaces(opponentColor)-xAndCSpaces(ourColor))*5;
 
 	return utility;
 }

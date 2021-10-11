@@ -167,6 +167,7 @@ int main() {
 		//END MINIMAX
 		cout << "total time taken to make move (ms): " << t->elapsedMilliseconds() << endl;
 		cout << "final minimax decided move: " << moveToMake << endl;
+		cout << "Board evaluation: " << b.evaluate() << endl;
 
 		//set piece for decided move
 		b.setPiece(moveToMake, b.ourColor);

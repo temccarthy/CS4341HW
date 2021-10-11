@@ -41,10 +41,11 @@ public:
 	bool isGameOver();
 	float utility();
 	float evaluate();
-	int mobility(char color);
-	int numStableDiscs(char color);
-	int numCorners(char color);
-	int numFrontierDiscs(char color);
+	float mobility(char color);
+	float numStableDiscs(char color);
+	float numCorners(char color);
+	float xAndCSpaces(char color);
+	float numFrontierDiscs(char color);
 
 	void testCases();
 	string boardToStr();
