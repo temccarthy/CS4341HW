@@ -100,8 +100,10 @@ int main() {
 		cout << "last move was: " << lastMove << endl;
 
 		// play opponent move on board (only if they didn't pass)
-		opponentMove = lastMove.substr(lastMove.find(" ") + 1, lastMove.size());
-		b.setPiece(opponentMove[0], opponentMove[2] - '0', b.opponentColor);
+		if (lastMove != ""){
+			opponentMove = lastMove.substr(lastMove.find(" ") + 1, lastMove.size());
+			b.setPiece(opponentMove[0], opponentMove[2] - '0', b.opponentColor);
+		}
 		
 		cout << "board after last move:" << endl;
 		cout << b.boardToStr() << endl;
