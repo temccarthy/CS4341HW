@@ -1,7 +1,12 @@
+import random
+import os
+from PIL import Image
 from keras.initializers.initializers_v1 import RandomNormal
 from keras.models import Sequential
 from keras.layers import Dense, Activation
 from keras.utils import np_utils
+from pandas import DataFrame
+from sklearn.metrics import confusion_matrix
 from sklearn.utils import shuffle
 import matplotlib.pyplot as plt
 import numpy as np
@@ -40,7 +45,7 @@ model.compile(optimizer='sgd',
 history = model.fit(x_train, y_train,
                     validation_data=(x_val, y_val),
                     epochs=100,
-                    batch_size=512)
+                    batch_size=100)
 
 # Save model
 # model.save("./")
@@ -60,11 +65,31 @@ for i, h in enumerate(history.history.items()):
 fig.tight_layout()
 plt.show()
 
+test_class, pred_class = np.argmax(y_test, axis=1), np.argmax(y_pred, axis=1)
+cols = [i for i in range(10)]
 # Plot confusion matrix
-plot_confusion_matrix_from_data(np.argmax(y_test, axis=1), np.argmax(y_pred, axis=1),
-                                columns=[i for i in range(10)])
+plot_confusion_matrix_from_data(test_class, pred_class,
+                                columns=cols)
+
+# visualize misclassified images
+confm = confusion_matrix(test_class, pred_class)
+df_cm = DataFrame(confm, index=cols, columns=cols)
+misclass = []
+while True:
+    index = random.randrange(0, len(test_class))
+    if test_class[index] != pred_class[index]:
+        misclass.append((index, pred_class[index], test_class[index]))
+
+    if len(misclass) == 3:
+        break
+
+for file in os.listdir('./'):
+    if file.endswith('.jpg'): os.remove(file)
+
+for i in range(3):
+    im = Image.fromarray(x_test[misclass[i][0]].reshape((28, 28)).astype('uint8'))
+    im.save("{0} misclassed as {1}.jpg".format(misclass[i][1], misclass[i][2]))
 
 # TODO: 3 visualizations of misclassified images
-# TODO: precision and recall calculations
 # TODO: write report
 # TODO: save best model

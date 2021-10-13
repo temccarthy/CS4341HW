@@ -20,6 +20,7 @@ main
 teamname.go
 
 *.json
+*.jpg
 
 # Distribution / packaging
 .Python
