@@ -23,15 +23,34 @@ labels = np_utils.to_categorical(labels, num_classes=10)  # make labels a one ho
 x_train, x_val, x_test = images[:3900], images[3900:4875], images[4875:]
 y_train, y_val, y_test = labels[:3900], labels[3900:4875], labels[4875:]
 
+neurons = 128
+activationF = 'relu'
+inputNeurons = 256
+EPOCH = 200
+BATCH = 200
+
 # Make the model
 model = Sequential()
-model.add(Dense(5, input_shape=(28*28, ), kernel_initializer='he_normal'))
-model.add(Activation('relu'))
+model.add(Dense(inputNeurons, input_shape=(28*28, ), kernel_initializer='he_normal'))
+model.add(Activation(activationF))
 
-model.add(Dense(32, kernel_initializer=RandomNormal(0.0, 0.10, 1), activation='relu'))
-model.add(Dense(32, kernel_initializer=RandomNormal(0.0, 0.10, 1), activation='relu'))
-model.add(Dense(32, kernel_initializer=RandomNormal(0.0, 0.10, 1), activation='relu'))
-model.add(Dense(32, kernel_initializer=RandomNormal(0.0, 0.10, 1), activation='relu'))
+model.add(Dense(neurons, kernel_initializer=RandomNormal(0.0, 0.10, 1), activation=activationF))
+model.add(Dense(neurons, kernel_initializer=RandomNormal(0.0, 0.10, 1), activation=activationF))
+model.add(Dense(neurons, kernel_initializer=RandomNormal(0.0, 0.10, 1), activation=activationF))
+model.add(Dense(neurons, kernel_initializer=RandomNormal(0.0, 0.10, 1), activation=activationF))
+model.add(Dense(neurons, kernel_initializer=RandomNormal(0.0, 0.10, 1), activation=activationF))
+model.add(Dense(neurons, kernel_initializer=RandomNormal(0.0, 0.10, 1), activation=activationF))
+model.add(Dense(neurons, kernel_initializer=RandomNormal(0.0, 0.10, 1), activation=activationF))
+model.add(Dense(neurons, kernel_initializer=RandomNormal(0.0, 0.10, 1), activation=activationF))
+model.add(Dense(neurons, kernel_initializer=RandomNormal(0.0, 0.10, 1), activation=activationF))
+model.add(Dense(neurons, kernel_initializer=RandomNormal(0.0, 0.10, 1), activation=activationF))
+model.add(Dense(neurons, kernel_initializer=RandomNormal(0.0, 0.10, 1), activation=activationF))
+model.add(Dense(neurons, kernel_initializer=RandomNormal(0.0, 0.10, 1), activation=activationF))
+model.add(Dense(neurons, kernel_initializer=RandomNormal(0.0, 0.10, 1), activation=activationF))
+model.add(Dense(neurons, kernel_initializer=RandomNormal(0.0, 0.10, 1), activation=activationF))
+model.add(Dense(neurons, kernel_initializer=RandomNormal(0.0, 0.10, 1), activation=activationF))
+model.add(Dense(neurons, kernel_initializer=RandomNormal(0.0, 0.10, 1), activation=activationF))
+
 
 model.add(Dense(10, kernel_initializer='he_normal'))  # last layer
 model.add(Activation('softmax'))
@@ -44,11 +63,11 @@ model.compile(optimizer='sgd',
 # Train Model
 history = model.fit(x_train, y_train,
                     validation_data=(x_val, y_val),
-                    epochs=100,
-                    batch_size=100)
+                    epochs=EPOCH,
+                    batch_size=BATCH)
 
 # Save model
-# model.save("./")
+model.save("./")
 
 # Report Results
 y_pred = model.predict(x_test)
@@ -88,7 +107,7 @@ for file in os.listdir('./'):
 
 for i in range(3):
     im = Image.fromarray(x_test[misclass[i][0]].reshape((28, 28)).astype('uint8'))
-    im.save("{0} misclassed as {1}.jpg".format(misclass[i][1], misclass[i][2]))
+    im.save("{0} misclassed as {1}.jpg".format(misclass[i][2], misclass[i][1]))
 
 # TODO: write report
 # TODO: save best model
