@@ -90,6 +90,5 @@ for i in range(3):
     im = Image.fromarray(x_test[misclass[i][0]].reshape((28, 28)).astype('uint8'))
     im.save("{0} misclassed as {1}.jpg".format(misclass[i][1], misclass[i][2]))
 
-# TODO: 3 visualizations of misclassified images
 # TODO: write report
 # TODO: save best model
